@@ -90,7 +90,7 @@ struct RootView: View {
                             .padding(.horizontal, 8)
                     }
                 }
-                NavigationLink(destination: StatusBarView()) {
+                NavigationLink(destination: FootnoteView()) {
                     HStack {
                         Image(systemName: "iphone")
                             .resizable()
@@ -104,7 +104,7 @@ struct RootView: View {
                 
                 Divider()
                 
-                NavigationLink(destination: StatusBarView()) {
+                NavigationLink(destination: FootnoteView()) {
                     HStack {
                         Image(systemName: "checkmark.circle")
                             .resizable()
@@ -118,16 +118,6 @@ struct RootView: View {
             }
             .frame(minWidth: 250)
         }
-//        TabView {
-//            HomeView()
-//                .tabItem {
-//                    Label("Home", systemImage: "house")
-//                }
-//            HomeView()
-//                .tabItem {
-//                    Label("About", systemImage: "i.circle")
-//                }
-//        }
     }
 }
 
