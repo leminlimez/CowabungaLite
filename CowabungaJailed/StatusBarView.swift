@@ -2,88 +2,127 @@
 //  StatusBarView.swift
 //  CowabungaJailed
 //
-//  Created by lemin on 3/17/23.
+//  Created by Rory Madden on 20/3/2023.
 //
 
 import SwiftUI
 
 struct StatusBarView: View {
-    @StateObject private var logger = Logger.shared
-    @State private var footnoteText = ""
+    @Environment(\.openURL) var openURL
+    
+    @State private var carrierText: String = ""
+    @State private var carrierTextEnabled: Bool = false
+    @State private var timeText: String = ""
+    @State private var timeTextEnabled: Bool = false
+    @State private var crumbText: String = ""
+    @State private var crumbTextEnabled: Bool = false
+    @State private var clockHidden: Bool = false
+    @State private var DNDHidden: Bool = false
+    @State private var airplaneHidden: Bool = false
+    @State private var cellHidden: Bool = false
+    @State private var wiFiHidden: Bool = false
+    @State private var batteryHidden: Bool = false
+    @State private var bluetoothHidden: Bool = false
+    @State private var alarmHidden: Bool = false
+    @State private var locationHidden: Bool = false
+    @State private var rotationHidden: Bool = false
+    @State private var airPlayHidden: Bool = false
+    @State private var carPlayHidden: Bool = false
+    @State private var VPNHidden: Bool = false
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Footnote Text", text: $footnoteText)
-                Button("Apply") {
-                    // set up backup directory
-                    guard copyFolderFromBundleToDocuments() else { return }
-                    
-                    // edit plist
-                    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                    let plistURL = documentsDirectory.appendingPathComponent("/Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
-                    guard var plist = NSDictionary(contentsOf: plistURL) as? [String:String] else {
-                        Logger.shared.logMe("Error parsing plist")
-                        return
+        List {
+            Group {
+                Toggle("Change Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
+                    if nv {
+                    } else {
                     }
-                    plist["LockScreenFootnote"] = footnoteText
-                    (plist as NSDictionary).write(to: plistURL, atomically: true)
-                    
-                    // generate backup
-                    guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
-                        Logger.shared.logMe("Error locating CreateBackup.sh")
-                        return }
-                    do {
-                        try shell(script, arguments: ["Files/Footnote", "Backup"], workingDirectory: documentsDirectory)
-                    } catch {
-                        Logger.shared.logMe("Error running CreateBackup.sh")
+                })
+                TextField("Carrier Text", text: $carrierText).onChange(of: carrierText, perform: { nv in
+                    // This is important.
+                    // Make sure the UTF-8 representation of the string does not exceed 100
+                    // Otherwise the struct will overflow
+                    var safeNv = nv
+                    while safeNv.utf8CString.count > 100 {
+                        safeNv = String(safeNv.prefix(safeNv.count - 1))
                     }
-                    
-                    // restore to device
-                    guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
-                        Logger.shared.logMe("Error locating idevicebackup2")
-                        return
+                    carrierText = safeNv
+                    if carrierTextEnabled {
                     }
-                    do {
-                        try execute(exec, arguments:["-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
-                    } catch {
-                        Logger.shared.logMe("Error restoring to device")
+                })
+                Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
+                    if nv {
+                    } else {
                     }
-                }
+                })
+                TextField("Breadcrumb Text", text: $crumbText).onChange(of: crumbText, perform: { nv in
+                    // This is important.
+                    // Make sure the UTF-8 representation of the string does not exceed 256
+                    // Otherwise the struct will overflow
+                    var safeNv = nv
+                    while (safeNv + " ▶").utf8CString.count > 256 {
+                        safeNv = String(safeNv.prefix(safeNv.count - 1))
+                    }
+                    crumbText = safeNv
+                    if crumbTextEnabled {
+                    }
+                })
+                Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
+                    if nv {
+                    } else {
+                    }
+                })
+                TextField("Status Bar Time Text", text: $timeText).onChange(of: timeText, perform: { nv in
+                    // This is important.
+                    // Make sure the UTF-8 representation of the string does not exceed 64
+                    // Otherwise the struct will overflow
+                    var safeNv = nv
+                    while safeNv.utf8CString.count > 64 {
+                        safeNv = String(safeNv.prefix(safeNv.count - 1))
+                    }
+                    timeText = safeNv
+                    if timeTextEnabled {
+                    }
+                })
+                
+                Text("When set to blank on notched devices, this will display the carrier name.")
             }
-//            Button("Set Up Backup Directory") {
-//                copyFolderFromBundleToDocuments()
-//                Logger.shared.logMe("done")
-//            }
-//            Button("View Backup Directory Tree") {
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//                printDirectoryTree(at: documentsDirectory, level: 0)
-//            }
-//            Button("Generate Backup") {
-//                guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else { return }
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//                do {
-//                    try shell(script, arguments: ["Files/Footnote", "Backup"], workingDirectory: documentsDirectory)
-//                } catch {
-//
-//                }
-//            }
-//            Button("Restore to Device") {
-//                guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else { return }
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//                do {
-//                    try execute(exec, arguments:["-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
-//                } catch {
-//                }
-//            }
-//            Button("Devices") {
-//                let devices = getDevices()
-//                for d in devices {
-//                    Logger.shared.logMe(d.uuid)
-//                    Logger.shared.logMe(d.name)
-//                }
-//            }
-            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced))
+            
+            Divider()
+            
+            Group {
+                
+                // bruh I had to add a group cause SwiftUI won't let you add more than 10 things to a view?? ok
+                Toggle("Hide Do Not Disturb", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
+                })
+                Toggle("Hide Airplane Mode", isOn: $airplaneHidden).onChange(of: airplaneHidden, perform: { nv in
+                })
+                Toggle("Hide Cellular*", isOn: $cellHidden).onChange(of: cellHidden, perform: { nv in
+                })
+            }
+            Group {
+                Toggle("Hide Wi-Fi^", isOn: $wiFiHidden).onChange(of: wiFiHidden, perform: { nv in
+                })
+                //                        if UIDevice.current.userInterfaceIdiom != .pad {
+                Toggle("Hide Battery", isOn: $batteryHidden).onChange(of: batteryHidden, perform: { nv in
+                })
+                //                        }
+                Toggle("Hide Bluetooth", isOn: $bluetoothHidden).onChange(of: bluetoothHidden, perform: { nv in
+                })
+                Toggle("Hide Alarm", isOn: $alarmHidden).onChange(of: alarmHidden, perform: { nv in
+                })
+                Toggle("Hide Location", isOn: $locationHidden).onChange(of: locationHidden, perform: { nv in
+                })
+                Toggle("Hide Rotation Lock", isOn: $rotationHidden).onChange(of: rotationHidden, perform: { nv in
+                })
+                Toggle("Hide AirPlay", isOn: $airPlayHidden).onChange(of: airPlayHidden, perform: { nv in
+                })
+                Toggle("Hide CarPlay", isOn: $carPlayHidden).onChange(of: carPlayHidden, perform: { nv in
+                })
+                Toggle("Hide VPN", isOn: $VPNHidden).onChange(of: VPNHidden, perform: { nv in
+                })
+                Text("*Will also hide carrier name\n^Will also hide cellular data indicator")
+            }
         }
     }
 }
