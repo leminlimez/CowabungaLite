@@ -7,9 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		250ADBB729C825500023F343 /* idevice_id in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB629C825500023F343 /* idevice_id */; };
+		250ADBB929C825590023F343 /* idevicename in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB829C825590023F343 /* idevicename */; };
 		2544926E29C7F5C900B6D82E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2544926D29C7F5C900B6D82E /* Utilities.swift */; };
 		2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */ = {isa = PBXBuildFile; fileRef = 2544927029C7F79F00B6D82E /* CreateBackup.sh */; };
 		2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */ = {isa = PBXBuildFile; fileRef = 2544927129C7F79F00B6D82E /* idevicebackup2 */; };
+		2544927529C8017900B6D82E /* Files in Resources */ = {isa = PBXBuildFile; fileRef = 2544927429C8017900B6D82E /* Files */; };
+		2544927F29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; };
+		2544928129C8087800B6D82E /* libimobiledevice-1.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2544928529C8091F00B6D82E /* libusbmuxd-2.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; };
+		2544928629C8093800B6D82E /* libusbmuxd-2.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2544928829C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; };
+		2544928929C8096000B6D82E /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2544928B29C8097900B6D82E /* libplist-2.0.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; };
+		2544928C29C8097B00B6D82E /* libplist-2.0.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2544928F29C80F5700B6D82E /* ideviceinfo in Resources */ = {isa = PBXBuildFile; fileRef = 2544928E29C80F5600B6D82E /* ideviceinfo */; };
 		6F700AB629C37DF50085964B /* CowabungaJailedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */; };
 		6F700AB829C37DF50085964B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB729C37DF50085964B /* HomeView.swift */; };
 		6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700AB929C37DF60085964B /* Assets.xcassets */; };
@@ -18,10 +30,35 @@
 		6F700AC729C51E130085964B /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AC629C51E130085964B /* StatusBarView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2544928229C8087800B6D82E /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2544928929C8096000B6D82E /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */,
+				2544928629C8093800B6D82E /* libusbmuxd-2.0.6.dylib in Embed Libraries */,
+				2544928129C8087800B6D82E /* libimobiledevice-1.0.6.dylib in Embed Libraries */,
+				2544928C29C8097B00B6D82E /* libplist-2.0.3.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		250ADBB629C825500023F343 /* idevice_id */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevice_id; sourceTree = "<group>"; };
+		250ADBB829C825590023F343 /* idevicename */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevicename; sourceTree = "<group>"; };
 		2544926D29C7F5C900B6D82E /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2544927029C7F79F00B6D82E /* CreateBackup.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CreateBackup.sh; sourceTree = "<group>"; };
 		2544927129C7F79F00B6D82E /* idevicebackup2 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevicebackup2; sourceTree = "<group>"; };
+		2544927429C8017900B6D82E /* Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Files; sourceTree = "<group>"; };
+		2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libimobiledevice-1.0.6.dylib"; sourceTree = "<group>"; };
+		2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libusbmuxd-2.0.6.dylib"; sourceTree = "<group>"; };
+		2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libimobiledevice-glue-1.0.0.dylib"; sourceTree = "<group>"; };
+		2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libplist-2.0.3.dylib"; sourceTree = "<group>"; };
+		2544928E29C80F5600B6D82E /* ideviceinfo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ideviceinfo; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* CowabungaJailed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CowabungaJailed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowabungaJailedApp.swift; sourceTree = "<group>"; };
 		6F700AB729C37DF50085964B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -37,6 +74,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2544928829C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib in Frameworks */,
+				2544928529C8091F00B6D82E /* libusbmuxd-2.0.6.dylib in Frameworks */,
+				2544927F29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib in Frameworks */,
+				2544928B29C8097900B6D82E /* libplist-2.0.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,10 +87,24 @@
 		2544926F29C7F79F00B6D82E /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				2544928E29C80F5600B6D82E /* ideviceinfo */,
 				2544927029C7F79F00B6D82E /* CreateBackup.sh */,
 				2544927129C7F79F00B6D82E /* idevicebackup2 */,
+				250ADBB629C825500023F343 /* idevice_id */,
+				250ADBB829C825590023F343 /* idevicename */,
 			);
 			path = Scripts;
+			sourceTree = "<group>";
+		};
+		2544928329C808EB00B6D82E /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */,
+				2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */,
+				2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */,
+				2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */,
+			);
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 		6F700AA929C37DF50085964B = {
@@ -79,6 +134,8 @@
 				6F700AC429C3A9240085964B /* RootView.swift */,
 				6F700AC629C51E130085964B /* StatusBarView.swift */,
 				2544926D29C7F5C900B6D82E /* Utilities.swift */,
+				2544928329C808EB00B6D82E /* Libraries */,
+				2544927429C8017900B6D82E /* Files */,
 				2544926F29C7F79F00B6D82E /* Scripts */,
 			);
 			path = CowabungaJailed;
@@ -102,6 +159,7 @@
 				6F700AAE29C37DF50085964B /* Sources */,
 				6F700AAF29C37DF50085964B /* Frameworks */,
 				6F700AB029C37DF50085964B /* Resources */,
+				2544928229C8087800B6D82E /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -152,7 +210,11 @@
 			files = (
 				2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */,
 				6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */,
+				2544928F29C80F5700B6D82E /* ideviceinfo in Resources */,
+				2544927529C8017900B6D82E /* Files in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
+				250ADBB929C825590023F343 /* idevicename in Resources */,
+				250ADBB729C825500023F343 /* idevice_id in Resources */,
 				2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +287,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -279,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -294,6 +356,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CowabungaJailed/CowabungaJailed.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -307,10 +370,16 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/CowabungaJailed/Libraries",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaJailed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -322,11 +391,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CowabungaJailed/CowabungaJailed.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U67AKNW8PW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -334,6 +404,11 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)/**",
+					"$(PROJECT_DIR)/**",
+					"$(PROJECT_DIR)/CowabungaJailed/Libraries",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
