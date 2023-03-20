@@ -22,12 +22,13 @@ struct LockScreenFootnoteView: View {
                     // edit plist
                     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                     let plistURL = documentsDirectory.appendingPathComponent("/Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
-                    guard var plist = NSDictionary(contentsOf: plistURL) as? [String:String] else {
-                        Logger.shared.logMe("Error parsing plist")
-                        return
+                    do {
+                        try PlistManager.setPlistValues(url: plistURL, values: [
+                            "LockScreenFootnote": footnoteText
+                        ])
+                    } catch {
+                        Logger.shared.logMe(error.localizedDescription)
                     }
-                    plist["LockScreenFootnote"] = footnoteText
-                    (plist as NSDictionary).write(to: plistURL, atomically: true)
                     
                     // generate backup
                     guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
