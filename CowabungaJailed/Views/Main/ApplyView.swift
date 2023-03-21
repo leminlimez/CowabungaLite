@@ -18,6 +18,35 @@ struct ApplyView: View {
                         .foregroundColor(.primary)
                 }
             }
+            Button("Apply Tweaks") {
+                // Erase backup folder
+                
+                // Copy tweaks across
+                for tweak in DataSingleton.shared.allEnabledTweaks() {
+                    
+                }
+                
+                // Generate backup
+//                guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
+//                    Logger.shared.logMe("Error locating CreateBackup.sh")
+//                    return }
+//                do {
+//                    try shell(script, arguments: ["Files/Footnote", "Backup"], workingDirectory: documentsDirectory)
+//                } catch {
+//                    Logger.shared.logMe("Error running CreateBackup.sh")
+//                }
+//                
+//                // Restore file
+//                guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
+//                    Logger.shared.logMe("Error locating idevicebackup2")
+//                    return
+//                }
+//                do {
+//                    try execute(exec, arguments:["-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
+//                } catch {
+//                    Logger.shared.logMe("Error restoring to device")
+//                }
+            }
         }
     }
 }
