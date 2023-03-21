@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AppKit
 
 class Logger: ObservableObject {
     static let shared = Logger()
@@ -15,6 +14,100 @@ class Logger: ObservableObject {
 
     func logMe(_ message: String) {
         logText += "\(message)\n"
+    }
+}
+
+enum Tweak: String {
+    case footnote = "Footnote"
+    case statusBar = "StatusBar"
+}
+
+class DataSingleton {
+    static let shared = DataSingleton()
+    private var currentUUID: String?
+    private var currentWorkspace: URL?
+    private var enabledTweaks: Set<Tweak> = []
+    
+    func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
+        if isEnabled {
+            enabledTweaks.insert(tweak)
+        } else {
+            enabledTweaks.remove(tweak)
+        }
+    }
+    
+    func isTweakEnabled(_ tweak: Tweak) -> Bool {
+        return enabledTweaks.contains(tweak)
+    }
+    
+    func allEnabledTweaks() -> Set<Tweak> {
+        return enabledTweaks
+    }
+    
+    func setCurrentUUID(_ UUID: String) {
+        Logger.shared.logMe("Setting UUID to \(UUID)")
+        currentUUID = UUID
+        setupWorkspaceForUUID(UUID)
+    }
+    
+    func getCurrentUUID() -> String? {
+        return currentUUID
+    }
+    
+    func resetCurrentUUID() {
+        Logger.shared.logMe("Resetting UUID")
+        currentUUID = nil
+    }
+    
+    func setCurrentWorkspace(_ workspaceURL: URL) {
+        currentWorkspace = workspaceURL
+    }
+    
+    func getCurrentWorkspace() -> URL? {
+        return currentWorkspace
+    }
+}
+
+func setupWorkspaceForUUID(_ UUID: String) {
+    let fileManager = FileManager.default
+    guard let documentsURL = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
+        Logger.shared.logMe("Can't find Documents URL?")
+        return
+    }
+    let workspaceDirectory = documentsURL.appendingPathComponent("Workspace")
+    if !fileManager.fileExists(atPath: workspaceDirectory.path) {
+        do {
+            try fileManager.createDirectory(atPath: workspaceDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            Logger.shared.logMe("Workspace folder created")
+        } catch {
+            Logger.shared.logMe("Error creating Workspace folder: \(error.localizedDescription)")
+            return
+        }
+    }
+    let UUIDDirectory = workspaceDirectory.appendingPathComponent(UUID)
+    if !fileManager.fileExists(atPath: UUIDDirectory.path) {
+        do {
+            try fileManager.createDirectory(atPath: UUIDDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            Logger.shared.logMe("UUID folder created")
+        } catch {
+            Logger.shared.logMe("Error creating UUID folder: \(error.localizedDescription)")
+            return
+        }
+    }
+    DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
+    let editingDirectory = UUIDDirectory.appendingPathComponent("Files")
+    if !fileManager.fileExists(atPath: editingDirectory.path) {
+        guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
+            Logger.shared.logMe("Can't find Bundle URL?")
+            return
+        }
+        do {
+            try fileManager.copyItem(at: docsFolderURL, to: editingDirectory)
+            Logger.shared.logMe("Successfully copied Files folder")
+        } catch {
+            Logger.shared.logMe("Error copying Files folder: \(error)")
+            return
+        }
     }
 }
 
@@ -50,7 +143,6 @@ func execute(_ execURL: URL, arguments: [String] = [], workingDirectory: URL? = 
     task.environment = environment
 
     task.executableURL = execURL
-    let scriptArguments = arguments.joined(separator: " ")
     task.arguments = arguments
     if let workingDirectory = workingDirectory {
         task.currentDirectoryURL = workingDirectory
@@ -150,12 +242,15 @@ func getDevices() -> [Device] {
     let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     do {
         let devices = try execute2(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
+        if devices.contains("ERROR") {
+            return []
+        }
         let devicesArr = devices.split(separator: "\n", omittingEmptySubsequences: true)
         
         var deviceStructs: [Device] = []
         for d in devicesArr {
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
-            let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory)
+            let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             let device = Device(uuid: String(d), name: deviceName)
             deviceStructs.append(device)
         }

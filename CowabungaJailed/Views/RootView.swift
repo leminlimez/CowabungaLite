@@ -25,14 +25,18 @@ struct RootView: View {
         ]),
         
         .init(options: [
-            .init(title: "Apply", icon: "checkmark.circle", view: StatusBarView())
+            .init(title: "Apply", icon: "checkmark.circle", view: ApplyView())
         ])
     ]
     
     func updateDevices() {
+        // fix to update and maintain UUID if a device is disconnected
         devices = getDevices()
         if selectedDeviceIndex >= (devices?.count ?? 0) {
             selectedDeviceIndex = 0
+            DataSingleton.shared.resetCurrentUUID()
+        } else if let devices = devices {
+            DataSingleton.shared.setCurrentUUID(devices[0].uuid)
         }
     }
     
@@ -46,7 +50,7 @@ struct RootView: View {
                                 Text("None").tag(0)
                             } else {
                                 ForEach(0..<devices.count, id: \.self) { index in
-                                    Text("\(devices[index].name) (\(devices[index].uuid))")
+                                    Text("\(devices[index].name)")
                                 }
                             }
                         } else {
@@ -54,6 +58,12 @@ struct RootView: View {
                         }
                     }.onAppear {
                         updateDevices()
+                    }.onChange(of: selectedDeviceIndex) { nv in
+                        if nv != 0, let devices = devices {
+                            DataSingleton.shared.setCurrentUUID(devices[nv - 1].uuid)
+                        } else {
+                            DataSingleton.shared.resetCurrentUUID()
+                        }
                     }
                     
                     Button(action: {
