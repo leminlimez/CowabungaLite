@@ -18,7 +18,6 @@ struct DynamicIslandView: View {
                     guard copyFolderFromBundleToDocuments() else { return }
                     
                     // edit plist
-                    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //                    let plistURL = documentsDirectory.appendingPathComponent("/Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist")
 //                    guard var plist = NSDictionary(contentsOf: plistURL) as? [String:String] else {
 //                        Logger.shared.logMe("Error parsing plist")
@@ -53,12 +52,10 @@ struct DynamicIslandView: View {
 //                Logger.shared.logMe("done")
 //            }
 //            Button("View Backup Directory Tree") {
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //                printDirectoryTree(at: documentsDirectory, level: 0)
 //            }
 //            Button("Generate Backup") {
 //                guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else { return }
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //                do {
 //                    try shell(script, arguments: ["Files/Footnote", "Backup"], workingDirectory: documentsDirectory)
 //                } catch {
@@ -67,7 +64,6 @@ struct DynamicIslandView: View {
 //            }
 //            Button("Restore to Device") {
 //                guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else { return }
-//                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 //                do {
 //                    try execute(exec, arguments:["-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
 //                } catch {
