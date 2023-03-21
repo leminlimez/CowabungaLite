@@ -15,7 +15,7 @@ struct LockScreenFootnoteView: View {
     var body: some View {
         List {
             HStack {
-                Image(systemName: "iphone")
+                Image(systemName: "platter.filled.bottom.iphone")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 35, height: 35)
@@ -38,7 +38,10 @@ struct LockScreenFootnoteView: View {
             Divider()
             HStack {
                 TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else { return }
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                        Logger.shared.logMe("Error finding footnote plist")
+                        return
+                    }
                     do {
                         try PlistManager.setPlistValues(url: plistURL, values: [
                             "LockScreenFootnote": footnoteText
@@ -75,7 +78,6 @@ struct LockScreenFootnoteView: View {
 //                Logger.shared.logMe("done")
 //            }
             Button("View Backup Directory Tree") {
-                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                 printDirectoryTree(at: documentsDirectory, level: 0)
             }
             TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250)

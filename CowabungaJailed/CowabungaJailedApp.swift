@@ -10,7 +10,13 @@ import SwiftUI
 @main
 struct CowabungaJailedApp: App {
     init() {
-//        guard copyFolderFromBundleToDocuments() else { return }
+        if !fm.fileExists(atPath: documentsDirectory.path) {
+            do {
+                try fm.createDirectory(at: documentsDirectory, withIntermediateDirectories: false)
+            } catch {
+                Logger.shared.logMe("Error creating directory com.leemin.CowabungaJailed")
+            }
+        }
     }
     
     var body: some Scene {

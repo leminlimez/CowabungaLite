@@ -69,15 +69,10 @@ class DataSingleton {
 }
 
 func setupWorkspaceForUUID(_ UUID: String) {
-    let fileManager = FileManager.default
-    guard let documentsURL = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
-        Logger.shared.logMe("Can't find Documents URL?")
-        return
-    }
-    let workspaceDirectory = documentsURL.appendingPathComponent("Workspace")
-    if !fileManager.fileExists(atPath: workspaceDirectory.path) {
+    let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
+    if !fm.fileExists(atPath: workspaceDirectory.path) {
         do {
-            try fileManager.createDirectory(atPath: workspaceDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            try fm.createDirectory(atPath: workspaceDirectory.path, withIntermediateDirectories: false, attributes: nil)
             Logger.shared.logMe("Workspace folder created")
         } catch {
             Logger.shared.logMe("Error creating Workspace folder: \(error.localizedDescription)")
@@ -85,9 +80,9 @@ func setupWorkspaceForUUID(_ UUID: String) {
         }
     }
     let UUIDDirectory = workspaceDirectory.appendingPathComponent(UUID)
-    if !fileManager.fileExists(atPath: UUIDDirectory.path) {
+    if !fm.fileExists(atPath: UUIDDirectory.path) {
         do {
-            try fileManager.createDirectory(atPath: UUIDDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            try fm.createDirectory(atPath: UUIDDirectory.path, withIntermediateDirectories: false, attributes: nil)
             Logger.shared.logMe("UUID folder created")
         } catch {
             Logger.shared.logMe("Error creating UUID folder: \(error.localizedDescription)")
@@ -96,13 +91,13 @@ func setupWorkspaceForUUID(_ UUID: String) {
     }
     DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
     let editingDirectory = UUIDDirectory.appendingPathComponent("Files")
-    if !fileManager.fileExists(atPath: editingDirectory.path) {
+    if !fm.fileExists(atPath: editingDirectory.path) {
         guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
             Logger.shared.logMe("Can't find Bundle URL?")
             return
         }
         do {
-            try fileManager.copyItem(at: docsFolderURL, to: editingDirectory)
+            try fm.copyItem(at: docsFolderURL, to: editingDirectory)
             Logger.shared.logMe("Successfully copied Files folder")
         } catch {
             Logger.shared.logMe("Error copying Files folder: \(error)")
@@ -181,11 +176,10 @@ func execute2(_ execURL: URL, arguments: [String] = [], workingDirectory: URL? =
 }
 
 func printDirectoryTree(at path: URL, level: Int) {
-    let fileManager = FileManager.default
     let prefix = String(repeating: "│   ", count: level > 0 ? level - 1 : 0) + (level > 0 ? "├── " : "")
     
     do {
-        let contents = try fileManager.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: [])
+        let contents = try fm.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: [])
         for url in contents {
             let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
             Logger.shared.logMe(prefix + url.lastPathComponent)
@@ -204,16 +198,11 @@ func copyFolderFromBundleToDocuments() -> Bool {
         return false
     }
 
-    let fileManager = FileManager.default
-    guard let documentsURL = try? fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {
-        Logger.shared.logMe("Can't find Documents URL?")
-        return false
-    }
-    let destinationURL = documentsURL.appendingPathComponent("Files")
+    let destinationURL = documentsDirectory.appendingPathComponent("Files")
 
-    if fileManager.fileExists(atPath: destinationURL.path) {
+    if fm.fileExists(atPath: destinationURL.path) {
         do {
-            try fileManager.removeItem(at: destinationURL)
+            try fm.removeItem(at: destinationURL)
             Logger.shared.logMe("Successfully removed existing Files folder from Documents directory")
         } catch {
             Logger.shared.logMe("Error removing existing Files folder: \(error)")
@@ -222,7 +211,7 @@ func copyFolderFromBundleToDocuments() -> Bool {
     }
 
     do {
-        try fileManager.copyItem(at: docsFolderURL, to: destinationURL)
+        try fm.copyItem(at: docsFolderURL, to: destinationURL)
         Logger.shared.logMe("Successfully copied Files folder to Documents directory")
     } catch {
         Logger.shared.logMe("Error copying Files folder: \(error)")
@@ -239,7 +228,6 @@ struct Device {
 
 func getDevices() -> [Device] {
     guard let exec = Bundle.main.url(forResource: "idevice_id", withExtension: "") else { return [] }
-    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     do {
         let devices = try execute2(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
