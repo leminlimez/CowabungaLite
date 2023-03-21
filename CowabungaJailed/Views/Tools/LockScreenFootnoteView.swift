@@ -49,6 +49,16 @@ struct LockScreenFootnoteView: View {
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
+                }).onAppear(perform: {
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                        Logger.shared.logMe("Error finding footnote plist")
+                        return
+                    }
+                    // Add a getPlistValues func to PlistManager pls
+                    guard var plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                        return
+                    }
+                    footnoteText = plist["LockScreenFootnote"] as! String
                 })
 //                Button("Apply") {
 //                    // generate backup
