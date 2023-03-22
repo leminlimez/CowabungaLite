@@ -87,6 +87,7 @@
 		25B8341629CAF95800176095 /* StatusSetter15.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusSetter15.h; sourceTree = "<group>"; };
 		25B8341A29CB04C700176095 /* StatusSetter16_3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusSetter16_3.h; sourceTree = "<group>"; };
 		25B8341B29CB04CA00176095 /* StatusSetter16_3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusSetter16_3.m; sourceTree = "<group>"; };
+		6F5C0C0829CB49450005FB0B /* CowabungaJailedRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CowabungaJailedRelease.entitlements; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* CowabungaJailed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CowabungaJailed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowabungaJailedApp.swift; sourceTree = "<group>"; };
 		6F700AB729C37DF50085964B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -175,6 +176,7 @@
 		6F700AB429C37DF50085964B /* CowabungaJailed */ = {
 			isa = PBXGroup;
 			children = (
+				6F5C0C0829CB49450005FB0B /* CowabungaJailedRelease.entitlements */,
 				6F886A2529C8BEE200B73E40 /* Controllers */,
 				6F886A2829C8C77700B73E40 /* Extensions */,
 				6F886A1829C899FC00B73E40 /* Views */,
@@ -467,11 +469,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CowabungaJailed/CowabungaJailed.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
-				DEVELOPMENT_TEAM = U67AKNW8PW;
+				DEVELOPMENT_TEAM = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -500,13 +503,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = CowabungaJailed/CowabungaJailed.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CowabungaJailed/CowabungaJailedRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
