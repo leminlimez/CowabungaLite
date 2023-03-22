@@ -20,6 +20,7 @@ import Foundation
 enum Tweak: String {
     case footnote = "Footnote"
     case statusBar = "StatusBar"
+    case springboardOptions = "SpringboardOptions"
     case skipSetup = "SkipSetup"
     case dynamicIsland = "DynamicIsland"
 }
