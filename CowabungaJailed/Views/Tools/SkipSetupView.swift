@@ -9,31 +9,35 @@ import SwiftUI
 
 struct SkipSetupView: View {
     @State private var enableTweak = false
+    @StateObject private var dataSingleton = DataSingleton.shared
     
     var body: some View {
         List {
-            HStack {
-                Image(systemName: "gear.badge.xmark")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 35, height: 35)
-                VStack {
-                    HStack {
-                        Text("Skip Setup")
-                            .bold()
-                        Spacer()
-                    }
-                    HStack {
-                        Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
-                            DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: nv)
-                        }).onAppear(perform: {
-                            enableTweak = DataSingleton.shared.isTweakEnabled(.skipSetup)
-                        })
-                        Spacer()
+            Group {
+                HStack {
+                    Image(systemName: "gear.badge.xmark")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 35, height: 35)
+                    VStack {
+                        HStack {
+                            Text("Skip Setup")
+                                .bold()
+                            Spacer()
+                        }
+                        HStack {
+                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
+                                DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: nv)
+                            }).onAppear(perform: {
+                                enableTweak = DataSingleton.shared.isTweakEnabled(.skipSetup)
+                            })
+                            Spacer()
+                        }
                     }
                 }
+                Divider()
             }
-        }
+        }.disabled(!dataSingleton.deviceAvailable)
     }
 }
 

@@ -1,4 +1,4 @@
-#import "StatusSetter16_1.h"
+#import "StatusSetter16_3.h"
 #import "StatusManager.h"
 
 typedef NS_ENUM(int, StatusBarItem) {
@@ -55,7 +55,8 @@ typedef NS_ENUM(unsigned int, BatteryState) {
 
 typedef struct {
   bool itemIsEnabled[45];
-  char padding;
+  char padding1;
+  char padding2;
   char timeString[64];
   char shortTimeString[64];
   char dateString[256];
@@ -115,7 +116,8 @@ typedef struct {
 
 typedef struct {
   bool overrideItemIsEnabled[45];
-  char padding;
+  char padding1;
+  char padding2;
   unsigned int overrideTimeString : 1;
   unsigned int overrideDateString : 1;
   unsigned int overrideGsmSignalStrengthRaw : 1;
@@ -155,7 +157,7 @@ typedef struct {
   StatusBarRawData values;
 } StatusBarOverrideData;
 
-@implementation StatusSetter16_1
+@implementation StatusSetter16_3
 
 // BELOW IS THE SAME IN iOS 15, 16, and 16.1
 

@@ -1,4 +1,4 @@
-#import "StatusSetter16_1.h"
+#import "StatusSetter16.h"
 #import "StatusManager.h"
 
 typedef NS_ENUM(int, StatusBarItem) {
@@ -55,7 +55,6 @@ typedef NS_ENUM(unsigned int, BatteryState) {
 
 typedef struct {
   bool itemIsEnabled[45];
-  char padding;
   char timeString[64];
   char shortTimeString[64];
   char dateString[256];
@@ -115,7 +114,6 @@ typedef struct {
 
 typedef struct {
   bool overrideItemIsEnabled[45];
-  char padding;
   unsigned int overrideTimeString : 1;
   unsigned int overrideDateString : 1;
   unsigned int overrideGsmSignalStrengthRaw : 1;
@@ -155,9 +153,32 @@ typedef struct {
   StatusBarRawData values;
 } StatusBarOverrideData;
 
-@implementation StatusSetter16_1
+@class UIStatusBarServer;
 
-// BELOW IS THE SAME IN iOS 15, 16, and 16.1
+@protocol UIStatusBarServerClient
+
+@required
+
+- (void)statusBarServer:(UIStatusBarServer *)arg1 didReceiveDoubleHeightStatusString:(NSString *)arg2 forStyle:(long long)arg3;
+- (void)statusBarServer:(UIStatusBarServer *)arg1 didReceiveGlowAnimationState:(bool)arg2 forStyle:(long long)arg3;
+- (void)statusBarServer:(UIStatusBarServer *)arg1 didReceiveStatusBarData:(const StatusBarRawData *)arg2 withActions:(int)arg3;
+- (void)statusBarServer:(UIStatusBarServer *)arg1 didReceiveStyleOverrides:(int)arg2;
+
+@end
+
+@interface UIStatusBarServer : NSObject
+
+@property (nonatomic, strong) id<UIStatusBarServerClient> statusBar;
+
++ (void)postStatusBarOverrideData:(StatusBarOverrideData *)arg1;
++ (void)permanentizeStatusBarOverrideData;
++ (StatusBarOverrideData *)getStatusBarOverrideData;
+
+@end
+
+@implementation StatusSetter16
+
+// BELOW IS THE SAME IN iOS 15, 16, AND 16.1
 
 - (void) applyChanges:(StatusBarOverrideData*)overrides {
     FILE *outfile;
@@ -338,7 +359,8 @@ typedef struct {
 
 - (bool) isWiFiHidden {
     StatusBarOverrideData *overrides = [self getOverrides];
-    return overrides->overrideItemIsEnabled[CellularDataNetworkStatusBarItem] == 1;
+    return overrides->overrideItemIsEnabled[CellularDataNetworkStatusBarItem] == 1 &&
+        overrides->overrideItemIsEnabled[SecondaryCellularDataNetworkStatusBarItem] == 1;
 }
 
 - (void) hideWiFi:(bool)hidden {

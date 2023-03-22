@@ -1,5 +1,6 @@
 #pragma once
 #import <Foundation/Foundation.h>
+#import "CowabungaJailed-Swift.h"
 
 @interface StatusManager : NSObject
 
@@ -16,8 +17,6 @@
 - (NSString*) getCrumbOverride;
 - (void) setCrumb:(NSString*)text;
 - (void) unsetCrumb;
-- (bool) isClockHidden;
-- (void) hideClock:(bool)hidden;
 - (bool) isDNDHidden;
 - (void) hideDND:(bool)hidden;
 - (bool) isAirplaneHidden;

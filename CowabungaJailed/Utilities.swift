@@ -7,12 +7,12 @@
 
 import Foundation
 
-class Logger: ObservableObject {
-    static let shared = Logger()
+@objc class Logger: NSObject, ObservableObject {
+    @objc static let shared = Logger()
     
     @Published var logText = ""
 
-    func logMe(_ message: String) {
+    @objc func logMe(_ message: String) {
         logText += "\(message)\n"
     }
 }
@@ -24,11 +24,12 @@ enum Tweak: String {
     case dynamicIsland = "DynamicIsland"
 }
 
-class DataSingleton {
-    static let shared = DataSingleton()
-    private var currentUUID: String?
+@objc class DataSingleton: NSObject, ObservableObject {
+    @objc static let shared = DataSingleton()
+    private var currentDevice: Device?
     private var currentWorkspace: URL?
     private var enabledTweaks: Set<Tweak> = []
+    @Published var deviceAvailable = false
     
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
@@ -46,26 +47,36 @@ class DataSingleton {
         return enabledTweaks
     }
     
-    func setCurrentUUID(_ UUID: String) {
-        Logger.shared.logMe("Setting UUID to \(UUID)")
-        currentUUID = UUID
-        setupWorkspaceForUUID(UUID)
+    func setCurrentDevice(_ device: Device) {
+        currentDevice = device
+        setupWorkspaceForUUID(device.uuid)
+        deviceAvailable = true
     }
     
-    func getCurrentUUID() -> String? {
-        return currentUUID
+    func resetCurrentDevice() {
+        currentDevice = nil
+        currentWorkspace = nil
+        deviceAvailable = false
+        enabledTweaks.removeAll()
     }
     
-    func resetCurrentUUID() {
-        Logger.shared.logMe("Resetting UUID")
-        currentUUID = nil
+    @objc func getCurrentUUID() -> String? {
+        return currentDevice?.uuid
+    }
+    
+    @objc func getCurrentVersion() -> String? {
+        return currentDevice?.version
+    }
+    
+    @objc func getCurrentName() -> String? {
+        return currentDevice?.name
     }
     
     func setCurrentWorkspace(_ workspaceURL: URL) {
         currentWorkspace = workspaceURL
     }
     
-    func getCurrentWorkspace() -> URL? {
+    @objc func getCurrentWorkspace() -> URL? {
         return currentWorkspace
     }
 }
@@ -244,6 +255,7 @@ func printDirectoryTree(at path: URL, level: Int) {
 struct Device {
     let uuid: String
     let name: String
+    let version: String
 }
 
 func getDevices() -> [Device] {
@@ -259,7 +271,9 @@ func getDevices() -> [Device] {
         for d in devicesArr {
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
             let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            let device = Device(uuid: String(d), name: deviceName)
+            guard let exec3 = Bundle.main.url(forResource: "ideviceinfo", withExtension: "") else { continue }
+            let deviceVersion = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            let device = Device(uuid: String(d), name: deviceName, version: deviceVersion)
             deviceStructs.append(device)
         }
         return deviceStructs
