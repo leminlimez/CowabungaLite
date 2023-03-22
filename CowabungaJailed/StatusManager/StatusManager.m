@@ -25,10 +25,10 @@
 #import <sys/utsname.h>
 #import "StatusManager.h"
 #import "StatusSetter.h"
+#import "StatusSetter16_3.h"
 #import "StatusSetter16_1.h"
-//#import "StatusSetter16.h"
-//#import "StatusSetter15.h"
-//#import "StatusSetter14.h"
+#import "StatusSetter16.h"
+#import "StatusSetter15.h"
 
 @interface StatusManager ()
 @property (nonatomic, strong) id <StatusSetter> setter;
@@ -44,15 +44,23 @@
 
 - (id<StatusSetter>)setter {
     if (!_setter) {
-        if (@available(iOS 16.1, *)) {
-            _setter = [StatusSetter16_1 new];
-        } else if (@available(iOS 16, *)) {
-//            _setter = [StatusSetter16 new];
-        } else if (@available(iOS 15, *)) {
-//            _setter =  [StatusSetter15 new];
-        } else if (@available(iOS 14, *)) {
-//            _setter = [StatusSetter14 new];
+        NSString *version = [[DataSingleton shared] getCurrentVersion];
+        NSArray *versionSplit = [version componentsSeparatedByCharactersInSet: [NSCharacterSet characterSetWithCharactersInString:@"."]];
+        if ([versionSplit[0] isEqual: @"15"]) {
+            _setter =  [StatusSetter15 new];
+        } else if ([versionSplit[0] isEqual: @"16"]) {
+            if ([versionSplit[1] isEqual: @"0"]) {
+                _setter = [StatusSetter16 new];
+            } else if ([versionSplit[1] isEqual: @"1"]) {
+                _setter = [StatusSetter16_1 new];
+            } else if ([versionSplit[1] isEqual: @"2"]) {
+                _setter = [StatusSetter16_1 new];
+            } else if ([versionSplit[1] isEqual: @"3"]) {
+                _setter = [StatusSetter16_3 new];
+            }
         }
+        [[Logger shared] logMe:versionSplit[0]];
+        [[Logger shared] logMe:versionSplit[1]];
     }
     return _setter;
 }
@@ -110,14 +118,6 @@
 
 - (void) unsetCrumb {
     [self.setter unsetCrumb];
-}
-
-- (bool) isClockHidden {
-    return [self.setter isClockHidden];
-}
-
-- (void) hideClock:(bool)hidden {
-    [self.setter hideClock:hidden];
 }
 
 - (bool) isDNDHidden {

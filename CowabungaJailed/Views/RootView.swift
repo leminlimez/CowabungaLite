@@ -20,7 +20,7 @@ struct RootView: View {
         // Tools View
         .init(title: "Tools", options: [
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
-            .init(title: "Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
+            .init(title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(title: "Skip Setup", icon: "gear.badge.xmark", view: SkipSetupView())
 //            .init(title: "Dynamic Island", icon: "platter.filled.top.iphone", view: DynamicIslandView())
         ]),
@@ -35,9 +35,9 @@ struct RootView: View {
         devices = getDevices()
         if selectedDeviceIndex >= (devices?.count ?? 0) {
             selectedDeviceIndex = 0
-            DataSingleton.shared.resetCurrentUUID()
+            DataSingleton.shared.resetCurrentDevice()
         } else if let devices = devices {
-            DataSingleton.shared.setCurrentUUID(devices[0].uuid)
+            DataSingleton.shared.setCurrentDevice(devices[0])
         }
     }
     
@@ -51,7 +51,7 @@ struct RootView: View {
                                 Text("None").tag(0)
                             } else {
                                 ForEach(0..<devices.count, id: \.self) { index in
-                                    Text("\(devices[index].name)")
+                                    Text("\(devices[index].name) (\(devices[index].version))")
                                 }
                             }
                         } else {
@@ -61,9 +61,9 @@ struct RootView: View {
                         updateDevices()
                     }.onChange(of: selectedDeviceIndex) { nv in
                         if nv != 0, let devices = devices {
-                            DataSingleton.shared.setCurrentUUID(devices[nv - 1].uuid)
+                            DataSingleton.shared.setCurrentDevice(devices[nv - 1])
                         } else {
-                            DataSingleton.shared.resetCurrentUUID()
+                            DataSingleton.shared.resetCurrentDevice()
                         }
                     }
                     

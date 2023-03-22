@@ -9,7 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-            VStack {
+        List {
+            Group {
                 HStack {
                     Image(systemName: "iphone")
                         .resizable()
@@ -17,34 +18,21 @@ struct HomeView: View {
                         .frame(width: 35, height: 35)
                     VStack {
                         HStack {
-                            Text("Huawei P30 Pro")
+                            Text(DataSingleton.shared.getCurrentName() ?? "No Device")
                                 .bold()
                             Spacer()
                         }
                         HStack {
-                            Text("iOS 15.4.1")
-                            Text("Supported!")
-                                .foregroundColor(.green)
+                            Text(DataSingleton.shared.getCurrentVersion() ?? "Please connect a device.")
+//                            Text("Supported!")
+//                                .foregroundColor(.green)
                             Spacer()
                         }
                     }
                 }
-                .padding(.bottom, 5)
-                List {
-                    Text("Console stuff")
-                        .foregroundColor(.secondary)
-                }
-                .cornerRadius(12)
-                .padding(5)
-                .padding(.bottom, 10)
-                
-                Button(action: {
-                    
-                }) {
-                    Text("Apply")
-                }
+                Divider()
             }
-            .padding()
+        }
     }
 }
 
