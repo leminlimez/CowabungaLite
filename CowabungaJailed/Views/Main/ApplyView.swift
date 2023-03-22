@@ -45,19 +45,39 @@ struct ApplyView: View {
                     Logger.shared.logMe("Error getting Workspace URL")
                     return
                 }
+
                 for tweak in DataSingleton.shared.allEnabledTweaks() {
                     do {
                         let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("Files/\(tweak.rawValue)"), includingPropertiesForKeys: nil)
                         for file in files {
                             let newURL = enabledTweaksDirectory.appendingPathComponent(file.lastPathComponent)
-                            try fm.copyItem(at: file, to: newURL)
+                            var shouldMergeDirectory = false
+                            var isDirectory: ObjCBool = false
+                            if fm.fileExists(atPath: newURL.path, isDirectory: &isDirectory) {
+                                if isDirectory.boolValue {
+                                    shouldMergeDirectory = true
+                                } else {
+                                    let newFileAttributes = try fm.attributesOfItem(atPath: newURL.path)
+                                    let oldFileAttributes = try fm.attributesOfItem(atPath: file.path)
+                                    if let newModifiedTime = newFileAttributes[.modificationDate] as? Date,
+                                       let oldModifiedTime = oldFileAttributes[.modificationDate] as? Date,
+                                       newModifiedTime.compare(oldModifiedTime) != .orderedAscending {
+                                        continue // skip copying the file since the new file is older
+                                    }
+                                }
+                            }
+                            if shouldMergeDirectory {
+                                try fm.mergeDirectory(at: file, to: newURL)
+                            } else {
+                                try fm.copyItem(at: file, to: newURL)
+                            }
                         }
-//                        try fm.copyItem(at: workspaceURL.appendingPathComponent(tweak.rawValue), to: enabledTweaksDirectory)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                         return
                     }
                 }
+
                 
                 let backupDirectory = documentsDirectory.appendingPathComponent("Backup")
                 if fm.fileExists(atPath: backupDirectory.path) {

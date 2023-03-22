@@ -55,7 +55,7 @@ struct LockScreenFootnoteView: View {
                         return
                     }
                     // Add a getPlistValues func to PlistManager pls
-                    guard var plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                    guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
                         return
                     }
                     footnoteText = plist["LockScreenFootnote"] as! String
