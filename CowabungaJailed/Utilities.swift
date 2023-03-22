@@ -20,6 +20,7 @@ class Logger: ObservableObject {
 enum Tweak: String {
     case footnote = "Footnote"
     case statusBar = "StatusBar"
+    case dynamicIsland = "DynamicIsland"
 }
 
 class DataSingleton {

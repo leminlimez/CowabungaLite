@@ -32,7 +32,6 @@
 		6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700AB929C37DF60085964B /* Assets.xcassets */; };
 		6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700ABC29C37DF60085964B /* Preview Assets.xcassets */; };
 		6F700AC529C3A9240085964B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AC429C3A9240085964B /* RootView.swift */; };
-		6F886A2029C8A9D100B73E40 /* com.apple.mobilegestalt.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F886A1F29C8A9D100B73E40 /* com.apple.mobilegestalt.plist */; };
 		6F886A2229C8AC0300B73E40 /* LockScreenFootnoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2129C8AC0300B73E40 /* LockScreenFootnoteView.swift */; };
 		6F886A2429C8AC0D00B73E40 /* DynamicIslandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */; };
 		6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2B29C8CFA900B73E40 /* String++.swift */; };
@@ -83,7 +82,6 @@
 		6F700ABC29C37DF60085964B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6F700ABE29C37DF60085964B /* CowabungaJailed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CowabungaJailed.entitlements; sourceTree = "<group>"; };
 		6F700AC429C3A9240085964B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		6F886A1F29C8A9D100B73E40 /* com.apple.mobilegestalt.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = com.apple.mobilegestalt.plist; sourceTree = "<group>"; };
 		6F886A2129C8AC0300B73E40 /* LockScreenFootnoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenFootnoteView.swift; sourceTree = "<group>"; };
 		6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicIslandView.swift; sourceTree = "<group>"; };
 		6F886A2B29C8CFA900B73E40 /* String++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String++.swift"; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 				2539F1AE29CA701C00FAD711 /* Constants.swift */,
 				25B47F1E29C91C2D00BD9F7E /* StatusManager */,
 				2544928329C808EB00B6D82E /* Libraries */,
-				6F886A1F29C8A9D100B73E40 /* com.apple.mobilegestalt.plist */,
 				25B47F1C29C91BA800BD9F7E /* Files */,
 				2544926F29C7F79F00B6D82E /* Scripts */,
 			);
@@ -296,7 +293,6 @@
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
 				250ADBB729C825500023F343 /* idevice_id in Resources */,
-				6F886A2029C8A9D100B73E40 /* com.apple.mobilegestalt.plist in Resources */,
 				2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
