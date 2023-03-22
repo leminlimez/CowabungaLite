@@ -20,8 +20,8 @@ struct RootView: View {
         // Tools View
         .init(title: "Tools", options: [
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
-            .init(title: "Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView())
-//            .init(title: "Dynam Islamd", icon: "iphone", view: DynamicIslandView())
+            .init(title: "Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
+            .init(title: "Dynamic Islamd", icon: "platter.filled.top.iphone", view: DynamicIslandView())
         ]),
         
         .init(options: [

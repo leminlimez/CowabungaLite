@@ -60,33 +60,7 @@ struct LockScreenFootnoteView: View {
                     }
                     footnoteText = plist["LockScreenFootnote"] as! String
                 })
-//                Button("Apply") {
-//                    // generate backup
-//                    guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
-//                        Logger.shared.logMe("Error locating CreateBackup.sh")
-//                        return }
-//                    do {
-//                        try shell(script, arguments: ["Files/Footnote", "Backup"], workingDirectory: documentsDirectory)
-//                    } catch {
-//                        Logger.shared.logMe("Error running CreateBackup.sh")
-//                    }
-//
-//                    // restore to device
-//                    guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
-//                        Logger.shared.logMe("Error locating idevicebackup2")
-//                        return
-//                    }
-//                    do {
-//                        try execute(exec, arguments:["-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
-//                    } catch {
-//                        Logger.shared.logMe("Error restoring to device")
-//                    }
-//                }
             }.disabled(!enableTweak)
-//            Button("Set Up Backup Directory") {
-//                copyFolderFromBundleToDocuments()
-//                Logger.shared.logMe("done")
-//            }
             Button("View Backup Directory Tree") {
                 printDirectoryTree(at: documentsDirectory, level: 0)
             }
