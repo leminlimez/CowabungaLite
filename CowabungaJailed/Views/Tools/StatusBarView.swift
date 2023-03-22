@@ -10,10 +10,28 @@ import SwiftUI
 struct StatusBarView: View {
     @State private var carrierText: String = ""
     @State private var carrierTextEnabled: Bool = false
+    
     @State private var timeText: String = ""
     @State private var timeTextEnabled: Bool = false
+    
+    @State private var batteryDetailText: String = ""
+    @State private var batteryDetailEnabled: Bool = false
+    
     @State private var crumbText: String = ""
     @State private var crumbTextEnabled: Bool = false
+    
+    @State private var batteryCapacity: Double = 0
+    @State private var batteryCapacityEnabled: Bool = false
+    
+    @State private var wiFiStrengthBars: Double = 0
+    @State private var wiFiStrengthBarsEnabled: Bool = false
+    
+    @State private var gsmStrengthBars: Double = 0
+    @State private var gsmStrengthBarsEnabled: Bool = false
+    
+    @State private var displayingRawWiFiStrength: Bool = false
+    @State private var displayingRawGSMStrength: Bool = false
+    
     @State private var DNDHidden: Bool = false
     @State private var airplaneHidden: Bool = false
     @State private var cellHidden: Bool = false
@@ -107,6 +125,26 @@ struct StatusBarView: View {
                         }).onAppear(perform: {
                             crumbText = StatusManager.sharedInstance().getCrumbOverride()
                         })
+                        Toggle("Change Battery Detail Text", isOn: $batteryDetailEnabled).onChange(of: batteryDetailEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setBatteryDetail(batteryDetailText)
+                            } else {
+                                StatusManager.sharedInstance().unsetBatteryDetail()
+                            }
+                        })
+                        TextField("Battery Detail Text", text: $batteryDetailText).onChange(of: batteryDetailText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 150
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 150 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            batteryDetailText = safeNv
+                            if batteryDetailEnabled {
+                                StatusManager.sharedInstance().setBatteryDetail(safeNv)
+                            }
+                        })
                         Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
                             if nv {
                                 StatusManager.sharedInstance().setTime(timeText)
@@ -132,6 +170,75 @@ struct StatusBarView: View {
                             timeText = StatusManager.sharedInstance().getTimeOverride()
                         })
                         Text("When set to blank on notched devices, this will display the carrier name.")
+                    }
+                    
+                    Divider()
+                    
+                    Section {
+                        Toggle("Change Battery Icon Capacity", isOn: $batteryCapacityEnabled).onChange(of: batteryCapacityEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setBatteryCapacity(Int32(batteryCapacity))
+                            } else {
+                                StatusManager.sharedInstance().unsetBatteryCapacity()
+                            }
+                        })
+                        HStack {
+                            Text("\(Int(batteryCapacity))%")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $batteryCapacity, in: 0...100, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: batteryCapacity) { nv in
+                                    StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
+                                }
+                        }
+                        
+                        Toggle("Change WiFi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(wiFiStrengthBars))
+                            } else {
+                                StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
+                            }
+                        })
+                        HStack {
+                            Text("\(Int(wiFiStrengthBars))")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $wiFiStrengthBars, in: 0...3, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: wiFiStrengthBars) { nv in
+                                    StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
+                                }
+                        }
+                        
+                        Toggle("Change Cellular Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(gsmStrengthBars))
+                            } else {
+                                StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
+                            }
+                        })
+                        HStack {
+                            Text("\(Int(gsmStrengthBars))")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $gsmStrengthBars, in: 0...4, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: gsmStrengthBars) { nv in
+                                    StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
+                                }
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    Section {
+                        Toggle("Show Numeric WiFi Strength", isOn: $displayingRawWiFiStrength).onChange(of: displayingRawWiFiStrength, perform: { nv in
+                            StatusManager.sharedInstance().displayRawWifiSignal(nv)
+                        })
+                        Toggle("Show Numeric Cellular Strength", isOn: $displayingRawGSMStrength).onChange(of: displayingRawGSMStrength, perform: { nv in
+                            StatusManager.sharedInstance().displayRawGSMSignal(nv)
+                        })
                     }
                     
                     Divider()
