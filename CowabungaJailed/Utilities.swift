@@ -119,7 +119,6 @@ func setupWorkspaceForUUID(_ UUID: String) {
         }
     }
     DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
-    let editingDirectory = UUIDDirectory.appendingPathComponent("Files")
     guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
         Logger.shared.logMe("Can't find Bundle URL?")
         return
@@ -127,7 +126,7 @@ func setupWorkspaceForUUID(_ UUID: String) {
     do {
         let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil)
         for file in files {
-            let newURL = editingDirectory.appendingPathComponent(file.lastPathComponent)
+            let newURL = UUIDDirectory.appendingPathComponent(file.lastPathComponent)
             var shouldMergeDirectory = false
             var isDirectory: ObjCBool = false
             if fm.fileExists(atPath: newURL.path, isDirectory: &isDirectory) {
@@ -154,19 +153,6 @@ func setupWorkspaceForUUID(_ UUID: String) {
         Logger.shared.logMe(error.localizedDescription)
         return
     }
-//    if !fm.fileExists(atPath: editingDirectory.path) {
-//        guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
-//            Logger.shared.logMe("Can't find Bundle URL?")
-//            return
-//        }
-//        do {
-//            try fm.copyItem(at: docsFolderURL, to: editingDirectory)
-//            Logger.shared.logMe("Successfully copied Files folder")
-//        } catch {
-//            Logger.shared.logMe("Error copying Files folder: \(error)")
-//            return
-//        }
-//    }
 }
 
 func shell(_ scriptURL: URL, arguments: [String] = [], workingDirectory: URL? = nil) throws {
@@ -253,66 +239,6 @@ func printDirectoryTree(at path: URL, level: Int) {
     } catch {
         Logger.shared.logMe(error.localizedDescription)
     }
-}
-
-func copyFolderFromBundleToDocuments() -> Bool {
-    guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
-        Logger.shared.logMe("Can't find Bundle URL?")
-        return false
-    }
-
-    let destinationURL = documentsDirectory.appendingPathComponent("Files")
-
-//    if fm.fileExists(atPath: destinationURL.path) {
-//        do {
-//            try fm.removeItem(at: destinationURL)
-//            Logger.shared.logMe("Successfully removed existing Files folder from Documents directory")
-//        } catch {
-//            Logger.shared.logMe("Error removing existing Files folder: \(error)")
-//            return false
-//        }
-//    }
-//
-//    do {
-//        try fm.copyItem(at: docsFolderURL, to: destinationURL)
-//        Logger.shared.logMe("Successfully copied Files folder to Documents directory")
-//    } catch {
-//        Logger.shared.logMe("Error copying Files folder: \(error)")
-//        return false
-//    }
-//
-//    return true
-    
-    do {
-        let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil)
-        for file in files {
-            let newURL = destinationURL.appendingPathComponent(file.lastPathComponent)
-            var shouldMergeDirectory = false
-            var isDirectory: ObjCBool = false
-            if fm.fileExists(atPath: newURL.path, isDirectory: &isDirectory) {
-                if isDirectory.boolValue {
-                    shouldMergeDirectory = true
-                } else {
-                    let newFileAttributes = try fm.attributesOfItem(atPath: newURL.path)
-                    let oldFileAttributes = try fm.attributesOfItem(atPath: file.path)
-                    if let newModifiedTime = newFileAttributes[.modificationDate] as? Date,
-                       let oldModifiedTime = oldFileAttributes[.modificationDate] as? Date,
-                       newModifiedTime.compare(oldModifiedTime) == .orderedAscending {
-                        continue // skip copying the file since the new file is older
-                    }
-                }
-            }
-            if shouldMergeDirectory {
-                try fm.mergeDirectory(at: file, to: newURL)
-            } else {
-                try fm.copyItem(at: file, to: newURL)
-            }
-        }
-    } catch {
-        Logger.shared.logMe(error.localizedDescription)
-        return false
-    }
-    return true
 }
 
 struct Device {

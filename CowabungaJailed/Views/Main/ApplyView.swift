@@ -48,7 +48,7 @@ struct ApplyView: View {
 
                 for tweak in DataSingleton.shared.allEnabledTweaks() {
                     do {
-                        let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("Files/\(tweak.rawValue)"), includingPropertiesForKeys: nil)
+                        let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("\(tweak.rawValue)"), includingPropertiesForKeys: nil)
                         for file in files {
                             let newURL = enabledTweaksDirectory.appendingPathComponent(file.lastPathComponent)
                             var shouldMergeDirectory = false

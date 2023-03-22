@@ -36,9 +36,10 @@ struct LockScreenFootnoteView: View {
                 }
             }
             Divider()
-            HStack {
+            Group {
+                Text("Footnote Text")
                 TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
                         Logger.shared.logMe("Error finding footnote plist")
                         return
                     }
@@ -50,7 +51,7 @@ struct LockScreenFootnoteView: View {
                         Logger.shared.logMe(error.localizedDescription)
                     }
                 }).onAppear(perform: {
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Files/Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
                         Logger.shared.logMe("Error finding footnote plist")
                         return
                     }
