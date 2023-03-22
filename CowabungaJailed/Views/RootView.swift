@@ -21,7 +21,8 @@ struct RootView: View {
         .init(title: "Tools", options: [
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
             .init(title: "Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
-            .init(title: "Dynamic Islamd", icon: "platter.filled.top.iphone", view: DynamicIslandView())
+            .init(title: "Skip Setup", icon: "gear.badge.xmark", view: SkipSetupView())
+//            .init(title: "Dynamic Island", icon: "platter.filled.top.iphone", view: DynamicIslandView())
         ]),
         
         .init(options: [
