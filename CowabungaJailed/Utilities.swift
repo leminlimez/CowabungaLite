@@ -49,8 +49,12 @@ enum Tweak: String {
     
     func setCurrentDevice(_ device: Device) {
         currentDevice = device
-        setupWorkspaceForUUID(device.uuid)
-        deviceAvailable = true
+        if Int(device.version.split(separator: ".")[0])! < 15 {
+            deviceAvailable = false
+        } else {
+            setupWorkspaceForUUID(device.uuid)
+            deviceAvailable = true
+        }
     }
     
     func resetCurrentDevice() {
