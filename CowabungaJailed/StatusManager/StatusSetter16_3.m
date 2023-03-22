@@ -117,8 +117,6 @@ typedef struct {
 typedef struct {
   bool overrideItemIsEnabled[45];
   char padding1;
-  char padding2;
-  char padding3;
   unsigned int overrideTimeString : 1;
   unsigned int overrideDateString : 1;
   unsigned int overrideGsmSignalStrengthRaw : 1;
