@@ -49,4 +49,15 @@ class PlistManager {
         plist = setPlistValues(plist: plist, values: values, replacing: replacing)
         (plist as NSDictionary).write(to: url, atomically: true)
     }
+    
+    // MARK: Getting Plist Values
+    public static func getPlistValues(path: String, key: String) throws -> Any? {
+        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
+            throw "Error finding plist"
+        }
+        guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+            throw "Error converting to dictionary"
+        }
+        return plist[key]
+    }
 }
