@@ -57,7 +57,6 @@ typedef struct {
   bool itemIsEnabled[45];
   char padding1;
   char padding2;
-  char padding3;
   char timeString[64];
   char shortTimeString[64];
   char dateString[256];
