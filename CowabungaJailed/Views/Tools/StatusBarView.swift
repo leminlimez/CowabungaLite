@@ -131,6 +131,8 @@ struct StatusBarView: View {
                             } else {
                                 StatusManager.sharedInstance().unsetBatteryDetail()
                             }
+                        }).onAppear(perform: {
+                            batteryDetailEnabled = StatusManager.sharedInstance().isBatteryDetailOverridden()
                         })
                         TextField("Battery Detail Text", text: $batteryDetailText).onChange(of: batteryDetailText, perform: { nv in
                             // This is important.
@@ -144,6 +146,8 @@ struct StatusBarView: View {
                             if batteryDetailEnabled {
                                 StatusManager.sharedInstance().setBatteryDetail(safeNv)
                             }
+                        }).onAppear(perform: {
+                            batteryDetailText = StatusManager.sharedInstance().getBatteryDetailOverride()
                         })
                         Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
                             if nv {
@@ -181,6 +185,8 @@ struct StatusBarView: View {
                             } else {
                                 StatusManager.sharedInstance().unsetBatteryCapacity()
                             }
+                        }).onAppear(perform: {
+                            batteryCapacityEnabled = StatusManager.sharedInstance().isBatteryCapacityOverridden()
                         })
                         HStack {
                             Text("\(Int(batteryCapacity))%")
@@ -191,6 +197,9 @@ struct StatusBarView: View {
                                 .onChange(of: batteryCapacity) { nv in
                                     StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
                                 }
+//                                .onAppear(perform: {
+//                                    batteryCapacity = StatusManager.sharedInstance().getBatteryCapacityOverride()
+//                                })
                         }
                         
                         Toggle("Change WiFi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
@@ -199,6 +208,8 @@ struct StatusBarView: View {
                             } else {
                                 StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
                             }
+                        }).onAppear(perform: {
+                            wiFiStrengthBarsEnabled = StatusManager.sharedInstance().isWiFiSignalStrengthBarsOverridden()
                         })
                         HStack {
                             Text("\(Int(wiFiStrengthBars))")
@@ -209,6 +220,9 @@ struct StatusBarView: View {
                                 .onChange(of: wiFiStrengthBars) { nv in
                                     StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
                                 }
+//                                .onAppear(perform: {
+//                                    wiFiStrengthBars = StatusManager.sharedInstance().getWiFiSignalStrengthBarsOverride()
+//                                })
                         }
                         
                         Toggle("Change Cellular Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
@@ -217,6 +231,8 @@ struct StatusBarView: View {
                             } else {
                                 StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
                             }
+                        }).onAppear(perform: {
+                            gsmStrengthBarsEnabled = StatusManager.sharedInstance().isGsmSignalStrengthBarsOverridden()
                         })
                         HStack {
                             Text("\(Int(gsmStrengthBars))")
@@ -227,6 +243,9 @@ struct StatusBarView: View {
                                 .onChange(of: gsmStrengthBars) { nv in
                                     StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
                                 }
+//                                .onAppear(perform: {
+//                                    gsmStrengthBars = StatusManager.sharedInstance().getGsmSignalStrengthBarsOverride()
+//                                })
                         }
                     }
                     
@@ -235,9 +254,13 @@ struct StatusBarView: View {
                     Section {
                         Toggle("Show Numeric WiFi Strength", isOn: $displayingRawWiFiStrength).onChange(of: displayingRawWiFiStrength, perform: { nv in
                             StatusManager.sharedInstance().displayRawWifiSignal(nv)
+                        }).onAppear(perform: {
+                            displayingRawWiFiStrength = StatusManager.sharedInstance().isDisplayingRawWiFiSignal()
                         })
                         Toggle("Show Numeric Cellular Strength", isOn: $displayingRawGSMStrength).onChange(of: displayingRawGSMStrength, perform: { nv in
                             StatusManager.sharedInstance().displayRawGSMSignal(nv)
+                        }).onAppear(perform: {
+                            displayingRawGSMStrength = StatusManager.sharedInstance().isDisplayingRawGSMSignal()
                         })
                     }
                     
