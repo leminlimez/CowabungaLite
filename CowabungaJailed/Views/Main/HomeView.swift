@@ -24,8 +24,15 @@ struct HomeView: View {
                         }
                         HStack {
                             Text(DataSingleton.shared.getCurrentVersion() ?? "Please connect a device.")
-//                            Text("Supported!")
-//                                .foregroundColor(.green)
+                            if (DataSingleton.shared.getCurrentUUID() != nil) {
+                                if (!DataSingleton.shared.deviceAvailable) {
+                                    Text("Not Supported.")
+                                        .foregroundColor(.red)
+                                } else {
+                                    Text("Supported!")
+                                        .foregroundColor(.green)
+                                }
+                            }
                             Spacer()
                         }
                     }
