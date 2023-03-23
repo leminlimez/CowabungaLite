@@ -41,6 +41,7 @@
 		6F886A2429C8AC0D00B73E40 /* DynamicIslandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */; };
 		6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2B29C8CFA900B73E40 /* String++.swift */; };
 		6F886A2E29C8CFB300B73E40 /* PlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2D29C8CFB300B73E40 /* PlistManager.swift */; };
+		6FFA737C29CBD9D400E4DCBC /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA737B29CBD9D400E4DCBC /* AboutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,6 +102,7 @@
 		6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicIslandView.swift; sourceTree = "<group>"; };
 		6F886A2B29C8CFA900B73E40 /* String++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String++.swift"; sourceTree = "<group>"; };
 		6F886A2D29C8CFB300B73E40 /* PlistManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistManager.swift; sourceTree = "<group>"; };
+		6FFA737B29CBD9D400E4DCBC /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 			children = (
 				6F700AB729C37DF50085964B /* HomeView.swift */,
 				25B47F3129C932C300BD9F7E /* ApplyView.swift */,
+				6FFA737B29CBD9D400E4DCBC /* AboutView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				25B8341829CAF95800176095 /* StatusSetter15.m in Sources */,
 				25B47F2D29C91C2D00BD9F7E /* StatusManager.m in Sources */,
 				2539F1B329CA9BA100FAD711 /* SkipSetupView.swift in Sources */,
+				6FFA737C29CBD9D400E4DCBC /* AboutView.swift in Sources */,
 				25B8341C29CB04CA00176095 /* StatusSetter16_3.m in Sources */,
 				25B47F2A29C91C2D00BD9F7E /* StatusSetter16_1.m in Sources */,
 			);
