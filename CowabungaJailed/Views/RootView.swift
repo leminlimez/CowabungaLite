@@ -14,7 +14,7 @@ struct RootView: View {
     @State private var options: [Category] = [
         .init(options: [
             .init(title: "Home", icon: "house", view: HomeView(), active: true),
-            .init(title: "About", icon: "info.circle", view: HomeView()) // to change later
+            .init(title: "About", icon: "info.circle", view: AboutView()) // to change later
         ]),
         
         // Tools View
