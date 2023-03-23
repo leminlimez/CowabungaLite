@@ -69,7 +69,6 @@ struct LockScreenFootnoteView: View {
                 Button("View Backup Directory Tree") {
                     printDirectoryTree(at: documentsDirectory, level: 0)
                 }
-                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250)
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
