@@ -11,8 +11,8 @@ struct AboutView: View {
     var body: some View {
         List {
             Section {
-                LinkCell(imageName: "LeminLimez", title: "LeminLimez", contribution: "Main Dev")
                 LinkCell(imageName: "avangelista", title: "Avangelista", contribution: "Main Dev")
+                LinkCell(imageName: "LeminLimez", title: "LeminLimez", contribution: "Main Dev")
             } header: {
                 Text("Credits")
             }
