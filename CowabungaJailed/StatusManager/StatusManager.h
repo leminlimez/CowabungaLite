@@ -1,6 +1,5 @@
 #pragma once
 #import <Foundation/Foundation.h>
-#import "CowabungaJailed-Swift.h"
 
 @interface StatusManager : NSObject
 

@@ -29,6 +29,7 @@
 #import "StatusSetter16_1.h"
 #import "StatusSetter16.h"
 #import "StatusSetter15.h"
+#import "CowabungaJailed-Swift.h"
 
 @interface StatusManager ()
 @property (nonatomic, strong) id <StatusSetter> setter;

@@ -69,6 +69,9 @@ struct LockScreenFootnoteView: View {
                 Button("View Backup Directory Tree") {
                     printDirectoryTree(at: documentsDirectory, level: 0)
                 }
+                Button("Other thing") {
+                    
+                }
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }

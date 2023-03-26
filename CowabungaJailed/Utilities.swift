@@ -288,3 +288,26 @@ func getDevices() -> [Device] {
     }
 }
 
+func getHomeScreenApps() -> [String:String] {
+    guard let exec = Bundle.main.url(forResource: "homeScreenApps", withExtension: "") else {
+        Logger.shared.logMe("Error locating homeScreenApps")
+        return [:]
+    }
+    guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+        Logger.shared.logMe("Error getting current UUID")
+        return [:]
+    }
+    do {
+        let appsCSV = try execute2(exec, arguments:["-u", currentUUID], workingDirectory: documentsDirectory)
+        var dict = [String:String]()
+        for line in appsCSV.split(separator: "\n") {
+            let components = line.split(separator: ",")
+            dict[String(components[0])] = String(components[1])
+        }
+        return dict
+    } catch {
+        Logger.shared.logMe("Error processing apps csv")
+        return [:]
+    }
+}
+
