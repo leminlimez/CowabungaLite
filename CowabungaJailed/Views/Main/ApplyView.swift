@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ApplyView: View {
-    @State private var logger = Logger.shared
+    @StateObject private var logger = Logger.shared
     var body: some View {
         List {
             ForEach(Array(DataSingleton.shared.allEnabledTweaks()), id: \.self) { tweak in
@@ -125,7 +125,7 @@ struct ApplyView: View {
                     Logger.shared.logMe("Error restoring to device")
                 }
             }
-            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
+            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250)
         }
     }
 }
