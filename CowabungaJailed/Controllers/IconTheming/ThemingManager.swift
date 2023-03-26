@@ -6,17 +6,30 @@
 //
 
 import Foundation
+import AppKit
 
 class ThemingManager {
+    static let shared = ThemingManager()
+    var currentTheme: String? = nil
+    var processing: Bool = false
+    @Published var themes: [ThemingManager.Theme] = []
+    
     struct AppIconChange {
         var appID: String
         var themeIconURL: URL?
         var name: String
     }
     
+    struct Theme: Codable, Identifiable, Equatable {
+        var id = UUID()
+        
+        var name: String
+        var iconCount: Int
+    }
+    
     private static let filePath: String = "HomeDomain/Library/WebClips"
     
-    public static func makeInfoPlist(displayName: String = " ", bundleID: String, isAppClip: Bool = false) throws -> Data {
+    public func makeInfoPlist(displayName: String = " ", bundleID: String, isAppClip: Bool = false) throws -> Data {
         let info: [String: Any] = [
             "ApplicationBundleIdentifier": bundleID,
             "ApplicationBundleVersion": 1,
@@ -38,11 +51,27 @@ class ThemingManager {
         return try PropertyListSerialization.data(fromPropertyList: info, format: .xml, options: 0)
     }
     
-    public static func getAppliedThemeFolder() -> URL? {
+    public func getAppliedThemeFolder() -> URL? {
         return DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AppliedTheme/HomeDomain/Library/WebClips")
     }
     
-    public static func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false) throws {
+    public func getCurrentAppliedTheme() -> String? {
+        guard let appliedThemes = getAppliedThemeFolder() else {
+            return nil
+        }
+        let infoPlist = appliedThemes.appendingPathComponent("Info.plist")
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            return nil
+        }
+        guard let infoData = try? Data(contentsOf: infoPlist) else {
+            return nil
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
+        guard let name = plist["ThemeName"] as? String else { return nil }
+        return name
+    }
+    
+    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false) throws {
         let folderName: String = "Cowabunga_" + bundleID + ".webclip"// + String(bundleID.data(using: .utf8)!.base64EncodedString()) + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
@@ -65,20 +94,24 @@ class ThemingManager {
         }
     }
     
-    public static func eraseAppliedTheme() {
+    public func eraseAppliedTheme() {
+        processing = true
         guard let appliedFolder = getAppliedThemeFolder() else {
+            processing = false
             return
         }
         do {
             for folder in try FileManager.default.contentsOfDirectory(at: appliedFolder, includingPropertiesForKeys: nil) {
                 try? FileManager.default.removeItem(at: folder)
             }
+            processing = false
         } catch {
+            processing = false
             print(error.localizedDescription)
         }
     }
     
-    public static func getThemesFolder() -> URL {
+    public func getThemesFolder() -> URL {
         let themesFolder = documentsDirectory.appendingPathComponent("Themes")
         if !FileManager.default.fileExists(atPath: themesFolder.path) {
             try? FileManager.default.createDirectory(at: themesFolder, withIntermediateDirectories: false)
@@ -86,11 +119,18 @@ class ThemingManager {
         return themesFolder
     }
     
-    public static func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
+    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
         let themeFolder = getThemesFolder().appendingPathComponent(themeName)
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
         }
+        guard let infoPlistPath = getAppliedThemeFolder()?.appendingPathComponent("Info.plist") else { return }
+        if FileManager.default.fileExists(atPath: infoPlistPath.path) {
+            try? FileManager.default.removeItem(at: infoPlistPath)
+        }
+        let newPlist = try PropertyListSerialization.data(fromPropertyList: ["ThemeName": themeName], format: .xml, options: 0)
+        try newPlist.write(to: infoPlistPath)
+        
         for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
             let bundleID: String = file.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "-large", with: "")
             // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
@@ -106,5 +146,29 @@ class ThemingManager {
                 Logger.shared.logMe(error.localizedDescription)
             }
         }
+    }
+    
+    public func getThemes() {
+        let themesFolder = getThemesFolder()
+        themes.removeAll(keepingCapacity: true)
+        do {
+            for t in try FileManager.default.contentsOfDirectory(at: themesFolder, includingPropertiesForKeys: nil) {
+                guard let c = try? FileManager.default.contentsOfDirectory(at: t, includingPropertiesForKeys: nil) else { continue }
+                themes.append(.init(name: t.lastPathComponent, iconCount: (c).count))
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    public func icons(forAppIDs: [String], from: ThemingManager.Theme) throws -> [NSImage?] {
+        let themesFolder = getThemesFolder().appendingPathComponent(from.name)
+        var finals: [NSImage?] = []
+        for d in forAppIDs {
+            if FileManager.default.fileExists(atPath: themesFolder.appendingPathComponent(d+"-large.png").path) {
+                finals.append(NSImage(contentsOf: themesFolder.appendingPathComponent(d+"-large.png")))
+            }
+        }
+        return finals
     }
 }
