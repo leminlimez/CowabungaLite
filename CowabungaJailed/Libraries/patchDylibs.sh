@@ -18,3 +18,6 @@ install_name_tool -change /usr/local/lib/libplist-2.0.3.dylib @executable_path/.
 install_name_tool -change /usr/local/lib/libplist-2.0.3.dylib @executable_path/../Frameworks/libplist-2.0.3.dylib libusbmuxd-2.0.6.dylib
 install_name_tool -change /usr/local/lib/libplist-2.0.3.dylib @executable_path/../Frameworks/libplist-2.0.3.dylib libimobiledevice-glue-1.0.0.dylib
 install_name_tool -change /usr/local/lib/libplist-2.0.3.dylib @executable_path/../Frameworks/libplist-2.0.3.dylib libplist-2.0.3.dylib
+
+install_name_tool -change /usr/local/lib/libimobiledevice-1.0.6.dylib @executable_path/../Frameworks/libimobiledevice-1.0.6.dylib homeScreenApps
+install_name_tool -change /usr/local/lib/libplist-2.0.3.dylib @executable_path/../Frameworks/libplist-2.0.3.dylib homeScreenApps

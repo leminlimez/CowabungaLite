@@ -71,7 +71,7 @@ struct SpringboardOptionsView: View {
                                         .minimumScaleFactor(0.5)
                                 }.onChange(of: option.value.wrappedValue) { new in
                                     do {
-                                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SpringboardOptions/SystemPreferencesDomain/com.apple.springboard.plist") else {
+                                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist") else {
                                             Logger.shared.logMe("Error finding springboard plist")
                                             return
                                         }
@@ -85,7 +85,7 @@ struct SpringboardOptionsView: View {
                                 }
                                 .onAppear {
                                     do {
-                                        option.value.wrappedValue =  try PlistManager.getPlistValues(path: "SpringboardOptions/SystemPreferencesDomain/com.apple.springboard.plist", key: option.key.wrappedValue) as? Bool ?? false
+                                        option.value.wrappedValue =  try PlistManager.getPlistValues(path: "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist", key: option.key.wrappedValue) as? Bool ?? false
                                     } catch {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
