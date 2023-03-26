@@ -66,12 +66,10 @@ struct LockScreenFootnoteView: View {
                         footnoteText = plist["LockScreenFootnote"] as! String
                     })
                 }.disabled(!enableTweak)
-                Button("View Backup Directory Tree") {
-                    printDirectoryTree(at: documentsDirectory, level: 0)
-                }
-                Button("Other thing") {
-                    
-                }
+//                Button("View Backup Directory Tree") {
+//                    printDirectoryTree(at: documentsDirectory, level: 0)
+//                    getHomeScreenApps()
+//                }
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
