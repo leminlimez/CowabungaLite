@@ -304,6 +304,7 @@ func getHomeScreenApps() -> [String:String] {
             let components = line.split(separator: ",")
             dict[String(components[0])] = String(components[1])
         }
+        Logger.shared.logMe("\(dict)")
         return dict
     } catch {
         Logger.shared.logMe("Error processing apps csv")
