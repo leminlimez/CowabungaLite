@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var logger = Logger.shared
+    
     var body: some View {
         List {
             Group {
@@ -38,6 +40,7 @@ struct HomeView: View {
                     }
                 }
                 Divider()
+                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
             }
         }
     }

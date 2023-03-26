@@ -22,6 +22,7 @@ enum Tweak: String {
     case statusBar = "StatusBar"
     case springboardOptions = "SpringboardOptions"
     case skipSetup = "SkipSetup"
+    case themes = "AppliedTheme"
     case dynamicIsland = "DynamicIsland"
 }
 
