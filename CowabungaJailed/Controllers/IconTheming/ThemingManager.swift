@@ -27,8 +27,6 @@ class ThemingManager: ObservableObject {
         var iconCount: Int
     }
     
-    private static let filePath: String = "HomeDomain/Library/WebClips"
-    
     public func makeInfoPlist(displayName: String = " ", bundleID: String, isAppClip: Bool = false) throws -> Data {
         let info: [String: Any] = [
             "ApplicationBundleIdentifier": bundleID,
