@@ -22,14 +22,14 @@ struct SpringboardOptionsView: View {
     }
     
     @State private var sbOptions: [SBOption] = [
-        .init(key: "SBDontLockAfterCrash", name: "Don't lock after respring", imageName: "lock.open"),
-        .init(key: "SBDontDimOrLockOnAC", name: "Don't dim when charging", imageName: "battery.100.bolt"),
-        .init(key: "SBHideLowPowerAlerts", name: "No Low Battery alerts", imageName: "battery.25"),
-        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
-        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
-        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", imageName: "app.badge"),
-        .init(key: "SBControlCenterEnabledInLockScreen", name: "Lock Screen CC", imageName: "square.grid.2x2"),
-        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
+        .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", imageName: "lock.open"),
+        .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", imageName: "battery.100.bolt"),
+        .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", imageName: "battery.25"),
+//        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
+//        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
+//        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", imageName: "app.badge"),
+//        .init(key: "SBControlCenterEnabledInLockScreen", name: "Lock Screen CC", imageName: "square.grid.2x2"),
+//        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
     ]
     
     var body: some View {

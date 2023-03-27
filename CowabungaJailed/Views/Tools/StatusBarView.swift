@@ -176,83 +176,83 @@ struct StatusBarView: View {
                         Text("When set to blank on notched devices, this will display the carrier name.")
                     }
                     
+//                    Divider()
+//                    
+//                    Group {
+//                        Toggle("Change Battery Icon Capacity", isOn: $batteryCapacityEnabled).onChange(of: batteryCapacityEnabled, perform: { nv in
+//                            if nv {
+//                                StatusManager.sharedInstance().setBatteryCapacity(Int32(batteryCapacity))
+//                            } else {
+//                                StatusManager.sharedInstance().unsetBatteryCapacity()
+//                            }
+//                        }).onAppear(perform: {
+//                            batteryCapacityEnabled = StatusManager.sharedInstance().isBatteryCapacityOverridden()
+//                        })
+//                        HStack {
+//                            Text("\(Int(batteryCapacity))%")
+//                                .frame(width: 125)
+//                            Spacer()
+//                            Slider(value: $batteryCapacity, in: 0...100, step: 1.0)
+//                                .padding(.horizontal)
+//                                .onChange(of: batteryCapacity) { nv in
+//                                    StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
+//                                }
+////                                .onAppear(perform: {
+////                                    batteryCapacity = StatusManager.sharedInstance().getBatteryCapacityOverride()
+////                                })
+//                        }
+//                        
+//                        Toggle("Change Wi-Fi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
+//                            if nv {
+//                                StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(wiFiStrengthBars))
+//                            } else {
+//                                StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
+//                            }
+//                        }).onAppear(perform: {
+//                            wiFiStrengthBarsEnabled = StatusManager.sharedInstance().isWiFiSignalStrengthBarsOverridden()
+//                        })
+//                        HStack {
+//                            Text("\(Int(wiFiStrengthBars))")
+//                                .frame(width: 125)
+//                            Spacer()
+//                            Slider(value: $wiFiStrengthBars, in: 0...3, step: 1.0)
+//                                .padding(.horizontal)
+//                                .onChange(of: wiFiStrengthBars) { nv in
+//                                    StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
+//                                }
+////                                .onAppear(perform: {
+////                                    wiFiStrengthBars = StatusManager.sharedInstance().getWiFiSignalStrengthBarsOverride()
+////                                })
+//                        }
+//                        
+//                        Toggle("Change Cellular Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
+//                            if nv {
+//                                StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(gsmStrengthBars))
+//                            } else {
+//                                StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
+//                            }
+//                        }).onAppear(perform: {
+//                            gsmStrengthBarsEnabled = StatusManager.sharedInstance().isGsmSignalStrengthBarsOverridden()
+//                        })
+//                        HStack {
+//                            Text("\(Int(gsmStrengthBars))")
+//                                .frame(width: 125)
+//                            Spacer()
+//                            Slider(value: $gsmStrengthBars, in: 0...4, step: 1.0)
+//                                .padding(.horizontal)
+//                                .onChange(of: gsmStrengthBars) { nv in
+//                                    StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
+//                                }
+////                                .onAppear(perform: {
+////                                    gsmStrengthBars = StatusManager.sharedInstance().getGsmSignalStrengthBarsOverride()
+////                                })
+//                        }
+//                    }
+                    
                     Divider()
                     
-                    Section {
-                        Toggle("Change Battery Icon Capacity", isOn: $batteryCapacityEnabled).onChange(of: batteryCapacityEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setBatteryCapacity(Int32(batteryCapacity))
-                            } else {
-                                StatusManager.sharedInstance().unsetBatteryCapacity()
-                            }
-                        }).onAppear(perform: {
-                            batteryCapacityEnabled = StatusManager.sharedInstance().isBatteryCapacityOverridden()
-                        })
-                        HStack {
-                            Text("\(Int(batteryCapacity))%")
-                                .frame(width: 125)
-                            Spacer()
-                            Slider(value: $batteryCapacity, in: 0...100, step: 1.0)
-                                .padding(.horizontal)
-                                .onChange(of: batteryCapacity) { nv in
-                                    StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
-                                }
-//                                .onAppear(perform: {
-//                                    batteryCapacity = StatusManager.sharedInstance().getBatteryCapacityOverride()
-//                                })
-                        }
-                        
-                        Toggle("Change WiFi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(wiFiStrengthBars))
-                            } else {
-                                StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
-                            }
-                        }).onAppear(perform: {
-                            wiFiStrengthBarsEnabled = StatusManager.sharedInstance().isWiFiSignalStrengthBarsOverridden()
-                        })
-                        HStack {
-                            Text("\(Int(wiFiStrengthBars))")
-                                .frame(width: 125)
-                            Spacer()
-                            Slider(value: $wiFiStrengthBars, in: 0...3, step: 1.0)
-                                .padding(.horizontal)
-                                .onChange(of: wiFiStrengthBars) { nv in
-                                    StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
-                                }
-//                                .onAppear(perform: {
-//                                    wiFiStrengthBars = StatusManager.sharedInstance().getWiFiSignalStrengthBarsOverride()
-//                                })
-                        }
-                        
-                        Toggle("Change Cellular Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(gsmStrengthBars))
-                            } else {
-                                StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
-                            }
-                        }).onAppear(perform: {
-                            gsmStrengthBarsEnabled = StatusManager.sharedInstance().isGsmSignalStrengthBarsOverridden()
-                        })
-                        HStack {
-                            Text("\(Int(gsmStrengthBars))")
-                                .frame(width: 125)
-                            Spacer()
-                            Slider(value: $gsmStrengthBars, in: 0...4, step: 1.0)
-                                .padding(.horizontal)
-                                .onChange(of: gsmStrengthBars) { nv in
-                                    StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
-                                }
-//                                .onAppear(perform: {
-//                                    gsmStrengthBars = StatusManager.sharedInstance().getGsmSignalStrengthBarsOverride()
-//                                })
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    Section {
-                        Toggle("Show Numeric WiFi Strength", isOn: $displayingRawWiFiStrength).onChange(of: displayingRawWiFiStrength, perform: { nv in
+                    Group {
+                        Toggle("Show Numeric Wi-Fi Strength", isOn: $displayingRawWiFiStrength).onChange(of: displayingRawWiFiStrength, perform: { nv in
                             StatusManager.sharedInstance().displayRawWifiSignal(nv)
                         }).onAppear(perform: {
                             displayingRawWiFiStrength = StatusManager.sharedInstance().isDisplayingRawWiFiSignal()
@@ -267,8 +267,6 @@ struct StatusBarView: View {
                     Divider()
                     
                     Group {
-                        
-                        // bruh I had to add a group cause SwiftUI won't let you add more than 10 things to a view?? ok
                         Toggle("Hide Do Not Disturb", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
                             StatusManager.sharedInstance().hideDND(nv)
                         }).onAppear(perform: {
