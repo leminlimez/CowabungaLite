@@ -90,7 +90,7 @@ enum Tweak: String {
 extension FileManager {
     func mergeDirectory(at sourceURL: URL, to destinationURL: URL) throws {
         try createDirectory(at: destinationURL, withIntermediateDirectories: true, attributes: nil)
-        let contents = try contentsOfDirectory(at: sourceURL, includingPropertiesForKeys: nil, options: [])
+        let contents = try contentsOfDirectory(at: sourceURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         for item in contents {
             let newItemURL = destinationURL.appendingPathComponent(item.lastPathComponent)
             var isDirectory: ObjCBool = false
@@ -141,7 +141,7 @@ func setupWorkspaceForUUID(_ UUID: String) {
         return
     }
     do {
-        let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil)
+        let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         for file in files {
             let newURL = UUIDDirectory.appendingPathComponent(file.lastPathComponent)
             var shouldMergeDirectory = false
@@ -245,7 +245,7 @@ func printDirectoryTree(at path: URL, level: Int) {
     let prefix = String(repeating: "│   ", count: level > 0 ? level - 1 : 0) + (level > 0 ? "├── " : "")
     
     do {
-        let contents = try fm.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: [])
+        let contents = try fm.contentsOfDirectory(at: path, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         for url in contents {
             let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
             Logger.shared.logMe(prefix + url.lastPathComponent)
