@@ -31,7 +31,7 @@
 		25B8341829CAF95800176095 /* StatusSetter15.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341229CAF95800176095 /* StatusSetter15.m */; };
 		25B8341929CAF95800176095 /* StatusSetter16.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341529CAF95800176095 /* StatusSetter16.m */; };
 		25B8341C29CB04CA00176095 /* StatusSetter16_3.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341B29CB04CA00176095 /* StatusSetter16_3.m */; };
-		25C3BABA29D10DD500069E96 /* homeScreenApps in Resources */ = {isa = PBXBuildFile; fileRef = 25C3BAB929D10DD500069E96 /* homeScreenApps */; };
+		25C3BABE29D11A3300069E96 /* homeScreenApps in Resources */ = {isa = PBXBuildFile; fileRef = 25C3BABD29D11A3300069E96 /* homeScreenApps */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
 		6F700AB629C37DF50085964B /* CowabungaJailedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */; };
 		6F700AB829C37DF50085964B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB729C37DF50085964B /* HomeView.swift */; };
@@ -96,7 +96,7 @@
 		25B8341629CAF95800176095 /* StatusSetter15.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusSetter15.h; sourceTree = "<group>"; };
 		25B8341A29CB04C700176095 /* StatusSetter16_3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusSetter16_3.h; sourceTree = "<group>"; };
 		25B8341B29CB04CA00176095 /* StatusSetter16_3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusSetter16_3.m; sourceTree = "<group>"; };
-		25C3BAB929D10DD500069E96 /* homeScreenApps */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = homeScreenApps; sourceTree = "<group>"; };
+		25C3BABD29D11A3300069E96 /* homeScreenApps */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = homeScreenApps; sourceTree = "<group>"; };
 		6F5C0C0829CB49450005FB0B /* CowabungaJailedRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CowabungaJailedRelease.entitlements; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* CowabungaJailed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CowabungaJailed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,12 +137,12 @@
 		2544926F29C7F79F00B6D82E /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				25C3BABD29D11A3300069E96 /* homeScreenApps */,
 				2544928E29C80F5600B6D82E /* ideviceinfo */,
 				2544927029C7F79F00B6D82E /* CreateBackup.sh */,
 				2544927129C7F79F00B6D82E /* idevicebackup2 */,
 				250ADBB629C825500023F343 /* idevice_id */,
 				250ADBB829C825590023F343 /* idevicename */,
-				25C3BAB929D10DD500069E96 /* homeScreenApps */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -368,7 +368,7 @@
 				2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */,
 				6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */,
 				2544928F29C80F5700B6D82E /* ideviceinfo in Resources */,
-				25C3BABA29D10DD500069E96 /* homeScreenApps in Resources */,
+				25C3BABE29D11A3300069E96 /* homeScreenApps in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
 				250ADBB729C825500023F343 /* idevice_id in Resources */,
@@ -538,7 +538,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
-				DEVELOPMENT_TEAM = 2P4CP47H76;
+				DEVELOPMENT_TEAM = U67AKNW8PW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
