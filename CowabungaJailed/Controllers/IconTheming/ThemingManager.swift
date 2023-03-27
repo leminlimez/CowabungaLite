@@ -8,10 +8,10 @@
 import Foundation
 import AppKit
 
-class ThemingManager {
+class ThemingManager: ObservableObject {
     static let shared = ThemingManager()
-    var currentTheme: String? = nil
-    var processing: Bool = false
+    @Published var currentTheme: String? = nil
+    @Published var processing: Bool = false
     @Published var themes: [ThemingManager.Theme] = []
     
     struct AppIconChange {
@@ -164,15 +164,16 @@ class ThemingManager {
         }
     }
     
-    public func icons(forAppIDs: [String], from: ThemingManager.Theme) throws -> [NSImage?] {
-        let themesFolder = getThemesFolder().appendingPathComponent(from.name)
-        var finals: [NSImage?] = []
-        for d in forAppIDs {
-            if FileManager.default.fileExists(atPath: themesFolder.appendingPathComponent(d+"-large.png").path) {
-                finals.append(NSImage(contentsOf: themesFolder.appendingPathComponent(d+"-large.png")))
-            }
-        }
-        return finals
+    // MARK: - Getting icons
+    func icons(forAppIDs appIDs: [String], from theme: Theme) throws -> [NSImage?] {
+        appIDs.map { try? icon(forAppID: $0, from: theme) }
+    }
+    func icon(forAppID appID: String, from theme: Theme) throws -> NSImage {
+        guard let image = NSImage(contentsOf: getThemesFolder().appendingPathComponent(theme.name).appendingPathComponent(appID + "-large.png")) else { throw "Couldn't open image" }
+        return image
+    }
+    func icon(forAppID appID: String, fromThemeWithName name: String) throws -> NSImage {
+        return try icon(forAppID: appID, from: Theme(name: name, iconCount: 1))
     }
     
     public func isCurrentTheme(_ name: String) -> Bool {

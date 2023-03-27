@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ThemeView: View {
-    @State var themeManager = ThemingManager.shared
+    @StateObject var themeManager = ThemingManager.shared
     @State var theme: ThemingManager.Theme
     var defaultWallpaper: Bool = false
     @State var icons: [NSImage?] = []
