@@ -13,6 +13,9 @@ struct ThemeView: View {
     var defaultWallpaper: Bool = false
     @State var icons: [NSImage?] = []
     
+    @Binding var hideLabels: Bool
+    @Binding var isAppClips: Bool
+    
     var body: some View {
         VStack {
             ZStack {
@@ -75,7 +78,7 @@ struct ThemeView: View {
                         themeManager.processing = true
                         themeManager.eraseAppliedTheme()
                         do {
-                            try themeManager.applyTheme(themeName: theme.name)
+                            try themeManager.applyTheme(themeName: theme.name, hideDisplayNames: hideLabels, appClips: isAppClips)
                         } catch {
                             themeManager.currentTheme = nil
                             print(error.localizedDescription)
@@ -84,12 +87,12 @@ struct ThemeView: View {
                     }
                 }
             }) {
-                Text(themeManager.currentTheme == theme.name ? "Selected" : "Select")
+                Text(themeManager.isCurrentTheme(theme.name) ? "Selected" : "Select")
                     .frame(maxWidth: .infinity)
                 
             }
             .padding(10)
-            .background(themeManager.currentTheme == theme.name ? Color.blue : Color(nsColor: .secondaryLabelColor))
+            .background(themeManager.isCurrentTheme(theme.name) ? Color.blue : Color(nsColor: .darkGray))
             .cornerRadius(8)
             .foregroundColor(.white)
         }
@@ -114,9 +117,9 @@ struct ThemeView: View {
     }
 }
 
-struct ThemeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ThemeView(theme: ThemingManager.Theme(name: "Theme", iconCount: 23))
-            .frame(width: 190)
-    }
-}
+//struct ThemeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ThemeView(theme: ThemingManager.Theme(name: "Theme", iconCount: 23))
+//            .frame(width: 190)
+//    }
+//}
