@@ -23,11 +23,11 @@ struct RootView: View {
         
         // Tools View
         .init(title: "Tools", options: [
+            .init(title: "Icon Theming", icon: "paintbrush", view: ThemingView()),
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
             .init(title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
-            .init(title: "Icon Theming", icon: "paintbrush", view: ThemingView()),
-            .init(title: "Skip Setup", icon: "gear.badge.xmark", view: SkipSetupView())
+            .init(title: "Supervision", icon: "gear.badge.xmark", view: SupervisionView())
 //            .init(title: "Dynamic Island", icon: "platter.filled.top.iphone", view: DynamicIslandView())
         ]),
         
