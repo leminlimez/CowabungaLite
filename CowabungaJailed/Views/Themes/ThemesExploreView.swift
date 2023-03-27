@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct ThemesExploreView: View {
     
     @ObservedObject var cowabungaAPI = CowabungaAPI.shared
@@ -257,7 +256,6 @@ struct PullToRefresh: View {
     }
 }
 
-@available(iOS 15.0, *)
 struct ThemesExploreView_Previews: PreviewProvider {
     static var previews: some View {
         ThemesExploreView()

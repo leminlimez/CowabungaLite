@@ -54,10 +54,7 @@ class ThemingManager: ObservableObject {
     }
     
     public func getCurrentAppliedTheme() -> String? {
-        guard let appliedThemes = getAppliedThemeFolder() else {
-            return nil
-        }
-        let infoPlist = appliedThemes.appendingPathComponent("Info.plist")
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Info.plist") else { return nil }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
             return nil
         }
@@ -65,7 +62,7 @@ class ThemingManager: ObservableObject {
             return nil
         }
         guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
-        guard let name = plist["ThemeName"] as? String else { return nil }
+        guard let name = plist["CurrentlyAppliedTheme"] as? String else { return nil }
         return name
     }
     
@@ -122,11 +119,11 @@ class ThemingManager: ObservableObject {
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
         }
-        guard let infoPlistPath = getAppliedThemeFolder()?.appendingPathComponent("Info.plist") else { return }
+        guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Info.plist") else { return }
         if FileManager.default.fileExists(atPath: infoPlistPath.path) {
             try? FileManager.default.removeItem(at: infoPlistPath)
         }
-        let newPlist = try PropertyListSerialization.data(fromPropertyList: ["ThemeName": themeName], format: .xml, options: 0)
+        let newPlist = try PropertyListSerialization.data(fromPropertyList: ["CurrentlyAppliedTheme": themeName], format: .xml, options: 0)
         try newPlist.write(to: infoPlistPath)
         let apps = getHomeScreenApps()
         
