@@ -100,7 +100,7 @@ struct ThemesExploreView: View {
                                     }
                                     .frame(minWidth: themeTypeShown == .icon ? 250 : 150)
 //                                    .frame(height: 250)
-                                    .background(.secondary)
+                                    .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))
                                     .cornerRadius(10)
                                     .padding(4)
                                 }
