@@ -46,13 +46,13 @@ struct ThemingView: View {
             if dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
-                        Text("No themes found. Download themes in the Explore tab,\nor import them using the button in the top right corner (Themes have to contain icons in the format of <id>.png).")
+                        Text("No themes found.\nDownload themes in the Explore tab or import them using the button in the top right corner.\nThemes have to contain icons in the format of <id>.png.")
                             .padding()
-                            .background(Color(.secondaryLabelColor))
+                            .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))
                             .multilineTextAlignment(.center)
                             .cornerRadius(16)
                             .font(.footnote)
-                            .foregroundColor(Color(.secondaryLabelColor))
+                            .frame(maxWidth: .infinity)
                     } else {
                         Group {
                             Toggle(isOn: $hideAppLabels) {

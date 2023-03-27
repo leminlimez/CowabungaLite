@@ -17,6 +17,10 @@ struct RootView: View {
             .init(title: "About", icon: "info.circle", view: AboutView()) // to change later
         ]),
         
+        .init(options: [
+            .init(title: "Explore Themes", icon: "safari", view: ThemesExploreView()),
+        ]),
+        
         // Tools View
         .init(title: "Tools", options: [
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
@@ -28,7 +32,6 @@ struct RootView: View {
         ]),
         
         .init(options: [
-            .init(title: "Explore", icon: "safari", view: ThemesExploreView()),
             .init(title: "Apply", icon: "checkmark.circle", view: ApplyView())
         ])
     ]
