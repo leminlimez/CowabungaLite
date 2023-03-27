@@ -54,67 +54,70 @@ struct ThemingView: View {
                             .font(.footnote)
                             .foregroundColor(Color(.secondaryLabelColor))
                     } else {
-                        Toggle(isOn: $hideAppLabels) {
-                            Text("Hide App Labels")
+                        Group {
+                            Toggle(isOn: $hideAppLabels) {
+                                Text("Hide App Labels")
+                            }
+                            Toggle(isOn: $isAppClips) {
+                                Text("As App Clips")
+                            }
                         }
-                        Toggle(isOn: $isAppClips) {
-                            Text("As App Clips")
-                        }
-                        ScrollView {
-                            LazyVGrid(columns: gridItemLayout, spacing: 8) {
+                        Group {
+                            LazyVGrid(columns: gridItemLayout, spacing: 10) {
                                 ForEach(themeManager.themes, id: \.name) { theme in
                                     ThemeView(theme: theme, hideLabels: $hideAppLabels, isAppClips: $isAppClips)
                                 }
                             }
-                            .padding()
+//                            .padding()
                             
-                            VStack {
-                                HStack {
-                                    VStack {
-                                        Text(easterEgg ? "Wait, it's all TrollTools?" : "Cowabunga \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
-                                            .multilineTextAlignment(.center)
-                                        Text(easterEgg ? "Always has been" : "Download themes in Themes tab.")
-                                            .font(.caption)
-                                            .multilineTextAlignment(.center)
-                                            .foregroundColor(.secondary)
-                                    }
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .padding(10)
-                                    .background(Color(.darkGray))
-                                    .cornerRadius(16)
-                                    .onTapGesture {
-                                        easterEgg.toggle()
-                                    }
+//                            VStack {
+//                                HStack {
 //                                    VStack {
-//                                        HStack {
-//                                            Text("Alternatives")
-//                                                .font(.headline)
-//                                                .lineLimit(1)
-//                                                .minimumScaleFactor(0.7)
-//                                                .padding(4)
-//
-//                                            Text("· \(themeManager.iconOverrides.count)")
-//                                                .font(.headline)
-//                                                .foregroundColor(Color.secondary)
-//                                            Spacer()
-//                                        }
+//                                        Text(easterEgg ? "Wait, it's all TrollTools?" : "Cowabunga \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
+//                                            .multilineTextAlignment(.center)
+//                                        Text(easterEgg ? "Always has been" : "Download themes in Themes tab.")
+//                                            .font(.caption)
+//                                            .multilineTextAlignment(.center)
+//                                            .foregroundColor(.secondary)
 //                                    }
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(10)
-                                .background(Color(.secondaryLabelColor))
-                                .cornerRadius(16)
-                            }
+//                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                                    .padding(10)
+//                                    .background(Color(.darkGray))
+//                                    .cornerRadius(16)
+//                                    .onTapGesture {
+//                                        easterEgg.toggle()
+//                                    }
+////                                    VStack {
+////                                        HStack {
+////                                            Text("Alternatives")
+////                                                .font(.headline)
+////                                                .lineLimit(1)
+////                                                .minimumScaleFactor(0.7)
+////                                                .padding(4)
+////
+////                                            Text("· \(themeManager.iconOverrides.count)")
+////                                                .font(.headline)
+////                                                .foregroundColor(Color.secondary)
+////                                            Spacer()
+////                                        }
+////                                    }
+//                                }
+//                                .frame(maxWidth: .infinity)
+//                                .padding(10)
+//                                .background(Color(.secondaryLabelColor))
+//                                .cornerRadius(16)
+//                            }
                         }
-                        .padding(.bottom, 80)
-                        .padding(.horizontal)
+//                        .padding(.bottom, 80)
+//                        .padding(.horizontal)
                     }
                 }.disabled(!enableTweak)
             }
-        }.disabled(!dataSingleton.deviceAvailable)
-            .onAppear {
-                themeManager.getThemes()
-            }
+        }
+        .disabled(!dataSingleton.deviceAvailable)
+        .onAppear {
+            themeManager.getThemes()
+        }
     }
 }
 

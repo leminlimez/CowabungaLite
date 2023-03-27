@@ -89,15 +89,17 @@ struct ThemeView: View {
             }) {
                 Text(themeManager.isCurrentTheme(theme.name) ? "Selected" : "Select")
                     .frame(maxWidth: .infinity)
+                    .padding(10)
                 
             }
-            .padding(10)
-            .background(themeManager.isCurrentTheme(theme.name) ? Color.blue : Color(nsColor: .darkGray))
+            .contentShape(Rectangle())
+            .background(themeManager.isCurrentTheme(theme.name) ? Color(.systemBlue) : Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
             .cornerRadius(8)
-            .foregroundColor(.white)
+            .buttonStyle(BorderlessButtonStyle())
+            .foregroundColor(.primary)
         }
         .padding(10)
-        .background(Color(.secondaryLabelColor))
+        .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))
         .cornerRadius(16)
         .onAppear {
             icons = (try? themeManager.icons(forAppIDs: ["com.apple.mobilephone", "com.apple.mobilesafari", "com.apple.mobileslideshow", "com.apple.camera", "com.apple.AppStore", "com.apple.Preferences", "com.apple.Music", "com.apple.calculator"], from: theme)) ?? []
