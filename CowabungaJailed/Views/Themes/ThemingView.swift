@@ -10,7 +10,7 @@ import SwiftUI
 struct ThemingView: View {
     @State private var enableTweak = false
     @StateObject private var dataSingleton = DataSingleton.shared
-    @State private var themeManager = ThemingManager.shared
+    @StateObject private var themeManager = ThemingManager.shared
     @State private var easterEgg: Bool = false
     private var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
     
