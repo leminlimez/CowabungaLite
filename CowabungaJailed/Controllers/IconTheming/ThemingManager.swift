@@ -8,9 +8,9 @@
 import Foundation
 import AppKit
 
-class ThemingManager {
+class ThemingManager: ObservableObject {
     static let shared = ThemingManager()
-    var currentTheme: String? = nil
+    @Published var currentTheme: String? = nil
     var processing: Bool = false
     @Published var themes: [ThemingManager.Theme] = []
     
