@@ -17,6 +17,8 @@ struct ThemingView: View {
     @State private var isAppClips: Bool = false
     @State private var hideAppLabels: Bool = false
     
+    @State private var showPicker: Bool = false
+    
     var body: some View {
         List {
             Group {
@@ -40,6 +42,13 @@ struct ThemingView: View {
                             Spacer()
                         }
                     }
+                    Spacer()
+                    Button(action: {
+                        showPicker.toggle()
+                    }) {
+                        Image(systemName: "square.and.arrow.down")
+                    }
+                    .padding(.horizontal, 15)
                 }
                 Divider()
             }
@@ -118,6 +127,10 @@ struct ThemingView: View {
         .onAppear {
             themeManager.getThemes()
         }
+        .fileImporter(isPresented: $showPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false, onCompletion: { result in
+            guard let url = try? result.get().first else { return }
+            try? ThemingManager.shared.importTheme(from: url)
+        })
     }
 }
 
