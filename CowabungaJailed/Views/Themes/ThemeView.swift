@@ -68,6 +68,22 @@ struct ThemeView: View {
                     .foregroundColor(Color.secondary)
                 Spacer()
             }
+            HStack {
+//                Button(action: {
+//                    // rename
+//                }, label: {
+//                    Image(systemName: "pencil")
+//                })
+//                .frame(width: 20, height: 20)
+                
+                Button(action: {
+                    themeManager.deleteTheme(themeName: theme.name)
+                }, label: {
+                    Image(systemName: "trash")
+                        .foregroundColor(.red)
+                })
+                .frame(width: 20, height: 20)
+            }
             Button(action: {
                 if !themeManager.processing {
                     if themeManager.currentTheme == theme.name {
