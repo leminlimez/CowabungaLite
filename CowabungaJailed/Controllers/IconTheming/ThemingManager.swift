@@ -114,6 +114,21 @@ class ThemingManager: ObservableObject {
         return themesFolder
     }
     
+    public func deleteTheme(themeName: String) {
+        processing = true
+        if currentTheme == themeName {
+            eraseAppliedTheme()
+            currentTheme = nil
+        }
+        let themePath = getThemesFolder().appendingPathComponent(themeName)
+        if FileManager.default.fileExists(atPath: themePath.path) {
+            try? FileManager.default.removeItem(at: themePath)
+        }
+        // update themes
+        getThemes()
+        processing = false
+    }
+    
     public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
         let themeFolder = getThemesFolder().appendingPathComponent(themeName)
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
