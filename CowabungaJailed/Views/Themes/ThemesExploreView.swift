@@ -38,7 +38,7 @@ struct ThemesExploreView: View {
                     if themes.isEmpty {
                         ProgressView()
                             .scaleEffect(1.75)
-                            .navigationTitle("Explore")
+                            .navigationTitle("Explore Themes")
                     } else {
 //                        HStack {
 //                            Spacer()
@@ -112,7 +112,7 @@ struct ThemesExploreView: View {
                 }
                 .searchable(text: $searchTerm)
                 .coordinateSpace(name: "pullToRefresh")
-                .navigationTitle("Explore")
+                .navigationTitle("Explore Themes")
 //                .toolbar {
 //                    ToolbarItem(placement: .navigationBarTrailing) {
 //                        Button {

@@ -302,6 +302,7 @@ func getHomeScreenApps() -> [String:String] {
         var dict = [String:String]()
         for line in appsCSV.split(separator: "\n") {
             let components = line.split(separator: ",")
+            // todo proper error check here
             dict[String(components[0])] = String(components[1])
         }
         Logger.shared.logMe("\(dict)")
