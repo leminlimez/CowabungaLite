@@ -28,6 +28,7 @@ struct RootView: View {
         ]),
         
         .init(options: [
+            .init(title: "Explore", icon: "safari", view: ThemesExploreView()),
             .init(title: "Apply", icon: "checkmark.circle", view: ApplyView())
         ])
     ]

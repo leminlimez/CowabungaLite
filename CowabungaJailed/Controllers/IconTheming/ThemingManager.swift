@@ -133,7 +133,7 @@ class ThemingManager: ObservableObject {
         let apps = getHomeScreenApps()
         
         for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
-            let bundleID: String = file.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "-large", with: "")
+            let bundleID: String = file.deletingPathExtension().lastPathComponent
             // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
             // IF NOT, CONTINUE
             if apps[bundleID] == nil { continue }
@@ -169,7 +169,7 @@ class ThemingManager: ObservableObject {
         appIDs.map { try? icon(forAppID: $0, from: theme) }
     }
     func icon(forAppID appID: String, from theme: Theme) throws -> NSImage {
-        guard let image = NSImage(contentsOf: getThemesFolder().appendingPathComponent(theme.name).appendingPathComponent(appID + "-large.png")) else { throw "Couldn't open image" }
+        guard let image = NSImage(contentsOf: getThemesFolder().appendingPathComponent(theme.name).appendingPathComponent(appID + ".png")) else { throw "Couldn't open image" }
         return image
     }
     func icon(forAppID appID: String, fromThemeWithName name: String) throws -> NSImage {
@@ -178,5 +178,53 @@ class ThemingManager: ObservableObject {
     
     public func isCurrentTheme(_ name: String) -> Bool {
         return currentTheme == name
+    }
+    
+    func importTheme(from importURL: URL) throws {
+        var name = importURL.deletingPathExtension().lastPathComponent
+        var finalURL = importURL
+        try? fm.createDirectory(at: getThemesFolder(), withIntermediateDirectories: true)
+        let themeURL = getThemesFolder().appendingPathComponent(name)
+        
+        if importURL.lastPathComponent.contains(".theme") {
+            // unzip
+            let unzipURL = fm.temporaryDirectory.appendingPathComponent("theme_unzip")
+            try? fm.removeItem(at: unzipURL)
+            try fm.unzipItem(at: importURL, to: unzipURL)
+            
+            for folder in (try? fm.contentsOfDirectory(at: unzipURL, includingPropertiesForKeys: nil)) ?? [] {
+                if folder.deletingPathExtension().lastPathComponent == "IconBundles" {
+                    name = importURL.deletingPathExtension().lastPathComponent
+                    finalURL = folder
+                    break
+                }
+            }
+        }
+        
+        try? fm.removeItem(at: themeURL)
+        try fm.createDirectory(at: themeURL, withIntermediateDirectories: true)
+        
+        for icon in (try? fm.contentsOfDirectory(at: finalURL, includingPropertiesForKeys: nil)) ?? [] {
+            guard !icon.lastPathComponent.contains(".DS_Store") else { continue }
+            try? fm.copyItem(at: icon, to: themeURL.appendingPathComponent(appIDFromIcon(url: icon) + ".png"))
+        }
+        getThemes()
+    }
+    
+    private func appIDFromIcon(url: URL) -> String {
+        return url.deletingPathExtension().lastPathComponent.replacingOccurrences(of: iconFileEnding(iconFilename: url.lastPathComponent), with: "")
+    }
+    
+    // MARK: - Utils
+    private func iconFileEnding(iconFilename: String) -> String {
+        if iconFilename.contains("-large.png") {
+            return "-large"
+        } else if iconFilename.contains("@2x.png") {
+            return"@2x"
+        } else if iconFilename.contains("@3x.png") {
+            return "@3x"
+        } else {
+            return ""
+        }
     }
 }
