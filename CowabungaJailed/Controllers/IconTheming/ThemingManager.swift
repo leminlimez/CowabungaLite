@@ -130,14 +130,17 @@ class ThemingManager {
         }
         let newPlist = try PropertyListSerialization.data(fromPropertyList: ["ThemeName": themeName], format: .xml, options: 0)
         try newPlist.write(to: infoPlistPath)
+        let apps = getHomeScreenApps()
         
         for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
             let bundleID: String = file.deletingPathExtension().lastPathComponent.replacingOccurrences(of: "-large", with: "")
             // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
             // IF NOT, CONTINUE
+            if apps[bundleID] == nil { continue }
             var displayName: String = " "
             if !hideDisplayNames {
                 // get the display name from the bundle id
+                displayName = apps[bundleID]!
             }
             do {
                 let imgData = try Data(contentsOf: file)
@@ -170,5 +173,9 @@ class ThemingManager {
             }
         }
         return finals
+    }
+    
+    public func isCurrentTheme(_ name: String) -> Bool {
+        return currentTheme == name
     }
 }

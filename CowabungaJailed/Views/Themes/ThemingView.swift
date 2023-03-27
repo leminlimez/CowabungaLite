@@ -14,6 +14,9 @@ struct ThemingView: View {
     @State private var easterEgg: Bool = false
     private var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
     
+    @State private var isAppClips: Bool = false
+    @State private var hideAppLabels: Bool = false
+    
     var body: some View {
         List {
             Group {
@@ -51,10 +54,16 @@ struct ThemingView: View {
                             .font(.footnote)
                             .foregroundColor(Color(.secondaryLabelColor))
                     } else {
+                        Toggle(isOn: $hideAppLabels) {
+                            Text("Hide App Labels")
+                        }
+                        Toggle(isOn: $isAppClips) {
+                            Text("As App Clips")
+                        }
                         ScrollView {
                             LazyVGrid(columns: gridItemLayout, spacing: 8) {
                                 ForEach(themeManager.themes, id: \.name) { theme in
-                                    ThemeView(theme: theme)
+                                    ThemeView(theme: theme, hideLabels: $hideAppLabels, isAppClips: $isAppClips)
                                 }
                             }
                             .padding()
@@ -71,7 +80,7 @@ struct ThemingView: View {
                                     }
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                     .padding(10)
-                                    .background(Color(.secondaryLabelColor))
+                                    .background(Color(.darkGray))
                                     .cornerRadius(16)
                                     .onTapGesture {
                                         easterEgg.toggle()
