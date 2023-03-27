@@ -11,7 +11,7 @@ import AppKit
 class ThemingManager: ObservableObject {
     static let shared = ThemingManager()
     @Published var currentTheme: String? = nil
-    var processing: Bool = false
+    @Published var processing: Bool = false
     @Published var themes: [ThemingManager.Theme] = []
     
     struct AppIconChange {
