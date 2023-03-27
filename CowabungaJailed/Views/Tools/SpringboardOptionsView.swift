@@ -60,38 +60,30 @@ struct SpringboardOptionsView: View {
                 if dataSingleton.deviceAvailable {
                     Group {
                         ForEach($sbOptions) { option in
-                            HStack {
-//                                Image(systemName: option.imageName.wrappedValue)
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .frame(width: 24, height: 24)
-//                                    .foregroundColor(.blue)
-                                Toggle(isOn: option.value) {
-                                    Text(option.name.wrappedValue)
-                                        .minimumScaleFactor(0.5)
-                                }.onChange(of: option.value.wrappedValue) { new in
-                                    do {
-                                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist") else {
-                                            Logger.shared.logMe("Error finding springboard plist")
-                                            return
-                                        }
-                                        try PlistManager.setPlistValues(url: plistURL, values: [
-                                            option.key.wrappedValue: option.value.wrappedValue
-                                        ])
-                                    } catch {
-                                        Logger.shared.logMe(error.localizedDescription)
-                                        return
-                                    }
-                                }
-                                .onAppear {
-                                    do {
-                                        option.value.wrappedValue =  try PlistManager.getPlistValues(path: "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist", key: option.key.wrappedValue) as? Bool ?? false
-                                    } catch {
+                            Toggle(isOn: option.value) {
+                                Text(option.name.wrappedValue)
+                                    .minimumScaleFactor(0.5)
+                            }.onChange(of: option.value.wrappedValue) { new in
+                                do {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist") else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
+                                    try PlistManager.setPlistValues(url: plistURL, values: [
+                                        option.key.wrappedValue: option.value.wrappedValue
+                                    ])
+                                } catch {
+                                    Logger.shared.logMe(error.localizedDescription)
+                                    return
                                 }
-                                .padding(.leading, 10)
+                            }
+                            .onAppear {
+                                do {
+                                    option.value.wrappedValue =  try PlistManager.getPlistValues(path: "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist", key: option.key.wrappedValue) as? Bool ?? false
+                                } catch {
+                                    Logger.shared.logMe("Error finding springboard plist")
+                                    return
+                                }
                             }
                         }
                     }
