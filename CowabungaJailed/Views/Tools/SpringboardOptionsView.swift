@@ -36,7 +36,7 @@ struct SpringboardOptionsView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "snowflake")
+                    Image(systemName: "app.badge")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35)

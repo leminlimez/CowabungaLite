@@ -96,7 +96,7 @@ struct ThemeView: View {
             .background(themeManager.isCurrentTheme(theme.name) ? Color(.systemBlue) : Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
             .cornerRadius(8)
             .buttonStyle(BorderlessButtonStyle())
-            .foregroundColor(.primary)
+            .foregroundColor(themeManager.isCurrentTheme(theme.name) ? .white : .primary)
         }
         .padding(10)
         .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))

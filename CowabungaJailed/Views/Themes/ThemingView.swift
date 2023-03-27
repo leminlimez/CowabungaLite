@@ -21,7 +21,7 @@ struct ThemingView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "gear.badge.xmark")
+                    Image(systemName: "paintbrush")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35)
