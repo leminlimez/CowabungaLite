@@ -46,19 +46,20 @@ struct StatusBarView: View {
     @State private var VPNHidden: Bool = false
     
     @State private var enableTweak = false
+    @State private var easterEgg = false
     @StateObject private var dataSingleton = DataSingleton.shared
     
     var body: some View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "wifi")
+                    Image(systemName: easterEgg ? "wand.and.stars" : "wifi")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
+                        .frame(width: 35, height: 35).onTapGesture(perform: { easterEgg = !easterEgg})
                     VStack {
                         HStack {
-                            Text("Status Bar")
+                            Text(easterEgg ? "StatusMagic" : "Status Bar")
                                 .bold()
                             Spacer()
                         }

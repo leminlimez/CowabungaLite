@@ -17,6 +17,7 @@ struct RootView: View {
             .init(title: "Home", icon: "house", view: HomeView(), active: true),
 //            .init(title: "About", icon: "info.circle", view: AboutView()), // to change later
             .init(title: "Explore", icon: "safari", view: ThemesExploreView()),
+            .init(title: "Appabetical", icon: "rectangle.2.swap", view: ThemesExploreView())
         ]),
         
         // Tools View
