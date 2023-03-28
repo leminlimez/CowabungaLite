@@ -80,20 +80,15 @@ struct ThemesExploreView: View {
                                             }
                                             .lineLimit(1)
                                             Spacer()
-                                            Button(action: {
-                                                downloadTheme(theme: theme)
-                                            }) {
+                                            
+                                            NiceButton(text: AnyView(
                                                 HStack {
                                                     Image(systemName: "arrow.down.circle")
                                                     Text("Download")
                                                 }.frame(maxWidth: .infinity)
-                                                .padding(10)
-                                                
-                                            }.contentShape(Rectangle())
-                                            .background(Color(.systemBlue))
-                                            .cornerRadius(8)
-                                            .buttonStyle(BorderlessButtonStyle())
-                                            .foregroundColor(.white)
+                                            )) {
+                                                downloadTheme(theme: theme)
+                                            }
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
@@ -101,7 +96,7 @@ struct ThemesExploreView: View {
                                     }
                                     .frame(minWidth: themeTypeShown == .icon ? 250 : 150)
 //                                    .frame(height: 250)
-                                    .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))
+                                    .background(Color.cowGray)
                                     .cornerRadius(10)
                                     .padding(4)
                                 }

@@ -83,13 +83,14 @@ int main(int argc, char *argv[])
     plist_t icon_state;
     sbservices_client_t sbservice_t;
     char *udid = NULL;
+    bool getNumPages = false;
 
     int c = 0;
     const struct option longopts[] = {
         {"udid", required_argument, NULL, 'u'}};
 
     /* parse cmdline args */
-    while ((c = getopt_long(argc, argv, "u:", longopts, NULL)) != -1)
+    while ((c = getopt_long(argc, argv, "u:n", longopts, NULL)) != -1)
     {
         switch (c)
         {
@@ -100,6 +101,9 @@ int main(int argc, char *argv[])
                 return 2;
             }
             udid = strdup(optarg);
+            break;
+        case 'n':
+            getNumPages = true;
             break;
         default:
             fprintf(stderr, "ERROR: Required argument(s) missing!\n");
@@ -134,8 +138,12 @@ int main(int argc, char *argv[])
     sbservices_error_t sb_icon_err_code = sbservices_get_icon_state(sbservice_t, &icon_state, "2");
     if (sb_icon_err_code == SBSERVICES_E_SUCCESS)
     {
-        // scoutAllApps(icon_state);
-        plist_write(icon_state, "sb_before.plist");
+        if (getNumPages) {
+            printf("%d\n", plist_array_get_size(icon_state) - 1);
+        } else {
+            scoutAllApps(icon_state);
+        }
+        // plist_write(icon_state, "sb_before.plist");
 
 
         // Set icon state
