@@ -29,13 +29,13 @@ struct NiceButton: View {
             }
             self.action()
         }) {
-            self.text.padding(EdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding))
+            self.text
+                .padding(EdgeInsets(top: padding, leading: padding, bottom: padding, trailing: padding))
         }
-        .contentShape(Rectangle())
         .background(self.background)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .background(isTapped ? Color(hue: 0, saturation: 0, brightness: 1.0, opacity: 0.2) : Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
+                .background(isTapped ? Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2) : Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
                 .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
         )
         .cornerRadius(8)

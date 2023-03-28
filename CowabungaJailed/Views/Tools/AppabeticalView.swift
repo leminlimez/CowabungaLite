@@ -11,8 +11,8 @@ struct AppabeticalView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var pages = 1
     @State private var selectedItems: [Int] = []
-    @State private var isTapped = false
-
+    @State private var together = false
+    @State private var az = true
     
     var body: some View {
         List {
@@ -44,17 +44,8 @@ struct AppabeticalView: View {
                                 .opacity(self.selectedItems.contains(item) ? 1.0 : 0.0)
                                 .foregroundColor(.accentColor)
                                 .font(.system(.headline))
-                        }),
+                        }.frame(maxWidth: 300)),
                     action: {
-                        withAnimation {
-                            self.isTapped = true
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            withAnimation {
-                                self.isTapped = false
-                            }
-                        }
-                        
                         if self.selectedItems.contains(item) {
                             self.selectedItems.removeAll(where: { $0 == item })
                         } else {
@@ -63,6 +54,21 @@ struct AppabeticalView: View {
                         self.selectedItems.sort()
                     })
                 }
+                Picker("Ordering", selection: $az) {
+                    Text("A-Z").tag(true)
+                    Text("Color").tag(false)
+                }.frame(maxWidth: 320)
+                Picker("Pages", selection: $together) {
+                    Text("Sort pages independently").tag(false)
+                    Text("Sort apps across pages").tag(true)
+                }.frame(maxWidth: 320)
+                NiceButton(text: AnyView(
+                    HStack {
+                        Text("Sort Apps")
+                    }.frame(maxWidth: 300)
+                )) {
+                    
+                }.disabled(selectedItems.isEmpty)
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
