@@ -9,52 +9,38 @@ import SwiftUI
 
 struct LinkCell: View {
     var imageName: String
-    var url: String = ""
+    var url: String? = nil
     var title: String
     var contribution: String
     var systemImage: Bool = false
-    var circle: Bool = false
+    @Environment(\.openURL) var openURL
     
     var body: some View {
-        HStack(alignment: .center) {
-            Group {
-                if systemImage {
-                    Image(systemName: imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else {
-                    if imageName != "" {
-                        Image(imageName)
+        NiceButton(text: AnyView(
+            HStack(alignment: .center) {
+                Group {
+                    if systemImage {
+                        Image(systemName: imageName)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                    } else {
+                        if imageName != "" {
+                            Image(imageName)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        }
                     }
                 }
+                .cornerRadius(.infinity)
+                .frame(width: 24, height: 24)
+                Text(title).fontWeight(.bold)
+                Text(contribution).foregroundColor(.secondary)
+            }.padding(0)
+        ), action: {
+            if let url = url {
+                openURL(URL(string: url)!)
             }
-            .cornerRadius(circle ? .infinity : 0)
-            .frame(width: 24, height: 24)
-            
-            VStack {
-                HStack {
-                    Button(action: {
-//                            if url != "" {
-//                                UIApplication.shared.open(URL(string: url)!)
-//                            }
-                    }) {
-                        Text(title)
-                            .fontWeight(.bold)
-                    }
-                    .padding(.horizontal, 6)
-                    Spacer()
-                }
-                HStack {
-                    Text(contribution)
-                        .padding(.horizontal, 6)
-                        .font(.footnote)
-                    Spacer()
-                }
-            }
-        }
-        .foregroundColor(.blue)
+        })
     }
 }
 
@@ -91,8 +77,8 @@ struct HomeView: View {
                     }
                 }
                 Divider()
-                LinkCell(imageName: "avangelista", title: "Avangelista", contribution: "Main Dev")
-                LinkCell(imageName: "LeminLimez", title: "LeminLimez", contribution: "Main Dev")
+                LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
+                LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
 //                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
             }
         }

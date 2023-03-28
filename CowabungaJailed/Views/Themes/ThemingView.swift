@@ -58,7 +58,7 @@ struct ThemingView: View {
                     if (themeManager.themes.count == 0) {
                         Text("No themes found.\nDownload themes in the Explore tab or import them using the button in the top right corner.\nThemes have to contain icons in the format of <id>.png.")
                             .padding()
-                            .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))
+                            .background(Color.cowGray)
                             .multilineTextAlignment(.center)
                             .cornerRadius(16)
                             .font(.footnote)
