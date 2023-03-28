@@ -47,6 +47,7 @@ struct ThemingView: View {
                         showPicker.toggle()
                     }) {
                         Image(systemName: "square.and.arrow.down")
+                        Text("Import")
                     }
                     .padding(.horizontal, 15)
                 }
