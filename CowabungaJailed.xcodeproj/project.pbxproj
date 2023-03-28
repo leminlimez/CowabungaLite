@@ -26,8 +26,8 @@
 		2544928F29C80F5700B6D82E /* ideviceinfo in Resources */ = {isa = PBXBuildFile; fileRef = 2544928E29C80F5600B6D82E /* ideviceinfo */; };
 		2557662529D2D97E008DF0E2 /* appabeticalJailed in Resources */ = {isa = PBXBuildFile; fileRef = 2557662429D2D97E008DF0E2 /* appabeticalJailed */; };
 		2557662729D2D9BE008DF0E2 /* AppabeticalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557662629D2D9BE008DF0E2 /* AppabeticalView.swift */; };
-		2557662929D2DBB8008DF0E2 /* homeScreenApps in Resources */ = {isa = PBXBuildFile; fileRef = 2557662829D2DBB8008DF0E2 /* homeScreenApps */; };
 		2557662B29D2E9BF008DF0E2 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */; };
+		2557662F29D2F4E2008DF0E2 /* homeScreenApps in Resources */ = {isa = PBXBuildFile; fileRef = 2557662E29D2F4E2008DF0E2 /* homeScreenApps */; };
 		25B47F1D29C91BA800BD9F7E /* Files in Resources */ = {isa = PBXBuildFile; fileRef = 25B47F1C29C91BA800BD9F7E /* Files */; };
 		25B47F2A29C91C2D00BD9F7E /* StatusSetter16_1.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B47F2129C91C2D00BD9F7E /* StatusSetter16_1.m */; };
 		25B47F2D29C91C2D00BD9F7E /* StatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B47F2829C91C2D00BD9F7E /* StatusManager.m */; };
@@ -89,8 +89,8 @@
 		2544928E29C80F5600B6D82E /* ideviceinfo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ideviceinfo; sourceTree = "<group>"; };
 		2557662429D2D97E008DF0E2 /* appabeticalJailed */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = appabeticalJailed; path = C/appabeticalJailed; sourceTree = SOURCE_ROOT; };
 		2557662629D2D9BE008DF0E2 /* AppabeticalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppabeticalView.swift; sourceTree = "<group>"; };
-		2557662829D2DBB8008DF0E2 /* homeScreenApps */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = homeScreenApps; path = C/homeScreenApps; sourceTree = SOURCE_ROOT; };
 		2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
+		2557662E29D2F4E2008DF0E2 /* homeScreenApps */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = homeScreenApps; sourceTree = "<group>"; };
 		25B47F1C29C91BA800BD9F7E /* Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Files; sourceTree = "<group>"; };
 		25B47F1F29C91C2D00BD9F7E /* StatusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusManager.h; sourceTree = "<group>"; };
 		25B47F2129C91C2D00BD9F7E /* StatusSetter16_1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusSetter16_1.m; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		2544926F29C7F79F00B6D82E /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
-				2557662829D2DBB8008DF0E2 /* homeScreenApps */,
+				2557662E29D2F4E2008DF0E2 /* homeScreenApps */,
 				2557662429D2D97E008DF0E2 /* appabeticalJailed */,
 				2544928E29C80F5600B6D82E /* ideviceinfo */,
 				2544927029C7F79F00B6D82E /* CreateBackup.sh */,
@@ -383,7 +383,7 @@
 				2557662529D2D97E008DF0E2 /* appabeticalJailed in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
-				2557662929D2DBB8008DF0E2 /* homeScreenApps in Resources */,
+				2557662F29D2F4E2008DF0E2 /* homeScreenApps in Resources */,
 				250ADBB729C825500023F343 /* idevice_id in Resources */,
 				2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */,
 			);
