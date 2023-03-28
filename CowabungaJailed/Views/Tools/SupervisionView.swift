@@ -14,6 +14,8 @@ struct SupervisionView: View {
     @State private var managedCompanyName = ""
     @State private var enableTweak = false
     
+    let fileLocation = "SkipSetup/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
+    
     var body: some View {
         List {
             Group {
@@ -24,7 +26,7 @@ struct SupervisionView: View {
                         .frame(width: 35, height: 35)
                     VStack {
                         HStack {
-                            Text("Supervision (+ Skip Setup)")
+                            Text("Setup Options")
                                 .bold()
                             Spacer()
                         }
@@ -43,7 +45,7 @@ struct SupervisionView: View {
             if dataSingleton.deviceAvailable {
                 Group {
                     Toggle("Supervision Enabled", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
-                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SkipSetup/SysSharedContainerDomain-systemgroup.com.apple/Library/ConfigurationProfiles/CloudConfigurationDetails.plist") else {
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                             Logger.shared.logMe("Error finding cloud configuration details plist")
                             return
                         }
@@ -53,13 +55,24 @@ struct SupervisionView: View {
                             ])
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
+                            print("ass")
+                            return
+                        }
+                    }).onAppear(perform: {
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                Logger.shared.logMe("Error finding cloud configuration details plist")
+                                return
+                            }
+                            supervisionEnabled = try PlistManager.getPlistValues(url: plistURL, key: "IsSupervised") as? Bool ?? false
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
                             return
                         }
                     })
-                    Text("OrganizationName")
                     TextField("Organization Name", text: $managedCompanyName).onChange(of: managedCompanyName, perform: { nv in
                         do {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SkipSetup/SysSharedContainerDomain-systemgroup.com.apple/Library/ConfigurationProfiles/CloudConfigurationDetails.plist") else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                                 Logger.shared.logMe("Error finding cloud configuration details plist")
                                 return
                             }
@@ -72,18 +85,17 @@ struct SupervisionView: View {
                         }
                     }).onAppear(perform: {
                         do {
-                            managedCompanyName = try PlistManager.getPlistValues(path: "SkipSetup/SysSharedContainerDomain-systemgroup.com.apple/Library/ConfigurationProfiles/CloudConfigurationDetails.plist", key: "OrganizationName") as? String ?? ""
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                Logger.shared.logMe("Error finding cloud configuration details plist")
+                                return
+                            }
+                            managedCompanyName = try PlistManager.getPlistValues(url: plistURL, key: "OrganizationName") as? String ?? ""
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
-                            print(error.localizedDescription)
                             return
                         }
                     })
                 }.disabled(!enableTweak)
-//                Button("View Backup Directory Tree") {
-//                    printDirectoryTree(at: documentsDirectory, level: 0)
-//                    getHomeScreenApps()
-//                }
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }

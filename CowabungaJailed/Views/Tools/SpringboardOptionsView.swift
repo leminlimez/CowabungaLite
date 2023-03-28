@@ -32,6 +32,8 @@ struct SpringboardOptionsView: View {
 //        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
     ]
     
+    let fileLocation = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
+    
     var body: some View {
         List {
             Group {
@@ -65,7 +67,7 @@ struct SpringboardOptionsView: View {
                                     .minimumScaleFactor(0.5)
                             }.onChange(of: option.value.wrappedValue) { new in
                                 do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist") else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
@@ -79,14 +81,18 @@ struct SpringboardOptionsView: View {
                             }
                             .onAppear {
                                 do {
-                                    option.value.wrappedValue =  try PlistManager.getPlistValues(path: "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist", key: option.key.wrappedValue) as? Bool ?? false
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                        Logger.shared.logMe("Error finding springboard plist")
+                                        return
+                                    }
+                                    option.value.wrappedValue =  try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
                                 } catch {
                                     Logger.shared.logMe("Error finding springboard plist")
                                     return
                                 }
                             }
                         }
-                    }
+                    }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
         }

@@ -43,21 +43,28 @@ class PlistManager {
     
     // Set plist values from file url
     public static func setPlistValues(url: URL, values: [String: Any], replacing: Bool = false) throws {
-        guard var plist = NSDictionary(contentsOf: url) as? [String:Any] else {
-            throw "Error parsing plist"
+        if var plist = NSDictionary(contentsOf: url) as? [String:Any] {
+            plist = setPlistValues(plist: plist, values: values, replacing: replacing)
+            (plist as NSDictionary).write(to: url, atomically: true)
+        } else {
+            var plist = try Data(contentsOf: url)
+            plist = try setPlistValues(data: plist, values: values, replacing: replacing)
+            try plist.write(to: url)
         }
-        plist = setPlistValues(plist: plist, values: values, replacing: replacing)
-        (plist as NSDictionary).write(to: url, atomically: true)
     }
     
     // MARK: Getting Plist Values
-    public static func getPlistValues(path: String, key: String) throws -> Any? {
-        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
-            throw "Error finding plist"
+    public static func getPlistValues(url: URL, key: String) throws -> Any? {
+//        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
+//            throw "Error finding plist"
+//        }
+        if let plist = NSDictionary(contentsOf: url) as? [String:Any] {
+            return plist[key]
+        } else {
+            let plistData = try Data(contentsOf: url)
+            let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
+            return plist[key]
         }
-        guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
-            throw "Error converting to dictionary"
-        }
-        return plist[key]
+        
     }
 }

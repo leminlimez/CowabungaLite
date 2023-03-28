@@ -24,35 +24,28 @@ struct ThemesExploreView: View {
     @State var searchTerm: String = ""
     
     var body: some View {
-            ZStack {
-                ScrollView {
-                    PullToRefresh(coordinateSpaceName: "pullToRefresh") {
-                        // refresh
-                        themes.removeAll()
-                        //URLCache.imageCache.removeAllCachedResponses()
-                        loadThemes()
-                    }
-                    .padding(.bottom, 10)
+            List {
+                Group {
+//                    PullToRefresh(coordinateSpaceName: "pullToRefresh") {
+//                        // refresh
+//                        themes.removeAll()
+//                        //URLCache.imageCache.removeAllCachedResponses()
+//                        loadThemes()
+//                    }
+//                    .padding(.bottom, 10)
                     
                     if themes.isEmpty {
-                        ProgressView()
-                            .scaleEffect(1.75)
-                            .navigationTitle("Explore Themes")
+                        VStack {
+                            Spacer()
+                            HStack { // set alignment to center
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-//                        HStack {
-//                            Spacer()
-//                            Button(
-//                                action: {
-//                                    showFilterChangerPopup()
-//                                },
-//                                label: {
-//                                    Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
-//                                }
-//                            )
-//                            .buttonStyle(TintedButton(color: .blue, fullwidth: false))
-//                            .padding(.trailing, 25)
-//                        }
-                        
                         LazyVGrid(columns: gridItemLayout) {
                             ForEach(themes) { theme in
                                 if searchTerm == "" || theme.name.lowercased().contains(searchTerm.lowercased()) || (theme.contact.values.first ?? "Unknown author").lowercased().contains(searchTerm.lowercased()) {
@@ -90,9 +83,17 @@ struct ThemesExploreView: View {
                                             Button(action: {
                                                 downloadTheme(theme: theme)
                                             }) {
-                                                Image(systemName: "arrow.down.circle")
-                                                    .foregroundColor(.blue)
-                                            }
+                                                HStack {
+                                                    Image(systemName: "arrow.down.circle")
+                                                    Text("Download")
+                                                }.frame(maxWidth: .infinity)
+                                                .padding(10)
+                                                
+                                            }.contentShape(Rectangle())
+                                            .background(Color(.systemBlue))
+                                            .cornerRadius(8)
+                                            .buttonStyle(BorderlessButtonStyle())
+                                            .foregroundColor(.white)
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
@@ -105,13 +106,13 @@ struct ThemesExploreView: View {
                                     .padding(4)
                                 }
                             }
-                            .padding()
+//                            .padding()
                         }
                     }
                 }
-                .searchable(text: $searchTerm)
-                .coordinateSpace(name: "pullToRefresh")
-                .navigationTitle("Explore Themes")
+//                .searchable(text: $searchTerm)
+////                .coordinateSpace(name: "pullToRefresh")
+//                .navigationTitle("Explore Themes")
 //                .toolbar {
 //                    ToolbarItem(placement: .navigationBarTrailing) {
 //                        Button {
@@ -217,44 +218,44 @@ struct ThemesExploreView: View {
 //    }
 }
 
-struct PullToRefresh: View {
-    var coordinateSpaceName: String
-    var onRefresh: ()->Void
-    
-    @State var needRefresh: Bool = false
-    
-    var body: some View {
-        GeometryReader { geo in
-            if (geo.frame(in: .named(coordinateSpaceName)).midY > 50) {
-                Spacer()
-                    .onAppear {
-                        needRefresh = true
-                    }
-            } else if (geo.frame(in: .named(coordinateSpaceName)).maxY < 10) {
-                Spacer()
-                    .onAppear {
-                        if needRefresh {
-                            needRefresh = false
-                            onRefresh()
-                        }
-                    }
-            }
-            HStack {
-                Spacer()
-                if needRefresh {
-                    ProgressView()
-                        .scaleEffect(1.75)
-//                        .onAppear {
-//                            Haptic.shared.play(.light)
+//struct PullToRefresh: View {
+//    var coordinateSpaceName: String
+//    var onRefresh: ()->Void
+//
+//    @State var needRefresh: Bool = false
+//
+//    var body: some View {
+//        GeometryReader { geo in
+//            if (geo.frame(in: .named(coordinateSpaceName)).midY > 50) {
+//                Spacer()
+//                    .onAppear {
+//                        needRefresh = true
+//                    }
+//            } else if (geo.frame(in: .named(coordinateSpaceName)).maxY < 10) {
+//                Spacer()
+//                    .onAppear {
+//                        if needRefresh {
+//                            needRefresh = false
+//                            onRefresh()
 //                        }
-                } else {
-                    Text("")
-                }
-                Spacer()
-            }
-        }.padding(.top, -50)
-    }
-}
+//                    }
+//            }
+//            HStack {
+//                Spacer()
+//                if needRefresh {
+//                    ProgressView()
+//                        .scaleEffect(1.75)
+////                        .onAppear {
+////                            Haptic.shared.play(.light)
+////                        }
+//                } else {
+//                    Text("")
+//                }
+//                Spacer()
+//            }
+//        }.padding(.top, -50)
+//    }
+//}
 
 struct ThemesExploreView_Previews: PreviewProvider {
     static var previews: some View {

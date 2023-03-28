@@ -27,11 +27,7 @@ struct RootView: View {
             .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
             .init(title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
-            .init(title: "Supervision", icon: "gear.badge.xmark", view: SupervisionView())
-//            .init(title: "Dynamic Island", icon: "platter.filled.top.iphone", view: DynamicIslandView())
-        ]),
-        
-        .init(options: [
+            .init(title: "Setup Options", icon: "gear", view: SupervisionView()),
             .init(title: "Apply", icon: "checkmark.circle", view: ApplyView())
         ])
     ]
