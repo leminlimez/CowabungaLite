@@ -101,7 +101,7 @@ struct SupervisionView: View {
                             return
                         }
                     })
-                    Toggle("Supervision Enabled", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
+                    Toggle("Enable Supervision", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
                         guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                             Logger.shared.logMe("Error finding cloud configuration details plist")
                             return

@@ -34,7 +34,7 @@ struct SpringboardOptionsView: View {
     ]
     
     let fileLocationSprinboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
-    let fileLocationFootnote = "Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
+    let fileLocationFootnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
     
     var body: some View {
         List {
