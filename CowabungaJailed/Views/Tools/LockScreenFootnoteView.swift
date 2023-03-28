@@ -13,6 +13,8 @@ struct LockScreenFootnoteView: View {
     @State private var footnoteText = ""
     @State private var enableTweak = false
     
+    let fileLocation = "Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
+    
     var body: some View {
         List {
             Group {
@@ -43,7 +45,7 @@ struct LockScreenFootnoteView: View {
                 Group {
                     Text("Footnote Text")
                     TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
-                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                             Logger.shared.logMe("Error finding footnote plist")
                             return
                         }
@@ -55,7 +57,7 @@ struct LockScreenFootnoteView: View {
                             Logger.shared.logMe(error.localizedDescription)
                         }
                     }).onAppear(perform: {
-                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist") else {
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                             Logger.shared.logMe("Error finding footnote plist")
                             return
                         }
@@ -66,10 +68,6 @@ struct LockScreenFootnoteView: View {
                         footnoteText = plist["LockScreenFootnote"] as! String
                     })
                 }.disabled(!enableTweak)
-//                Button("View Backup Directory Tree") {
-//                    printDirectoryTree(at: documentsDirectory, level: 0)
-//                    getHomeScreenApps()
-//                }
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }

@@ -106,7 +106,6 @@ struct ThemeView: View {
                 Text(themeManager.isCurrentTheme(theme.name) ? "Selected" : "Select")
                     .frame(maxWidth: .infinity)
                     .padding(10)
-                
             }
             .contentShape(Rectangle())
             .background(themeManager.isCurrentTheme(theme.name) ? Color(.systemBlue) : Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
