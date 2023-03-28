@@ -12,6 +12,7 @@ struct SpringboardOptionsView: View {
     @StateObject private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var enableTweak: Bool = false
+    @State private var footnoteText = ""
     
     struct SBOption: Identifiable {
         var id = UUID()
@@ -32,7 +33,8 @@ struct SpringboardOptionsView: View {
 //        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
     ]
     
-    let fileLocation = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
+    let fileLocationSprinboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
+    let fileLocationFootnote = "Footnote/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
     
     var body: some View {
         List {
@@ -67,7 +69,7 @@ struct SpringboardOptionsView: View {
                                     .minimumScaleFactor(0.5)
                             }.onChange(of: option.value.wrappedValue) { new in
                                 do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationSprinboard) else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
@@ -81,7 +83,7 @@ struct SpringboardOptionsView: View {
                             }
                             .onAppear {
                                 do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationSprinboard) else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
@@ -92,6 +94,30 @@ struct SpringboardOptionsView: View {
                                 }
                             }
                         }
+                        Text("Lock Screen Footnote Text")
+                        TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationFootnote) else {
+                                Logger.shared.logMe("Error finding footnote plist")
+                                return
+                            }
+                            do {
+                                try PlistManager.setPlistValues(url: plistURL, values: [
+                                    "LockScreenFootnote": footnoteText
+                                ])
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                            }
+                        }).onAppear(perform: {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationFootnote) else {
+                                Logger.shared.logMe("Error finding footnote plist")
+                                return
+                            }
+                            // Add a getPlistValues func to PlistManager pls
+                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                                return
+                            }
+                            footnoteText = plist["LockScreenFootnote"] as! String
+                        })
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
