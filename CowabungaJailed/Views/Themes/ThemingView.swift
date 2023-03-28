@@ -11,7 +11,7 @@ struct ThemingView: View {
     @State private var enableTweak = false
     @StateObject private var dataSingleton = DataSingleton.shared
     @StateObject private var themeManager = ThemingManager.shared
-    @State private var easterEgg: Bool = false
+    @State private var easterEgg = false
     private var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
     
     @State private var isAppClips: Bool = false
@@ -23,13 +23,13 @@ struct ThemingView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "paintbrush")
+                    Image(systemName: easterEgg ? "doc.badge.gearshape.fill" : "paintbrush")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
+                        .frame(width: 35, height: 35).onTapGesture(perform: { easterEgg = !easterEgg })
                     VStack {
                         HStack {
-                            Text("Icon Theming")
+                            Text(easterEgg ? "TrollTools" : "Icon Theming")
                                 .bold()
                             Spacer()
                         }
