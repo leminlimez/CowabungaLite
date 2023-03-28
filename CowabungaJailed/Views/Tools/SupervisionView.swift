@@ -10,6 +10,7 @@ import SwiftUI
 struct SupervisionView: View {
     @StateObject private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
+    @State private var skipSetup = false
     @State private var supervisionEnabled = false
     @State private var managedCompanyName = ""
     @State private var enableTweak = false
@@ -20,7 +21,7 @@ struct SupervisionView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "gear.badge.xmark")
+                    Image(systemName: "gear")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35)
@@ -44,6 +45,62 @@ struct SupervisionView: View {
             }
             if dataSingleton.deviceAvailable {
                 Group {
+                    Toggle("Skip Setup (recommended)", isOn: $skipSetup).onChange(of: skipSetup, perform: { nv in
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                            Logger.shared.logMe("Error finding cloud configuration details plist")
+                            return
+                        }
+                        if nv {
+                            do {
+                                try PlistManager.setPlistValues(url: plistURL, values: [
+                                    "CloudConfigurationUIComplete": true,
+                                    "SkipSetup": [
+                                        "Diagnostics",
+                                        "WiFi",
+                                        "AppleID",
+                                        "Siri",
+                                        "Restore",
+                                        "SoftwareUpdate",
+                                        "Welcome",
+                                        "Appearance",
+                                        "Privacy",
+                                        "SIMSetup",
+                                        "OnBoarding",
+                                        "Zoom",
+                                        "Biometric",
+                                        "ScreenTime",
+                                        "Payment",
+                                        "Passcode",
+                                        "Display",
+                                    ]
+                                ])
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                                return
+                            }
+                        } else {
+                            do {
+                                try PlistManager.setPlistValues(url: plistURL, values: [
+                                    "CloudConfigurationUIComplete": false,
+                                    "SkipSetup": []
+                                ])
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                                return
+                            }
+                        }
+                    }).onAppear(perform: {
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
+                                Logger.shared.logMe("Error finding cloud configuration details plist")
+                                return
+                            }
+                            skipSetup = try PlistManager.getPlistValues(url: plistURL, key: "CloudConfigurationUIComplete") as? Bool ?? false
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
+                            return
+                        }
+                    })
                     Toggle("Supervision Enabled", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
                         guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocation) else {
                             Logger.shared.logMe("Error finding cloud configuration details plist")
@@ -55,7 +112,6 @@ struct SupervisionView: View {
                             ])
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
-                            print("ass")
                             return
                         }
                     }).onAppear(perform: {

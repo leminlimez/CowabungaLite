@@ -24,13 +24,14 @@ enum Tweak: String {
     case skipSetup = "SkipSetup"
     case themes = "AppliedTheme"
     case dynamicIsland = "DynamicIsland"
+    case none = "None"
 }
 
 @objc class DataSingleton: NSObject, ObservableObject {
     @objc static let shared = DataSingleton()
     private var currentDevice: Device?
     private var currentWorkspace: URL?
-    private var enabledTweaks: Set<Tweak> = []
+    @Published var enabledTweaks: Set<Tweak> = []
     @Published var deviceAvailable = false
     
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {

@@ -69,49 +69,48 @@ struct ThemeView: View {
                 Spacer()
             }
             HStack {
-//                Button(action: {
-//                    // rename
-//                }, label: {
-//                    Image(systemName: "pencil")
-//                })
-//                .frame(width: 20, height: 20)
+                Button(action: {
+                    if !themeManager.processing {
+                        if themeManager.currentTheme == theme.name {
+                            themeManager.eraseAppliedTheme()
+                            themeManager.currentTheme = nil
+                        } else {
+                            themeManager.currentTheme = theme.name
+                            themeManager.processing = true
+                            themeManager.eraseAppliedTheme()
+                            do {
+                                try themeManager.applyTheme(themeName: theme.name, hideDisplayNames: hideLabels, appClips: isAppClips)
+                            } catch {
+                                themeManager.currentTheme = nil
+                                print(error.localizedDescription)
+                            }
+                            themeManager.processing = false
+                        }
+                    }
+                }) {
+                    Text(themeManager.isCurrentTheme(theme.name) ? "Selected" : "Select")
+                        .frame(maxWidth: .infinity)
+                        .padding(10)
+                }
+                .contentShape(Rectangle())
+                .background(themeManager.isCurrentTheme(theme.name) ? Color(.systemBlue) : Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
+                .cornerRadius(8)
+                .buttonStyle(BorderlessButtonStyle())
+                .foregroundColor(themeManager.isCurrentTheme(theme.name) ? .white : .primary)
                 
                 Button(action: {
                     themeManager.deleteTheme(themeName: theme.name)
                 }, label: {
-                    Image(systemName: "trash")
-                        .foregroundColor(.red)
+                    Image(systemName: "trash.fill")
+                        .frame(maxWidth: 20)
+                        .padding(10)
                 })
-                .frame(width: 20, height: 20)
+                .contentShape(Rectangle())
+                .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
+                .cornerRadius(8)
+                .buttonStyle(BorderlessButtonStyle())
+                .foregroundColor(.red)
             }
-            Button(action: {
-                if !themeManager.processing {
-                    if themeManager.currentTheme == theme.name {
-                        themeManager.eraseAppliedTheme()
-                        themeManager.currentTheme = nil
-                    } else {
-                        themeManager.currentTheme = theme.name
-                        themeManager.processing = true
-                        themeManager.eraseAppliedTheme()
-                        do {
-                            try themeManager.applyTheme(themeName: theme.name, hideDisplayNames: hideLabels, appClips: isAppClips)
-                        } catch {
-                            themeManager.currentTheme = nil
-                            print(error.localizedDescription)
-                        }
-                        themeManager.processing = false
-                    }
-                }
-            }) {
-                Text(themeManager.isCurrentTheme(theme.name) ? "Selected" : "Select")
-                    .frame(maxWidth: .infinity)
-                    .padding(10)
-            }
-            .contentShape(Rectangle())
-            .background(themeManager.isCurrentTheme(theme.name) ? Color(.systemBlue) : Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.3))
-            .cornerRadius(8)
-            .buttonStyle(BorderlessButtonStyle())
-            .foregroundColor(themeManager.isCurrentTheme(theme.name) ? .white : .primary)
         }
         .padding(10)
         .background(Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2))

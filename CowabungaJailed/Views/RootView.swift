@@ -8,26 +8,24 @@
 import SwiftUI
 
 struct RootView: View {
+    @StateObject private var dataSingleton = DataSingleton.shared
     @State private var devices: [Device]?
     @State private var selectedDeviceIndex = 0
     
     @State private var options: [Category] = [
         .init(options: [
             .init(title: "Home", icon: "house", view: HomeView(), active: true),
-            .init(title: "About", icon: "info.circle", view: AboutView()) // to change later
-        ]),
-        
-        .init(options: [
-            .init(title: "Explore Themes", icon: "safari", view: ThemesExploreView()),
+//            .init(title: "About", icon: "info.circle", view: AboutView()), // to change later
+            .init(title: "Explore", icon: "safari", view: ThemesExploreView()),
         ]),
         
         // Tools View
         .init(title: "Tools", options: [
-            .init(title: "Icon Theming", icon: "paintbrush", view: ThemingView()),
-            .init(title: "Status Bar", icon: "wifi", view: StatusBarView()),
-            .init(title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
-            .init(title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
-            .init(title: "Setup Options", icon: "gear", view: SupervisionView()),
+            .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: ThemingView()),
+            .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView()),
+//            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
+            .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
+            .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
             .init(title: "Apply", icon: "checkmark.circle", view: ApplyView())
         ])
     ]
@@ -86,9 +84,15 @@ struct RootView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 24, height: 24)
-                                    .foregroundColor(.blue)
                                 Text(option.title.wrappedValue)
                                     .padding(.horizontal, 8)
+                                if (dataSingleton.enabledTweaks.contains(option.tweak.wrappedValue)) {
+                                    Spacer()
+                                    Image(systemName: "checkmark")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 10, height: 10)
+                                }
                             }
                         }
                     }
@@ -110,13 +114,14 @@ struct RootView: View {
         var icon: String
         var view: AnyView
         var active: Bool = false
+        var tweak: Tweak
         
-        init(id: UUID = UUID(), title: String, icon: String, view: any View, active: Bool = false) {
-            self.id = id
+        init(tweak: Tweak = .none, title: String, icon: String, view: any View, active: Bool = false) {
             self.title = title
             self.icon = icon
             self.view = AnyView(view)
             self.active = active
+            self.tweak = tweak
         }
     }
 }
