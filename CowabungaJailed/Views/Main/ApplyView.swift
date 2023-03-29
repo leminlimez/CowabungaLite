@@ -27,7 +27,9 @@ struct ApplyView: View {
                     Text("Apply Tweaks")
                 }
             )) {
-                applyTweaks()
+                Task {
+                    await applyTweaks()
+                }
             }
             TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250)
         }
