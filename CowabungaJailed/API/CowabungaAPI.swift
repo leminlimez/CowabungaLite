@@ -1,8 +1,8 @@
 //
 //  CowabungaAPI.swift
-//  Cowabunga
+//  CowabungaLite
 //
-//  Created by sourcelocation on 30/01/2023.
+//  Created by lemin on 3/29/2023.
 //
 
 import ZIPFoundation
@@ -147,7 +147,7 @@ class CowabungaAPI: ObservableObject {
     }
     
     func getCommitHash() async throws -> String {
-        let request = URLRequest(url: .init(string: serverURL + "https://api.github.com/repos/sourcelocation/Cowabunga-theme-repo/commits/main")!)
+        let request = URLRequest(url: .init(string: serverURL + "https://api.github.com/repos/leminlimez/Cowabunga-explore-repo/commits/main")!)
         
         let (data, response) = try await session.data(for: request) as! (Data, HTTPURLResponse)
         guard response.statusCode == 200 else { throw "Could not connect to server" }
@@ -168,7 +168,7 @@ class CowabungaAPI: ObservableObject {
         Task {
             do {
                 let hash = try await getCommitHash()
-                serverURL = "https://raw.githubusercontent.com/sourcelocation/Cowabunga-theme-repo/\(hash)/"
+                serverURL = "https://raw.githubusercontent.com/leminlimez/Cowabunga-explore-repo/\(hash)/"
             } catch {
                 print(error.localizedDescription)
             }
