@@ -31,6 +31,9 @@ struct AppabeticalView: View {
                     }
                 }
                 Divider()
+                Button("test") {
+                    
+                }
                 Text("Select Pages")
                     .onAppear(perform: {
                     pages = getHomeScreenNumPages()
