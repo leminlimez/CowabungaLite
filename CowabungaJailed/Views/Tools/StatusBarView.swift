@@ -11,6 +11,9 @@ struct StatusBarView: View {
     @State private var carrierText: String = ""
     @State private var carrierTextEnabled: Bool = false
     
+    @State private var secondaryCarrierText: String = ""
+    @State private var secondaryCarrierTextEnabled: Bool = false
+    
     @State private var timeText: String = ""
     @State private var timeTextEnabled: Bool = false
     
@@ -101,6 +104,31 @@ struct StatusBarView: View {
                             }
                         }).onAppear(perform: {
                             carrierText = StatusManager.sharedInstance().getCarrierOverride()
+                        })
+                        // HELP: this is causing an error and I have no idea why
+//                        Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
+//                            if nv {
+//                                StatusManager.sharedInstance().setSecondaryCarrier(secondaryCarrierText)
+//                            } else {
+//                                StatusManager.sharedInstance().unsetSecondaryCarrier()
+//                            }
+//                        }).onAppear(perform: {
+//                            secondaryCarrierTextEnabled = StatusManager.sharedInstance().isSecondaryCarrierOverridden()
+//                        })
+                        TextField("Secondary Carrier Text", text: $secondaryCarrierText).onChange(of: secondaryCarrierText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 100
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 100 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            secondaryCarrierText = safeNv
+                            if secondaryCarrierTextEnabled {
+                                StatusManager.sharedInstance().setSecondaryCarrier(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            secondaryCarrierText = StatusManager.sharedInstance().getSecondaryCarrierOverride()
                         })
                         Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
                             if nv {
