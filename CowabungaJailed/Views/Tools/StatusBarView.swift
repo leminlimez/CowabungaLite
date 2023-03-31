@@ -11,8 +11,14 @@ struct StatusBarView: View {
     @State private var carrierText: String = ""
     @State private var carrierTextEnabled: Bool = false
     
+    @State private var primaryServiceBadgeText: String = ""
+    @State private var primaryServiceBadgeTextEnabled: Bool = false
+    
     @State private var secondaryCarrierText: String = ""
     @State private var secondaryCarrierTextEnabled: Bool = false
+    
+    @State private var secondaryServiceBadgeText: String = ""
+    @State private var secondaryServiceBadgeTextEnabled: Bool = false
     
     @State private var timeText: String = ""
     @State private var timeTextEnabled: Bool = false
@@ -81,55 +87,6 @@ struct StatusBarView: View {
             if dataSingleton.deviceAvailable {
                 Group {
                     Group {
-                        Toggle("Change Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setCarrier(carrierText)
-                            } else {
-                                StatusManager.sharedInstance().unsetCarrier()
-                            }
-                        }).onAppear(perform: {
-                            carrierTextEnabled = StatusManager.sharedInstance().isCarrierOverridden()
-                        })
-                        TextField("Carrier Text", text: $carrierText).onChange(of: carrierText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            carrierText = safeNv
-                            if carrierTextEnabled {
-                                StatusManager.sharedInstance().setCarrier(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            carrierText = StatusManager.sharedInstance().getCarrierOverride()
-                        })
-                        // HELP: this is causing an error and I have no idea why
-//                        Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
-//                            if nv {
-//                                StatusManager.sharedInstance().setSecondaryCarrier(secondaryCarrierText)
-//                            } else {
-//                                StatusManager.sharedInstance().unsetSecondaryCarrier()
-//                            }
-//                        }).onAppear(perform: {
-//                            secondaryCarrierTextEnabled = StatusManager.sharedInstance().isSecondaryCarrierOverridden()
-//                        })
-                        TextField("Secondary Carrier Text", text: $secondaryCarrierText).onChange(of: secondaryCarrierText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            secondaryCarrierText = safeNv
-                            if secondaryCarrierTextEnabled {
-                                StatusManager.sharedInstance().setSecondaryCarrier(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            secondaryCarrierText = StatusManager.sharedInstance().getSecondaryCarrierOverride()
-                        })
                         Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
                             if nv {
                                 StatusManager.sharedInstance().setCrumb(crumbText)
@@ -203,6 +160,108 @@ struct StatusBarView: View {
                             timeText = StatusManager.sharedInstance().getTimeOverride()
                         })
                         Text("When set to blank on notched devices, this will display the carrier name.")
+                    }
+                    
+                    Divider()
+                    
+                    Group {
+                        Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setCarrier(carrierText)
+                            } else {
+                                StatusManager.sharedInstance().unsetCarrier()
+                            }
+                        }).onAppear(perform: {
+                            carrierTextEnabled = StatusManager.sharedInstance().isCarrierOverridden()
+                        })
+                        TextField("Primary Carrier Text", text: $carrierText).onChange(of: carrierText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 100
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 100 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            carrierText = safeNv
+                            if carrierTextEnabled {
+                                StatusManager.sharedInstance().setCarrier(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            carrierText = StatusManager.sharedInstance().getCarrierOverride()
+                        })
+                        Toggle("Change Primary Service Badge Text", isOn: $primaryServiceBadgeTextEnabled).onChange(of: primaryServiceBadgeTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setPrimaryServiceBadge(primaryServiceBadgeText)
+                            } else {
+                                StatusManager.sharedInstance().unsetPrimaryServiceBadge()
+                            }
+                        }).onAppear(perform: {
+                            primaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isPrimaryServiceBadgeOverridden()
+                        })
+                        TextField("Primary Service Badge Text", text: $primaryServiceBadgeText).onChange(of: primaryServiceBadgeText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 100
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 100 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            primaryServiceBadgeText = safeNv
+                            if primaryServiceBadgeTextEnabled {
+                                StatusManager.sharedInstance().setPrimaryServiceBadge(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            primaryServiceBadgeText = StatusManager.sharedInstance().getPrimaryServiceBadgeOverride()
+                        })
+                        
+                        Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setSecondaryCarrier(secondaryCarrierText)
+                            } else {
+                                StatusManager.sharedInstance().unsetSecondaryCarrier()
+                            }
+                        }).onAppear(perform: {
+                            secondaryCarrierTextEnabled = StatusManager.sharedInstance().isSecondaryCarrierOverridden()
+                        })
+                        TextField("Secondary Carrier Text", text: $secondaryCarrierText).onChange(of: secondaryCarrierText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 100
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 100 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            secondaryCarrierText = safeNv
+                            if secondaryCarrierTextEnabled {
+                                StatusManager.sharedInstance().setSecondaryCarrier(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            secondaryCarrierText = StatusManager.sharedInstance().getSecondaryCarrierOverride()
+                        })
+                        Toggle("Change Secondary Service Badge Text", isOn: $secondaryServiceBadgeTextEnabled).onChange(of: secondaryServiceBadgeTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setSecondaryServiceBadge(secondaryServiceBadgeText)
+                            } else {
+                                StatusManager.sharedInstance().unsetSecondaryServiceBadge()
+                            }
+                        }).onAppear(perform: {
+                            secondaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isSecondaryServiceBadgeOverridden()
+                        })
+                        TextField("Secondary Service Badge Text", text: $secondaryServiceBadgeText).onChange(of: secondaryServiceBadgeText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 100
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 100 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            secondaryServiceBadgeText = safeNv
+                            if secondaryServiceBadgeTextEnabled {
+                                StatusManager.sharedInstance().setSecondaryServiceBadge(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            secondaryServiceBadgeText = StatusManager.sharedInstance().getSecondaryServiceBadgeOverride()
+                        })
                     }
                     
 //                    Divider()
