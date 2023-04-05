@@ -8,4 +8,4 @@
 import Foundation
 
 let fm = FileManager.default
-let documentsDirectory = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("com.leemin.CowabungaJailed")
+@usableFromInline let documentsDirectory = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("com.leemin.CowabungaJailed")

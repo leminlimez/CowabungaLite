@@ -9,10 +9,13 @@ import SwiftUI
 
 struct ApplyView: View {
     @StateObject private var logger = Logger.shared
+    @StateObject private var dataSingleton = DataSingleton.shared
     
     var body: some View {
         List {
-            ForEach(Array(DataSingleton.shared.allEnabledTweaks()), id: \.self) { tweak in
+            Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Complete\" at the bottom if successful.")
+            Text("Enabled tweaks: \(dataSingleton.enabledTweaks.isEmpty ? "None" : "")")
+            ForEach(Array(dataSingleton.enabledTweaks), id: \.self) { tweak in
                 HStack(spacing: 5) {
                     Text("•")
                         .foregroundColor(.secondary)
@@ -27,12 +30,10 @@ struct ApplyView: View {
                     Text("Apply Tweaks")
                 }
             )) {
-                Task {
-                    await applyTweaks()
-                }
+                applyTweaks()
             }
             TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250)
-        }
+        }.disabled(!dataSingleton.deviceAvailable)
     }
 }
 

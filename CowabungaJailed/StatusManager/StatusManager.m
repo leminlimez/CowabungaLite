@@ -50,18 +50,15 @@
         if ([versionSplit[0] isEqual: @"15"]) {
             _setter =  [StatusSetter15 new];
         } else if ([versionSplit[0] isEqual: @"16"]) {
-            if ([versionSplit[1] isEqual: @"0"]) {
+            NSInteger subversion = [versionSplit[1] integerValue];
+            if (subversion == 0) {
                 _setter = [StatusSetter16 new];
-            } else if ([versionSplit[1] isEqual: @"1"]) {
+            } else if (subversion <= 2) {
                 _setter = [StatusSetter16_1 new];
-            } else if ([versionSplit[1] isEqual: @"2"]) {
-                _setter = [StatusSetter16_1 new];
-            } else if ([versionSplit[1] isEqual: @"3"]) {
+            } else if (subversion <= 5) {
                 _setter = [StatusSetter16_3 new];
             }
         }
-        [[Logger shared] logMe:versionSplit[0]];
-        [[Logger shared] logMe:versionSplit[1]];
     }
     return _setter;
 }

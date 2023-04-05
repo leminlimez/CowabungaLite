@@ -124,3 +124,9 @@ struct SpringboardOptionsView: View {
         }
     }
 }
+
+struct SpringboardOptionsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SpringboardOptionsView()
+    }
+}

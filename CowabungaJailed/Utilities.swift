@@ -259,7 +259,7 @@ func printDirectoryTree(at path: URL, level: Int) {
     }
 }
 
-func applyTweaks() async {
+func applyTweaks() {
     // Erase backup folder
     let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
     if fm.fileExists(atPath: enabledTweaksDirectory.path) {
@@ -341,7 +341,7 @@ func applyTweaks() async {
     }
     
     // Generate backup
-    await generateBackup()
+    generateBackup()
     
     // Restore files
     guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
