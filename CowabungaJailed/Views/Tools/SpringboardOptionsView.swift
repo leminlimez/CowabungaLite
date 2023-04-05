@@ -20,7 +20,7 @@ struct SpringboardOptionsView: View {
         case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
         case ota = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
         case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
-        case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/.GlobalPreferences.plist"
+        case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
     }
     
     struct SBOption: Identifiable {
@@ -79,7 +79,7 @@ struct SpringboardOptionsView: View {
                             }.onChange(of: option.value.wrappedValue) { new in
                                 do {
                                     guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
-                                        Logger.shared.logMe("Error finding springboard plist")
+                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
                                     try PlistManager.setPlistValues(url: plistURL, values: [
@@ -93,12 +93,12 @@ struct SpringboardOptionsView: View {
                             .onAppear {
                                 do {
                                     guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
-                                        Logger.shared.logMe("Error finding springboard plist")
+                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
                                     option.value.wrappedValue =  try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
                                 } catch {
-                                    Logger.shared.logMe("Error finding springboard plist")
+                                    Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                     return
                                 }
                             }
@@ -140,6 +140,27 @@ struct SpringboardOptionsView: View {
                                         }
                                     }
                                 })
+                                .onAppear {
+                                    do {
+                                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
+                                            Logger.shared.logMe("Error finding springboard plist")
+                                            return
+                                        }
+                                        guard let data = fm.contents(atPath: plistURL.path) else {
+                                            Logger.shared.logMe("Can't read plist")
+                                            return
+                                        }
+                                        let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+                                        if let dictionary = plist as? [String: Any], dictionary.isEmpty {
+                                            otaDisabled = false
+                                        } else {
+                                            otaDisabled = true
+                                        }
+                                    } catch {
+                                        Logger.shared.logMe("Error finding springboard plist")
+                                        return
+                                    }
+                                }
                         }
                         
                         Divider()
