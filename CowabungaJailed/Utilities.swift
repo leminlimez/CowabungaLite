@@ -259,7 +259,18 @@ func printDirectoryTree(at path: URL, level: Int) {
     }
 }
 
-func applyTweaks() {
+func generateBackup() {
+    guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
+            Logger.shared.logMe("Error locating CreateBackup.sh")
+            return }
+        do {
+            try shell(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
+        } catch {
+            Logger.shared.logMe("Error running CreateBackup.sh")
+        }
+}
+
+func applyTweaks() async {
     // Erase backup folder
     let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
     if fm.fileExists(atPath: enabledTweaksDirectory.path) {

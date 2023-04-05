@@ -13,28 +13,37 @@ struct SpringboardOptionsView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var enableTweak: Bool = false
     @State private var footnoteText = ""
+    @State private var otaDisabled = false
+    
+    enum FileLocation: String {
+        case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
+        case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
+        case ota = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
+        case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
+        case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/.GlobalPreferences.plist"
+    }
     
     struct SBOption: Identifiable {
         var id = UUID()
         var key: String
         var name: String
-        var imageName: String
+        var fileLocation: FileLocation
         var value: Bool = false
     }
     
     @State private var sbOptions: [SBOption] = [
-        .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", imageName: "lock.open"),
-        .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", imageName: "battery.100.bolt"),
-        .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", imageName: "battery.25"),
+        .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", fileLocation: .springboard),
+        .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
+        .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
+        .init(key: "SBIconVisibility", name: "Mute Module in CC", fileLocation: .mute),
+        .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
+        .init(key: "AccessoryDeveloperEnabled", name: "Accessory Developer", fileLocation: .globalPreferences)
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
 //        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", imageName: "app.badge"),
 //        .init(key: "SBControlCenterEnabledInLockScreen", name: "Lock Screen CC", imageName: "square.grid.2x2"),
 //        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
     ]
-    
-    let fileLocationSprinboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
-    let fileLocationFootnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
     
     var body: some View {
         List {
@@ -69,7 +78,7 @@ struct SpringboardOptionsView: View {
                                     .minimumScaleFactor(0.5)
                             }.onChange(of: option.value.wrappedValue) { new in
                                 do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationSprinboard) else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
@@ -83,7 +92,7 @@ struct SpringboardOptionsView: View {
                             }
                             .onAppear {
                                 do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationSprinboard) else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
                                         Logger.shared.logMe("Error finding springboard plist")
                                         return
                                     }
@@ -94,9 +103,50 @@ struct SpringboardOptionsView: View {
                                 }
                             }
                         }
+                        Toggle(isOn: $otaDisabled) {
+                            Text("Disable OTA Updates")
+                                .minimumScaleFactor(0.5)
+                                .onChange(of: otaDisabled, perform: { nv in
+                                    if nv {
+                                        do {
+                                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
+                                                Logger.shared.logMe("Error finding MobileAsset plist")
+                                                return
+                                            }
+                                            try PlistManager.setPlistValues(url: plistURL, values: [
+                                                "MobileAssetServerURL-com.apple.MobileAsset.MobileSoftwareUpdate.UpdateBrain": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
+                                                "MobileAssetSUAllowOSVersionChange": false,
+                                                "MobileAssetSUAllowSameVersionFullReplacement": false,
+                                                "MobileAssetServerURL-com.apple.MobileAsset.RecoveryOSUpdate": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
+                                                "MobileAssetServerURL-com.apple.MobileAsset.RecoveryOSUpdateBrain": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
+                                                "MobileAssetServerURL-com.apple.MobileAsset.SoftwareUpdate": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
+                                                "MobileAssetAssetAudience": "65254ac3-f331-4c19-8559-cbe22f5bc1a6"
+                                            ])
+                                        } catch {
+                                            Logger.shared.logMe("Error disabling ota preferences: \(error.localizedDescription)")
+                                            return
+                                        }
+                                    } else {
+                                        do {
+                                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
+                                                Logger.shared.logMe("Error finding MobileAsset plist")
+                                                return
+                                            }
+                                            let newData = try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
+                                            try newData.write(to: plistURL)
+                                        } catch {
+                                            Logger.shared.logMe("Error enabling ota preferences: \(error.localizedDescription)")
+                                            return
+                                        }
+                                    }
+                                })
+                        }
+                        
+                        Divider()
+                        
                         Text("Lock Screen Footnote Text")
                         TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationFootnote) else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }
@@ -108,7 +158,7 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe(error.localizedDescription)
                             }
                         }).onAppear(perform: {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(fileLocationFootnote) else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }
