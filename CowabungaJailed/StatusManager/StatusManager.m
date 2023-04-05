@@ -86,6 +86,55 @@
     [self.setter unsetCarrier];
 }
 
+- (bool) isSecondaryCarrierOverridden {
+    return [self.setter isSecondaryCarrierOverridden];
+}
+
+- (NSString*) getSecondaryCarrierOverride {
+    return [self.setter getSecondaryCarrierOverride];
+}
+
+- (void) setSecondaryCarrier:(NSString*)text {
+    [self.setter setSecondaryCarrier:text];
+}
+
+- (void) unsetSecondaryCarrier {
+    [self.setter unsetSecondaryCarrier];
+}
+
+- (bool) isPrimaryServiceBadgeOverridden {
+    return [self.setter isPrimaryServiceBadgeOverridden];
+}
+
+- (NSString*) getPrimaryServiceBadgeOverride {
+    return [self.setter getPrimaryServiceBadgeOverride];
+}
+
+- (void) setPrimaryServiceBadge:(NSString*)text {
+    [self.setter setPrimaryServiceBadge:text];
+}
+
+- (void) unsetPrimaryServiceBadge {
+    [self.setter unsetPrimaryServiceBadge];
+}
+
+- (bool) isSecondaryServiceBadgeOverridden {
+    return [self.setter isSecondaryServiceBadgeOverridden];
+}
+
+- (NSString*) getSecondaryServiceBadgeOverride {
+    return [self.setter getSecondaryServiceBadgeOverride];
+}
+
+- (void) setSecondaryServiceBadge:(NSString*)text {
+    [self.setter setSecondaryServiceBadge:text];
+}
+
+- (void) unsetSecondaryServiceBadge {
+    [self.setter unsetSecondaryServiceBadge];
+    [self.setter unsetSecondaryServiceBadge];
+}
+
 - (bool) isTimeOverridden {
     return [self.setter isTimeOverridden];
 }
