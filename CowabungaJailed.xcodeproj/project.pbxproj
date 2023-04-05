@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		250ADBB729C825500023F343 /* idevice_id in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB629C825500023F343 /* idevice_id */; };
 		250ADBB929C825590023F343 /* idevicename in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB829C825590023F343 /* idevicename */; };
-		2521BEF829D3BAF300BED6B2 /* out.sh in Resources */ = {isa = PBXBuildFile; fileRef = 2521BEF729D3BAF300BED6B2 /* out.sh */; };
 		2521BEFA29D3BC8900BED6B2 /* DRMUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2521BEF929D3BC8900BED6B2 /* DRMUtils.swift */; };
 		2539F1AF29CA701C00FAD711 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2539F1AE29CA701C00FAD711 /* Constants.swift */; };
 		2539F1B129CA791100FAD711 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2539F1B029CA791100FAD711 /* StatusBarView.swift */; };
@@ -77,7 +76,6 @@
 /* Begin PBXFileReference section */
 		250ADBB629C825500023F343 /* idevice_id */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevice_id; sourceTree = "<group>"; };
 		250ADBB829C825590023F343 /* idevicename */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevicename; sourceTree = "<group>"; };
-		2521BEF729D3BAF300BED6B2 /* out.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = out.sh; sourceTree = "<group>"; };
 		2521BEF929D3BC8900BED6B2 /* DRMUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DRMUtils.swift; sourceTree = "<group>"; };
 		2539F1AE29CA701C00FAD711 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2539F1B029CA791100FAD711 /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 		2544926F29C7F79F00B6D82E /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
-				2521BEF729D3BAF300BED6B2 /* out.sh */,
 				2557663029D2F51B008DF0E2 /* appabeticalJailed */,
 				2557662E29D2F4E2008DF0E2 /* homeScreenApps */,
 				2544928E29C80F5600B6D82E /* ideviceinfo */,
@@ -397,7 +394,6 @@
 				2557663129D2F51B008DF0E2 /* appabeticalJailed in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
-				2521BEF829D3BAF300BED6B2 /* out.sh in Resources */,
 				2557662F29D2F4E2008DF0E2 /* homeScreenApps in Resources */,
 				250ADBB729C825500023F343 /* idevice_id in Resources */,
 				2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */,
