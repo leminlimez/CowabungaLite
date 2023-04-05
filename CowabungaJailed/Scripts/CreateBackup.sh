@@ -26,16 +26,17 @@ for domain in "$1"/*; do
 		find "$domain" ! -name ".*" | while read file; do
 			path=${file#$domain/}
 			path=${path#$domain}
+            pathFixed=$(printf "%s" "$path" | sed 's/hiddendot/./g')
 
 			# Write domain name string to Manifest.mbdb
 			printf "%04x" $(printf "$justDomain" | wc -c) | xxd -r -p >>$output_file
 			printf "$justDomain" >>$output_file
 
-			printf "Domain: %s, Path: %s" $justDomain ${path:-N/A}
+			printf "Domain: %s, Path: %s" $justDomain ${pathFixed:-N/A}
 
 			# Write path string to Manifest.mbdb
-			printf "%04x" $(printf "$path" | wc -c) | xxd -r -p >>$output_file
-			printf "$path" >>$output_file
+			printf "%04x" $(printf "$pathFixed" | wc -c) | xxd -r -p >>$output_file
+			printf "$pathFixed" >>$output_file
 
 			if [ -f "$file" ]; then
 				printf "FFFF0014" | xxd -r -p >>$output_file
@@ -51,7 +52,7 @@ for domain in "$1"/*; do
 				printf " - written structure to Manifest.mbdb"
 
 				# Rename file to its domain-path hash
-				hash=$(printf "$justDomain-$path" | shasum | awk '{print $1}')
+				hash=$(printf "$justDomain-$pathFixed" | shasum | awk '{print $1}')
 				newfile="$2/$hash"
 				cp "$file" "$newfile"
 

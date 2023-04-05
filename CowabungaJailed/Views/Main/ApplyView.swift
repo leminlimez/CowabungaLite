@@ -13,7 +13,7 @@ struct ApplyView: View {
     
     var body: some View {
         List {
-            Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Complete\" at the bottom if successful.")
+            Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Successful\" at the bottom if successful.")
             Text("Enabled tweaks: \(dataSingleton.enabledTweaks.isEmpty ? "None" : "")")
             ForEach(Array(dataSingleton.enabledTweaks), id: \.self) { tweak in
                 HStack(spacing: 5) {

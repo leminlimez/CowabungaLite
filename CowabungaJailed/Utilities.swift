@@ -270,7 +270,7 @@ func generateBackup() {
         }
 }
 
-func applyTweaks() async {
+func applyTweaks() {
     // Erase backup folder
     let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
     if fm.fileExists(atPath: enabledTweaksDirectory.path) {
