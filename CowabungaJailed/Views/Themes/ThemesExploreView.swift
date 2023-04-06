@@ -51,15 +51,22 @@ struct ThemesExploreView: View {
                                 if searchTerm == "" || theme.name.lowercased().contains(searchTerm.lowercased()) || (theme.contact.values.first ?? "Unknown author").lowercased().contains(searchTerm.lowercased()) {
                                     
                                     VStack(spacing: 0) {
-                                        AsyncImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme)) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
+                                        if #available(macOS 12.0, *) {
+                                            AsyncImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme)) { image in
+                                                image
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(maxWidth: .infinity)
+                                                //                                                    .cornerRadius(10, corners: .topLeft)
+                                                //                                                    .cornerRadius(10, corners: .topRight)
+                                            } placeholder: {
+                                                Color.gray
+                                                    .frame(height: 192)
+                                            }
+                                        } else {
+                                            Rectangle()
+                                                .foregroundColor(.gray)
                                                 .frame(maxWidth: .infinity)
-                                            //                                                    .cornerRadius(10, corners: .topLeft)
-                                            //                                                    .cornerRadius(10, corners: .topRight)
-                                        } placeholder: {
-                                            Color.gray
                                                 .frame(height: 192)
                                         }
                                         HStack {
@@ -121,15 +128,15 @@ struct ThemesExploreView: View {
             .onAppear {
                 loadThemes()
             }
-            .alert("Submit themes", isPresented: $submitThemeAlertShown, actions: {
-                Button("Join Discord", role: .none, action: {
-//                    UIApplication.shared.open(URL(string: "https://discord.gg/zTPFJuQfdw")!)
-                })
-                Button("OK", role: .cancel, action: {})
-            }, message: {
-                Text("Currently to submit themes for other people to see and use, we have to review them on our Discord in #showcase channel.")
-                
-            })
+//            .alert("Submit themes", isPresented: $submitThemeAlertShown, actions: {
+//                Button("Join Discord", role: .none, action: {
+////                    UIApplication.shared.open(URL(string: "https://discord.gg/zTPFJuQfdw")!)
+//                })
+//                Button("OK", role: .cancel, action: {})
+//            }, message: {
+//                Text("Currently to submit themes for other people to see and use, we have to review them on our Discord in #showcase channel.")
+//
+//            })
             
             //            .sheet(isPresented: $showLogin, content: { LoginView() })
             // maybe later
