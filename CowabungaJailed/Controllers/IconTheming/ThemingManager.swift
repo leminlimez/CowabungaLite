@@ -54,7 +54,7 @@ class ThemingManager: ObservableObject {
     }
     
     public func getCurrentAppliedTheme() -> String? {
-        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Info.plist") else { return nil }
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return nil }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
             return nil
         }
@@ -64,6 +64,19 @@ class ThemingManager: ObservableObject {
         guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
         guard let name = plist["CurrentlyAppliedTheme"] as? String else { return nil }
         return name
+    }
+    
+    public func getThemeToggleSetting(_ settingName: String) -> Bool {
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return false }
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            return false
+        }
+        guard let infoData = try? Data(contentsOf: infoPlist) else {
+            return false
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return false }
+        guard let val = plist[settingName] as? Bool else { return false }
+        return val
     }
     
     public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false) throws {
@@ -129,17 +142,51 @@ class ThemingManager: ObservableObject {
         processing = false
     }
     
+    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, deletingTheme: Bool = false) throws {
+        guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return }
+        var plist: [String: Any] = [:]
+        if FileManager.default.fileExists(atPath: infoPlistPath.path) {
+            do {
+                plist = try PropertyListSerialization.propertyList(from: try Data(contentsOf: infoPlistPath), format: nil) as? [String: Any] ?? [:]
+            }
+            try? FileManager.default.removeItem(at: infoPlistPath)
+        }
+        if themeName != nil {
+            plist["CurrentlyAppliedTheme"] = themeName!
+        } else if deletingTheme == true {
+            plist["CurrentlyAppliedTheme"] = nil
+        }
+        if hideDisplayNames != nil {
+            plist["HideDisplayNames"] = hideDisplayNames!
+        }
+        if appClips != nil {
+            plist["AsAppClips"] = appClips!
+        }
+        let newPlist = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        try newPlist.write(to: infoPlistPath)
+    }
+    
+    public func applyTheme() {
+        let t = getCurrentAppliedTheme()
+        if t == nil {
+            eraseAppliedTheme()
+        } else {
+            Logger.shared.logMe("Applying icon themes...")
+            eraseAppliedTheme()
+            do {
+                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"))
+                Logger.shared.logMe("Successfully applied icon themes!")
+            } catch {
+                Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
         let themeFolder = getThemesFolder().appendingPathComponent(themeName)
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
         }
-        guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("Info.plist") else { return }
-        if FileManager.default.fileExists(atPath: infoPlistPath.path) {
-            try? FileManager.default.removeItem(at: infoPlistPath)
-        }
-        let newPlist = try PropertyListSerialization.data(fromPropertyList: ["CurrentlyAppliedTheme": themeName], format: .xml, options: 0)
-        try newPlist.write(to: infoPlistPath)
         let apps = getHomeScreenApps()
         
         for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
