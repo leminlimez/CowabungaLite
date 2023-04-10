@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		250ADBB729C825500023F343 /* idevice_id in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB629C825500023F343 /* idevice_id */; };
 		250ADBB929C825590023F343 /* idevicename in Resources */ = {isa = PBXBuildFile; fileRef = 250ADBB829C825590023F343 /* idevicename */; };
+		2519D55029E419AC00747C49 /* patreon.txt in Sources */ = {isa = PBXBuildFile; fileRef = 2519D54F29E419AC00747C49 /* patreon.txt */; };
+		251C097F29E41F7B001069BB /* patreon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2519D54F29E419AC00747C49 /* patreon.txt */; };
 		2521BEFA29D3BC8900BED6B2 /* DRMUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2521BEF929D3BC8900BED6B2 /* DRMUtils.swift */; };
 		2539F1AF29CA701C00FAD711 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2539F1AE29CA701C00FAD711 /* Constants.swift */; };
 		2539F1B129CA791100FAD711 /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2539F1B029CA791100FAD711 /* StatusBarView.swift */; };
@@ -76,6 +78,7 @@
 /* Begin PBXFileReference section */
 		250ADBB629C825500023F343 /* idevice_id */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevice_id; sourceTree = "<group>"; };
 		250ADBB829C825590023F343 /* idevicename */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevicename; sourceTree = "<group>"; };
+		2519D54F29E419AC00747C49 /* patreon.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = patreon.txt; sourceTree = "<group>"; };
 		2521BEF929D3BC8900BED6B2 /* DRMUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DRMUtils.swift; sourceTree = "<group>"; };
 		2539F1AE29CA701C00FAD711 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2539F1B029CA791100FAD711 /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
@@ -213,6 +216,7 @@
 		6F700AB429C37DF50085964B /* CowabungaJailed */ = {
 			isa = PBXGroup;
 			children = (
+				2519D54F29E419AC00747C49 /* patreon.txt */,
 				2521BEF629D3B51B00BED6B2 /* DRM */,
 				6FFA738729D11A3C00E4DCBC /* API */,
 				6F886A2529C8BEE200B73E40 /* Controllers */,
@@ -385,6 +389,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				251C097F29E41F7B001069BB /* patreon.txt in Resources */,
 				25B47F1D29C91BA800BD9F7E /* Files in Resources */,
 				2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */,
 				6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */,
@@ -428,6 +433,7 @@
 				25B47F2D29C91C2D00BD9F7E /* StatusManager.m in Sources */,
 				2557662B29D2E9BF008DF0E2 /* UtilityViews.swift in Sources */,
 				2539F1B329CA9BA100FAD711 /* SkipSetupView.swift in Sources */,
+				2519D55029E419AC00747C49 /* patreon.txt in Sources */,
 				6FFA737C29CBD9D400E4DCBC /* AboutView.swift in Sources */,
 				25B8341C29CB04CA00176095 /* StatusSetter16_3.m in Sources */,
 				6FFA739429D1E7F400E4DCBC /* SupervisionView.swift in Sources */,
