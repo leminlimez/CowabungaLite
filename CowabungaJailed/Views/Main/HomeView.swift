@@ -46,6 +46,8 @@ struct LinkCell: View {
 
 struct HomeView: View {
     
+    @State private var versionBuildString: String?
+    
     @State private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
     
@@ -87,7 +89,7 @@ struct HomeView: View {
                     LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
                 }
                 Divider()
-                Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
+                Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown") (\(versionBuildString ?? "Release"))")
                 Divider()
                 Text("Thanks to our Patrons:")
                     .bold()
@@ -98,6 +100,10 @@ struct HomeView: View {
                     }
                 }
                 .onAppear(perform: {
+                    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String, build != "0" {
+                        versionBuildString = "Beta \(build)"
+                    }
+                    
                     // add the patreon supporters
                     loadPatrons()
                 })
