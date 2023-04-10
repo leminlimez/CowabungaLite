@@ -45,10 +45,12 @@ struct LinkCell: View {
 }
 
 struct HomeView: View {
-    @State var patronNames: [String] = []
     
     @State private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
+    
+    @ObservedObject var patreonAPI = PatreonAPI.shared
+    @State private var patrons: [Patron] = []
     
     var body: some View {
         List {
@@ -87,24 +89,27 @@ struct HomeView: View {
                 Divider()
                 Text("Thanks to our Patrons:")
                 LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 10) {
-                    ForEach(patronNames.indices, id: \.self) { index in
-                        Text(patronNames[index]).id(index)
+                    ForEach(patrons) { patron in
+                        Text(patron.name)
                     }
                 }
                 .onAppear(perform: {
-                    if let filePath = Bundle.main.path(forResource: "patreon", ofType: "txt") {
-                        do {
-                            let fileContents = try String(contentsOfFile: filePath)
-                            print(fileContents)
-                            patronNames = fileContents.components(separatedBy: .newlines).filter{ !$0.isEmpty }
-                        } catch {
-                            print("Error reading file: \(error.localizedDescription)")
-                        }
-                    }
+                    // add the patreon supporters
+                    loadPatrons()
                 })
                 Divider()
                 Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
 //                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
+            }
+        }
+    }
+    
+    func loadPatrons() {
+        Task {
+            do {
+                patrons = try await patreonAPI.fetchPatrons()
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }
