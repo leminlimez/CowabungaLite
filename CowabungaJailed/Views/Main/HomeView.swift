@@ -45,6 +45,8 @@ struct LinkCell: View {
 }
 
 struct HomeView: View {
+    @State var patronNames: [String] = []
+    
     @State private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
     
@@ -78,8 +80,28 @@ struct HomeView: View {
                     }
                 }
                 Divider()
-                LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
-                LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
+                HStack {
+                    LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
+                    LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
+                }
+                Divider()
+                Text("Thanks to our Patrons:")
+                LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 10) {
+                    ForEach(patronNames.indices, id: \.self) { index in
+                        Text(patronNames[index]).id(index)
+                    }
+                }
+                .onAppear(perform: {
+                    if let filePath = Bundle.main.path(forResource: "patreon", ofType: "txt") {
+                        do {
+                            let fileContents = try String(contentsOfFile: filePath)
+                            print(fileContents)
+                            patronNames = fileContents.components(separatedBy: .newlines).filter{ !$0.isEmpty }
+                        } catch {
+                            print("Error reading file: \(error.localizedDescription)")
+                        }
+                    }
+                })
                 Divider()
                 Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
 //                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
