@@ -87,7 +87,11 @@ struct HomeView: View {
                     LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
                 }
                 Divider()
+                Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
+                Divider()
                 Text("Thanks to our Patrons:")
+                    .bold()
+                    .padding(.bottom, 10)
                 LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 10) {
                     ForEach(patrons) { patron in
                         Text(patron.name)
@@ -97,8 +101,6 @@ struct HomeView: View {
                     // add the patreon supporters
                     loadPatrons()
                 })
-                Divider()
-                Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
 //                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
             }
         }
