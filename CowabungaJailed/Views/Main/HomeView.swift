@@ -93,8 +93,8 @@ struct HomeView: View {
                     .bold()
                     .padding(.bottom, 10)
                 LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 4), spacing: 10) {
-                    ForEach(patrons) { patron in
-                        Text(patron.name)
+                    ForEach($patrons) { patron in
+                        Text(patron.name.wrappedValue)
                     }
                 }
                 .onAppear(perform: {
