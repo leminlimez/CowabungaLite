@@ -13,9 +13,6 @@ struct ThemeView: View {
     var defaultWallpaper: Bool = false
     @State var icons: [NSImage?] = []
     
-    @Binding var hideLabels: Bool
-    @Binding var isAppClips: Bool
-    
     var body: some View {
         VStack {
             ZStack {
@@ -75,19 +72,15 @@ struct ThemeView: View {
                 ), action: {
                     if !themeManager.processing {
                         if themeManager.currentTheme == theme.name {
-                            themeManager.eraseAppliedTheme()
+                            try? themeManager.setThemeSettings(deletingTheme: true)
                             themeManager.currentTheme = nil
                         } else {
-                            themeManager.currentTheme = theme.name
-                            themeManager.processing = true
-                            themeManager.eraseAppliedTheme()
                             do {
-                                try themeManager.applyTheme(themeName: theme.name, hideDisplayNames: hideLabels, appClips: isAppClips)
+                                try themeManager.setThemeSettings(themeName: theme.name)
                             } catch {
                                 themeManager.currentTheme = nil
                                 print(error.localizedDescription)
                             }
-                            themeManager.processing = false
                         }
                     }
                 }, background: themeManager.isCurrentTheme(theme.name) ? .blue : Color.cowGray)

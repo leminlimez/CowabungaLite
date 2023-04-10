@@ -299,6 +299,11 @@ func applyTweaks() {
         Logger.shared.logMe("Error getting Workspace URL")
         return
     }
+    
+    // Create the webclip icons
+    if DataSingleton.shared.allEnabledTweaks().contains(.themes) {
+        ThemingManager.shared.applyTheme()
+    }
 
     for tweak in DataSingleton.shared.allEnabledTweaks() {
         do {
