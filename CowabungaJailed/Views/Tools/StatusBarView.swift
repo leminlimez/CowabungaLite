@@ -83,9 +83,9 @@ struct StatusBarView: View {
                     }
                 }
                 Divider()
-                Text("Currently only tested on iOS 15 - 16.1.2 and iOS 16.3.* - other versions, use with caution. Betas, use with caution. Have a backup.")
             }
             if dataSingleton.deviceAvailable {
+                Text("Betas, use with caution. Have a backup.")
                 Group {
                     Group {
                         Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
