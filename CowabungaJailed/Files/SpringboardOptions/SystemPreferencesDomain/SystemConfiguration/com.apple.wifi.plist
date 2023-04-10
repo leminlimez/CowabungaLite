@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kWiFiShowKnownNetworks</key>
+	<false/>
+	<key>LoggingFile</key>
+	<string>/Library/Logs/wifi.log</string>
+	<key>Custom network settings</key>
+	<dict/>
+	<key>AllowEnable</key>
+	<integer>1</integer>
+	<key>List of known networks</key>
+	<array/>
+	<key>JoinMode</key>
+	<string>Preferred</string>
+	<key>Version</key>
+	<integer>3</integer>
+	<key>DisassociationInterval</key>
+	<real>1800</real>
+	<key>lpasEnable</key>
+	<true/>
+	<key>mStageAutoJoin</key>
+	<true/>
+	<key>Enable5GhzAutoJoinScan</key>
+	<false/>
+	<key>Fallback Preference</key>
+	<integer>2</integer>
+</dict>
+</plist>
