@@ -29,7 +29,7 @@ enum Tweak: String {
 
 @objc class DataSingleton: NSObject, ObservableObject {
     @objc static let shared = DataSingleton()
-    private var currentDevice: Device?
+    @Published var currentDevice: Device?
     private var currentWorkspace: URL?
     @Published var enabledTweaks: Set<Tweak> = []
     @Published var deviceAvailable = false
@@ -52,12 +52,14 @@ enum Tweak: String {
     
     func setCurrentDevice(_ device: Device) {
         currentDevice = device
+        print("set to \(device)")
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {
             setupWorkspaceForUUID(device.uuid)
             deviceAvailable = true
         }
+        enabledTweaks.insert(.skipSetup)
     }
     
     func resetCurrentDevice() {

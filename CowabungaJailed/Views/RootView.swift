@@ -32,13 +32,23 @@ struct RootView: View {
     ]
     
     func updateDevices() {
-        // fix to update and maintain UUID if a device is disconnected
         devices = getDevices()
-        if selectedDeviceIndex >= (devices?.count ?? 0) {
-            selectedDeviceIndex = 0
-            DataSingleton.shared.resetCurrentDevice()
-        } else if let devices = devices {
-            DataSingleton.shared.setCurrentDevice(devices[0])
+        if let devices = devices {
+            if devices.isEmpty {
+                selectedDeviceIndex = 0
+                DataSingleton.shared.resetCurrentDevice()
+            } else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
+                selectedDeviceIndex = index
+            } else {
+                DataSingleton.shared.setCurrentDevice(devices[0])
+            }
+        }
+        // Return to Home view
+        options[0].options[0].active = true
+        for i in 1..<options.count {
+            for j in 0..<options[i].options.count {
+                options[i].options[j].active = false
+            }
         }
     }
     
@@ -61,11 +71,12 @@ struct RootView: View {
                     }.onAppear {
                         updateDevices()
                     }.onChange(of: selectedDeviceIndex) { nv in
-                        if nv != 0, let devices = devices {
-                            DataSingleton.shared.setCurrentDevice(devices[nv - 1])
+                        if let devices = devices {
+                            DataSingleton.shared.setCurrentDevice(devices[nv])
                         } else {
                             DataSingleton.shared.resetCurrentDevice()
                         }
+                        updateDevices()
                     }
                     
                     Button(action: {

@@ -46,6 +46,7 @@ struct LinkCell: View {
 
 struct HomeView: View {
     @State private var logger = Logger.shared
+    @StateObject private var dataSingleton = DataSingleton.shared
     
     var body: some View {
         List {
@@ -57,13 +58,13 @@ struct HomeView: View {
                         .frame(width: 35, height: 35)
                     VStack {
                         HStack {
-                            Text(DataSingleton.shared.getCurrentName() ?? "No Device")
+                            Text(dataSingleton.currentDevice?.name ?? "No Device")
                                 .bold()
                             Spacer()
                         }
                         HStack {
-                            Text(DataSingleton.shared.getCurrentVersion() ?? "Please connect a device.")
-                            if (DataSingleton.shared.getCurrentUUID() != nil) {
+                            Text(dataSingleton.currentDevice?.version ?? "Please connect a device.")
+                            if (dataSingleton.currentDevice?.uuid != nil) {
                                 if (!DataSingleton.shared.deviceAvailable) {
                                     Text("Not Supported.")
                                         .foregroundColor(.red)
