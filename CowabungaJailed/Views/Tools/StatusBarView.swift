@@ -20,6 +20,9 @@ struct StatusBarView: View {
     @State private var secondaryServiceBadgeText: String = ""
     @State private var secondaryServiceBadgeTextEnabled: Bool = false
     
+    @State private var dateText: String = ""
+    @State private var dateTextEnabled: Bool = false
+    
     @State private var timeText: String = ""
     @State private var timeTextEnabled: Bool = false
     
@@ -136,6 +139,32 @@ struct StatusBarView: View {
                         }).onAppear(perform: {
                             batteryDetailText = StatusManager.sharedInstance().getBatteryDetailOverride()
                         })
+                        if dataSingleton.currentDevice?.ipad ?? false == true {
+                            Toggle("Change Status Bar Date Text", isOn: $dateTextEnabled).onChange(of: dateTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setDate(dateText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetDate()
+                                }
+                            }).onAppear(perform: {
+                                dateTextEnabled = StatusManager.sharedInstance().isDateOverridden()
+                            })
+                            TextField("Status Bar Date Text", text: $dateText).onChange(of: dateText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 64
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 256 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                dateText = safeNv
+                                if dateTextEnabled {
+                                    StatusManager.sharedInstance().setDate(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                dateText = StatusManager.sharedInstance().getDateOverride()
+                            })
+                        }
                         Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
                             if nv {
                                 StatusManager.sharedInstance().setTime(timeText)
