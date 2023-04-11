@@ -73,12 +73,10 @@ struct ThemeView: View {
                     if !themeManager.processing {
                         if themeManager.currentTheme == theme.name {
                             try? themeManager.setThemeSettings(deletingTheme: true)
-                            themeManager.currentTheme = nil
                         } else {
                             do {
                                 try themeManager.setThemeSettings(themeName: theme.name)
                             } catch {
-                                themeManager.currentTheme = nil
                                 print(error.localizedDescription)
                             }
                         }
