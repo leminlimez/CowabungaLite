@@ -153,8 +153,10 @@ class ThemingManager: ObservableObject {
         }
         if themeName != nil {
             plist["CurrentlyAppliedTheme"] = themeName!
+            currentTheme = themeName
         } else if deletingTheme == true {
             plist["CurrentlyAppliedTheme"] = nil
+            currentTheme = nil
         }
         if hideDisplayNames != nil {
             plist["HideDisplayNames"] = hideDisplayNames!
