@@ -67,15 +67,19 @@ struct ThemingView: View {
                         Group {
                             Toggle(isOn: $hideAppLabels) {
                                 Text("Hide App Labels")
-                            }
+                            }.onChange(of: hideAppLabels, perform: { nv in
+                                try? themeManager.setThemeSettings(hideDisplayNames: nv)
+                            })
                             Toggle(isOn: $isAppClips) {
                                 Text("As App Clips")
-                            }
+                            }.onChange(of: isAppClips, perform: { nv in
+                                try? themeManager.setThemeSettings(appClips: nv)
+                            })
                         }
                         Group {
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
                                 ForEach(themeManager.themes, id: \.name) { theme in
-                                    ThemeView(theme: theme, hideLabels: $hideAppLabels, isAppClips: $isAppClips)
+                                    ThemeView(theme: theme)
                                 }
                             }
 //                            .padding()
@@ -127,6 +131,8 @@ struct ThemingView: View {
         .disabled(!dataSingleton.deviceAvailable)
         .onAppear {
             themeManager.getThemes()
+            hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
+            isAppClips = themeManager.getThemeToggleSetting("AsAppClips")
         }
         .fileImporter(isPresented: $showPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false, onCompletion: { result in
             guard let url = try? result.get().first else { return }

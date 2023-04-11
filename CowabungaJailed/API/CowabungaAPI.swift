@@ -20,7 +20,6 @@ class CowabungaAPI: ObservableObject {
     var serverURL = ""
     var session = URLSession.shared
     
-    #warning("If we are modifying files, it's no longer an API. Needs refactoring")
     let fm = FileManager.default
     
     func fetchThemes(type: DownloadableTheme.ThemeType) async throws -> [DownloadableTheme] {
