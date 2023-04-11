@@ -39,12 +39,12 @@ struct SpringboardOptionsView: View {
         .init(key: "SBIconVisibility", name: "Mute Module in CC", fileLocation: .mute),
         .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
         .init(key: "AccessoryDeveloperEnabled", name: "Accessory Developer", fileLocation: .globalPreferences),
-        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi)
+        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi),
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
-//        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", imageName: "app.badge"),
-//        .init(key: "SBControlCenterEnabledInLockScreen", name: "Lock Screen CC", imageName: "square.grid.2x2"),
-//        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", imageName: "wifi.circle")
+        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", fileLocation: .springboard),
+        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
+        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", fileLocation: .springboard)
     ]
     
     var body: some View {
