@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ThemesExploreView: View {
     
@@ -51,24 +52,10 @@ struct ThemesExploreView: View {
                                 if searchTerm == "" || theme.name.lowercased().contains(searchTerm.lowercased()) || (theme.contact.values.first ?? "Unknown author").lowercased().contains(searchTerm.lowercased()) {
                                     
                                     VStack(spacing: 0) {
-                                        if #available(macOS 12.0, *) {
-                                            AsyncImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme)) { image in
-                                                image
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(maxWidth: .infinity)
-                                                //                                                    .cornerRadius(10, corners: .topLeft)
-                                                //                                                    .cornerRadius(10, corners: .topRight)
-                                            } placeholder: {
-                                                Color.gray
-                                                    .frame(height: 192)
-                                            }
-                                        } else {
-                                            Rectangle()
-                                                .foregroundColor(.gray)
-                                                .frame(maxWidth: .infinity)
-                                                .frame(height: 192)
-                                        }
+                                        WebImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme))
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(maxWidth: .infinity)
                                         HStack {
                                             VStack(spacing: 4) {
                                                 HStack {
