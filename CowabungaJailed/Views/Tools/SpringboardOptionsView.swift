@@ -14,6 +14,7 @@ struct SpringboardOptionsView: View {
     @State private var enableTweak: Bool = false
     @State private var footnoteText = ""
     @State private var otaDisabled = false
+    @State private var animSpeed: Double = 1
     
     enum FileLocation: String {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
@@ -22,6 +23,7 @@ struct SpringboardOptionsView: View {
         case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
         case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
+        case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
     }
     
     struct SBOption: Identifiable {
@@ -166,6 +168,34 @@ struct SpringboardOptionsView: View {
                         }
                         
                         Divider()
+                        
+                        Text("Animation Speed")
+                        TextField("Animation Speed", value: $animSpeed, format: .number).onChange(of: animSpeed, perform: { nv in
+                            if animSpeed <= 0 {
+                                animSpeed = 1
+                            }
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+                                Logger.shared.logMe("Error finding uikit plist")
+                                return
+                            }
+                            do {
+                                try PlistManager.setPlistValues(url: plistURL, values: [
+                                    "UIAnimationDragCoefficient": animSpeed
+                                ])
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                            }
+                        }).onAppear {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+                                Logger.shared.logMe("Error finding uikit plist")
+                                return
+                            }
+                            // Add a getPlistValues func to PlistManager pls
+                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                                return
+                            }
+                            animSpeed = plist["UIAnimationDragCoefficient"] as? Double ?? 1
+                        }
                         
                         Text("Lock Screen Footnote Text")
                         TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
