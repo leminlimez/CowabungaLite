@@ -14,7 +14,7 @@ struct SpringboardOptionsView: View {
     @State private var enableTweak: Bool = false
     @State private var footnoteText = ""
     @State private var otaDisabled = false
-    @State private var animSpeed: Double = 1
+    @State private var animSpeed: String = "1"
     
     enum FileLocation: String {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
@@ -170,9 +170,11 @@ struct SpringboardOptionsView: View {
                         Divider()
                         
                         Text("Animation Speed")
-                        TextField("Animation Speed", value: $animSpeed, format: .number).onChange(of: animSpeed, perform: { nv in
-                            if animSpeed <= 0 {
-                                animSpeed = 1
+                        TextField("Animation Speed", text: $animSpeed).onChange(of: animSpeed, perform: { nv in
+                            var val = Double(animSpeed) ?? -1
+                            if val <= 0 {
+                                val = 1
+                                animSpeed = "1"
                             }
                             guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
                                 Logger.shared.logMe("Error finding uikit plist")
@@ -180,7 +182,7 @@ struct SpringboardOptionsView: View {
                             }
                             do {
                                 try PlistManager.setPlistValues(url: plistURL, values: [
-                                    "UIAnimationDragCoefficient": animSpeed
+                                    "UIAnimationDragCoefficient": val
                                 ])
                             } catch {
                                 Logger.shared.logMe(error.localizedDescription)
@@ -194,7 +196,7 @@ struct SpringboardOptionsView: View {
                             guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
                                 return
                             }
-                            animSpeed = plist["UIAnimationDragCoefficient"] as? Double ?? 1
+                            animSpeed = plist["UIAnimationDragCoefficient"] as? String ?? "1"
                         }
                         
                         Text("Lock Screen Footnote Text")
