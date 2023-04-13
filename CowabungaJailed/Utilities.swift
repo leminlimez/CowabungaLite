@@ -183,7 +183,8 @@ func shell(_ scriptURL: URL, arguments: [String] = [], workingDirectory: URL? = 
 
     task.executableURL = URL(fileURLWithPath: "/bin/sh")
     let scriptArguments = arguments.joined(separator: " ")
-    task.arguments = ["-c", "source \(scriptURL.path) \(scriptArguments)"]
+    // testing fix here
+    task.arguments = ["-c", "source \"\(scriptURL.path)\" \(scriptArguments)"]
     if let workingDirectory = workingDirectory {
         task.currentDirectoryURL = workingDirectory
     }
