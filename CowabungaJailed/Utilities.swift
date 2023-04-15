@@ -410,6 +410,27 @@ func getDevices() -> [Device] {
     }
 }
 
+func splitString(_ inputString: String) -> (String, String) {
+    // Convert the input string to a C string
+    var cString = (inputString + "\0").cString(using: .utf8)!
+    
+    // Split the C string on the comma
+    var splitString = strtok(&cString, ",")!
+    
+    // Convert the first part of the split string back to a Swift string
+    let firstString = String(cString: splitString)
+    
+    // Find the beginning of the second part of the split string
+    splitString = strtok(nil, ",")!
+    
+    // Convert the second part of the split string back to a Swift string
+    let secondString = String(cString: splitString)
+    
+    // Return the two split strings
+    return (firstString, secondString)
+}
+
+
 func getHomeScreenApps() -> [String:String] {
     guard let exec = Bundle.main.url(forResource: "homeScreenApps", withExtension: "") else {
         Logger.shared.logMe("Error locating homeScreenApps")
@@ -423,9 +444,13 @@ func getHomeScreenApps() -> [String:String] {
         let appsCSV = try execute2(exec, arguments:["-u", currentUUID], workingDirectory: documentsDirectory)
         var dict = [String:String]()
         for line in appsCSV.split(separator: "\n") {
-            let components = line.split(separator: ",")
-            // todo proper error check here
-            dict[String(components[0])] = String(components[1])
+            // fucking nightmare
+            let components = line.unicodeScalars.map{Character($0)}.split(separator: ",")
+            if components.count == 2 {
+                dict[String(components[0])] = String(components[1])
+            } else {
+                dict[String(components[0])] = String(components[0])
+            }
         }
         Logger.shared.logMe("\(dict)")
         return dict
