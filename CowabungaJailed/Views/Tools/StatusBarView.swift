@@ -32,6 +32,9 @@ struct StatusBarView: View {
     @State private var crumbText: String = ""
     @State private var crumbTextEnabled: Bool = false
     
+    @State private var dataNetworkType: Int = 0
+    @State private var dataNetworkTypeEnabled: Bool = false
+    
     @State private var batteryCapacity: Double = 0
     @State private var batteryCapacityEnabled: Bool = false
     
@@ -60,6 +63,24 @@ struct StatusBarView: View {
     @State private var enableTweak = false
     @State private var easterEgg = false
     @StateObject private var dataSingleton = DataSingleton.shared
+    
+    private var NetworkTypes: [String] = [
+        "GPRS", // 0
+        "EDGE", // 1
+        "3G", // 2
+        "4G", // 3
+        "LTE", // 4
+        "WiFi", // 5
+        "Personal Hotspot", // 6
+        "1x", // 7
+        "5Gᴇ", // 8
+        "LTE-A", // 9
+        "LTE+", // 10
+        "5G", // 11
+        "5G+", // 12
+        "5GUW", // 13
+        "5GUC", // 14
+    ]
     
     var body: some View {
         List {
@@ -242,6 +263,39 @@ struct StatusBarView: View {
                             }
                         }).onAppear(perform: {
                             primaryServiceBadgeText = StatusManager.sharedInstance().getPrimaryServiceBadgeOverride()
+                        })
+                        
+                        Toggle("Change Data Network Type", isOn: $dataNetworkTypeEnabled).onChange(of: dataNetworkTypeEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
+                            } else {
+                                StatusManager.sharedInstance().unsetDataNetworkType()
+                            }
+                        }).onAppear(perform: {
+                            dataNetworkTypeEnabled = StatusManager.sharedInstance().isDataNetworkTypeOverridden()
+                        })
+                        HStack {
+                            Text("Data Network Type")
+                            Spacer()
+                            
+                            Menu {
+                                ForEach(Array(NetworkTypes.enumerated()), id: \.offset) { i, net in
+                                    if net != "???" {
+                                        Button(action: {
+                                            dataNetworkType = i
+                                            if dataNetworkTypeEnabled {
+                                                StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
+                                            }
+                                        }) {
+                                            Text(net)
+                                        }
+                                    }
+                                }
+                            } label: {
+                                Text(NetworkTypes[dataNetworkType])
+                            }
+                        }.onAppear(perform: {
+                            dataNetworkType = Int(StatusManager.sharedInstance().getDataNetworkTypeOverride())
                         })
                         
                         Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
