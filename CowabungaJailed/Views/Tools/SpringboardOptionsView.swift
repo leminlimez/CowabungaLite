@@ -172,20 +172,18 @@ struct SpringboardOptionsView: View {
                         Text("Animation Speed")
                         TextField("Animation Speed", text: $animSpeed).onChange(of: animSpeed, perform: { nv in
                             var val = Double(animSpeed) ?? -1
-                            if val <= 0 {
-                                val = 1
-                                animSpeed = "1"
-                            }
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
-                                Logger.shared.logMe("Error finding uikit plist")
-                                return
-                            }
-                            do {
-                                try PlistManager.setPlistValues(url: plistURL, values: [
-                                    "UIAnimationDragCoefficient": val
-                                ])
-                            } catch {
-                                Logger.shared.logMe(error.localizedDescription)
+                            if val > 0 {
+                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+                                    Logger.shared.logMe("Error finding uikit plist")
+                                    return
+                                }
+                                do {
+                                    try PlistManager.setPlistValues(url: plistURL, values: [
+                                        "UIAnimationDragCoefficient": val
+                                    ])
+                                } catch {
+                                    Logger.shared.logMe(error.localizedDescription)
+                                }
                             }
                         }).onAppear {
                             guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
