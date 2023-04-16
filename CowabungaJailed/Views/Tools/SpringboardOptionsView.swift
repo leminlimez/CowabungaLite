@@ -13,13 +13,11 @@ struct SpringboardOptionsView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var enableTweak: Bool = false
     @State private var footnoteText = ""
-    @State private var otaDisabled = false
     @State private var animSpeed: String = "1"
     
     enum FileLocation: String {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
-        case ota = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
         case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
         case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
@@ -106,65 +104,6 @@ struct SpringboardOptionsView: View {
                                     return
                                 }
                             }
-                        }
-                        Toggle(isOn: $otaDisabled) {
-                            Text("Disable OTA Updates")
-                                .minimumScaleFactor(0.5)
-                                .onChange(of: otaDisabled, perform: { nv in
-                                    if nv {
-                                        do {
-                                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
-                                                Logger.shared.logMe("Error finding MobileAsset plist")
-                                                return
-                                            }
-                                            try PlistManager.setPlistValues(url: plistURL, values: [
-                                                "MobileAssetServerURL-com.apple.MobileAsset.MobileSoftwareUpdate.UpdateBrain": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
-                                                "MobileAssetSUAllowOSVersionChange": false,
-                                                "MobileAssetSUAllowSameVersionFullReplacement": false,
-                                                "MobileAssetServerURL-com.apple.MobileAsset.RecoveryOSUpdate": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
-                                                "MobileAssetServerURL-com.apple.MobileAsset.RecoveryOSUpdateBrain": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
-                                                "MobileAssetServerURL-com.apple.MobileAsset.SoftwareUpdate": "https://mesu.apple.com/assets/tvOS16DeveloperSeed",
-                                                "MobileAssetAssetAudience": "65254ac3-f331-4c19-8559-cbe22f5bc1a6"
-                                            ])
-                                        } catch {
-                                            Logger.shared.logMe("Error disabling ota preferences: \(error.localizedDescription)")
-                                            return
-                                        }
-                                    } else {
-                                        do {
-                                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
-                                                Logger.shared.logMe("Error finding MobileAsset plist")
-                                                return
-                                            }
-                                            let newData = try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
-                                            try newData.write(to: plistURL)
-                                        } catch {
-                                            Logger.shared.logMe("Error enabling ota preferences: \(error.localizedDescription)")
-                                            return
-                                        }
-                                    }
-                                })
-                                .onAppear {
-                                    do {
-                                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
-                                            Logger.shared.logMe("Error finding springboard plist")
-                                            return
-                                        }
-                                        guard let data = fm.contents(atPath: plistURL.path) else {
-                                            Logger.shared.logMe("Can't read plist")
-                                            return
-                                        }
-                                        let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-                                        if let dictionary = plist as? [String: Any], dictionary.isEmpty {
-                                            otaDisabled = false
-                                        } else {
-                                            otaDisabled = true
-                                        }
-                                    } catch {
-                                        Logger.shared.logMe("Error finding springboard plist")
-                                        return
-                                    }
-                                }
                         }
                         
                         Divider()
