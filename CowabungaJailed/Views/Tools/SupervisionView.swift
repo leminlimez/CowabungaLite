@@ -17,7 +17,7 @@ struct SupervisionView: View {
     @State private var otaDisabled = false
     
     let fileLocation = "SkipSetup/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
-    let otaFileLocation = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
+    let otaFileLocation = "SkipSetup/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
     
     var body: some View {
         List {
