@@ -194,21 +194,31 @@ class ThemingManager: ObservableObject {
         }
         let apps = getHomeScreenApps()
         
-        for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
-            let bundleID: String = file.deletingPathExtension().lastPathComponent
-            // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
-            // IF NOT, CONTINUE
-            if apps[bundleID] == nil { continue }
+        for (bundleID, name) in apps {
+            // get the name to display
             var displayName: String = " "
             if !hideDisplayNames {
                 // get the display name from the bundle id
-                displayName = apps[bundleID]!
+                displayName = name
             }
-            do {
-                let imgData = try Data(contentsOf: file)
-                try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips)
-            } catch {
-                Logger.shared.logMe(error.localizedDescription)
+            
+            // STEP 1: Apply it if it is an alt icon
+            // TODO: Alt Icon Applying
+            
+            // STEP 2: Apply it if it is in the main theme
+            if FileManager.default.fileExists(atPath: themeFolder.appendingPathComponent(bundleID + ".png").path) {
+                do {
+                    let imgData = try Data(contentsOf: themeFolder.appendingPathComponent(bundleID + ".png"))
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips)
+                } catch {
+                    Logger.shared.logMe(error.localizedDescription)
+                }
+            }
+            
+            // STEP 3: Apply it if applying all icons
+            // TODO: All Icon Applying
+            else if themeAllIcons {
+                // get the image data
             }
         }
     }
