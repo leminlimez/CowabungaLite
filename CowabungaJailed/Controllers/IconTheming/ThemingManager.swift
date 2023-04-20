@@ -142,7 +142,7 @@ class ThemingManager: ObservableObject {
         processing = false
     }
     
-    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, deletingTheme: Bool = false) throws {
+    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, themeAllApps: Bool? = nil, deletingTheme: Bool = false) throws {
         guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return }
         var plist: [String: Any] = [:]
         if FileManager.default.fileExists(atPath: infoPlistPath.path) {
@@ -164,6 +164,9 @@ class ThemingManager: ObservableObject {
         if appClips != nil {
             plist["AsAppClips"] = appClips!
         }
+        if themeAllApps != nil {
+            plist["ThemeAllApps"] = themeAllApps!
+        }
         let newPlist = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
         try newPlist.write(to: infoPlistPath)
     }
@@ -176,7 +179,7 @@ class ThemingManager: ObservableObject {
             Logger.shared.logMe("Applying icon themes...")
             eraseAppliedTheme()
             do {
-                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"))
+                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
                 Logger.shared.logMe("Successfully applied icon themes!")
             } catch {
                 Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
@@ -184,7 +187,7 @@ class ThemingManager: ObservableObject {
         }
     }
     
-    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
+    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false) throws {
         let themeFolder = getThemesFolder().appendingPathComponent(themeName)
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
