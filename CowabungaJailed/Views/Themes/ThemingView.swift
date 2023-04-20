@@ -16,6 +16,7 @@ struct ThemingView: View {
     
     @State private var isAppClips: Bool = false
     @State private var hideAppLabels: Bool = false
+    @State private var themeAllApps: Bool = false
     
     @State private var showPicker: Bool = false
     
@@ -75,6 +76,11 @@ struct ThemingView: View {
                             }.onChange(of: isAppClips, perform: { nv in
                                 try? themeManager.setThemeSettings(appClips: nv)
                             })
+                            Toggle(isOn: $themeAllApps) {
+                                Text("Theme All Apps (Includes apps not included in the selected theme)")
+                            }.onChange(of: themeAllApps, perform: { nv in
+                                try? themeManager.setThemeSettings(themeAllApps: nv)
+                            })
                         }
                         Group {
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
@@ -133,6 +139,7 @@ struct ThemingView: View {
             themeManager.getThemes()
             hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
             isAppClips = themeManager.getThemeToggleSetting("AsAppClips")
+            themeAllApps = themeManager.getThemeToggleSetting("ThemeAllApps")
         }
         .fileImporter(isPresented: $showPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false, onCompletion: { result in
             guard let url = try? result.get().first else { return }
