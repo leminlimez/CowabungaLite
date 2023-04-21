@@ -49,7 +49,7 @@ struct ThemeView: View {
                             }
                         }
                     }
-                    if icons.compactMap { $0 }.isEmpty {
+                    if icons.compactMap({ $0 }).isEmpty {
                         noIconsFoundPreview
                     }
                 }

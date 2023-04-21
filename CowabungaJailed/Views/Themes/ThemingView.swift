@@ -82,49 +82,10 @@ struct ThemingView: View {
                                     ThemeView(theme: theme)
                                 }
                             }
-//                            .padding()
-                            
-//                            VStack {
-//                                HStack {
-//                                    VStack {
-//                                        Text(easterEgg ? "Wait, it's all TrollTools?" : "Cowabunga \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")")
-//                                            .multilineTextAlignment(.center)
-//                                        Text(easterEgg ? "Always has been" : "Download themes in Themes tab.")
-//                                            .font(.caption)
-//                                            .multilineTextAlignment(.center)
-//                                            .foregroundColor(.secondary)
-//                                    }
-//                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                                    .padding(10)
-//                                    .background(Color(.darkGray))
-//                                    .cornerRadius(16)
-//                                    .onTapGesture {
-//                                        easterEgg.toggle()
-//                                    }
-////                                    VStack {
-////                                        HStack {
-////                                            Text("Alternatives")
-////                                                .font(.headline)
-////                                                .lineLimit(1)
-////                                                .minimumScaleFactor(0.7)
-////                                                .padding(4)
-////
-////                                            Text("· \(themeManager.iconOverrides.count)")
-////                                                .font(.headline)
-////                                                .foregroundColor(Color.secondary)
-////                                            Spacer()
-////                                        }
-////                                    }
-//                                }
-//                                .frame(maxWidth: .infinity)
-//                                .padding(10)
-//                                .background(Color(.secondaryLabelColor))
-//                                .cornerRadius(16)
-//                            }
                         }
-//                        .padding(.bottom, 80)
-//                        .padding(.horizontal)
                     }
+                    Divider()
+                    Text("Alternative Icons")
                 }.disabled(!enableTweak)
             }
         }

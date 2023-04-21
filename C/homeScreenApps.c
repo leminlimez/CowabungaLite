@@ -10,7 +10,7 @@
 
 // const char *UUID = "00008030-001219041E7A402E";
 
-void scoutArray(plist_t array)
+void scoutArray(plist_t array, plist_t apps, sbservices_client_t sbservice_t)
 {
     int num_items = plist_array_get_size(array);
     for (int j = 0; j < num_items; j++)
@@ -20,13 +20,73 @@ void scoutArray(plist_t array)
         if (displayName)
         {
             plist_t bundleIdentifier = plist_dict_get_item(dict, "bundleIdentifier");
+            plist_t displayIdentifier = plist_dict_get_item(dict, "displayIdentifier");
+            // Regular app
             if (bundleIdentifier)
             {
                 char *name = NULL;
                 plist_get_string_val(displayName, &name);
                 char *bundle = NULL;
                 plist_get_string_val(bundleIdentifier, &bundle);
-                printf("%s,%s\n", bundle, name);
+                // printf("%s,%s\n", bundle, name);
+
+                plist_t currentApp = plist_dict_get_item(apps, bundle);
+                if (currentApp == NULL) {
+                    currentApp = plist_new_dict();
+                    plist_dict_set_item(apps, bundle, currentApp);
+                    plist_dict_set_item(currentApp, "old_webclip_exists", plist_new_bool(false));
+                }
+                plist_dict_set_item(currentApp, "name", plist_new_string(name));
+
+                char* pngdata = NULL;
+                uint64_t pngsize = 0;
+                sbservices_error_t sb_icon_err_code = sbservices_get_icon_pngdata(sbservice_t, bundle, &pngdata, &pngsize);
+                if (sb_icon_err_code == SBSERVICES_E_SUCCESS)
+                {
+                    plist_dict_set_item(currentApp, "icon", plist_new_data(pngdata, pngsize));
+                }
+            }
+            // Themed app
+            else if (displayIdentifier)
+            {
+                char *identifier = NULL;
+                plist_get_string_val(displayIdentifier, &identifier);
+
+                int prefix_len = strlen("Cowabunga_");
+                if (strncmp(identifier, "Cowabunga_", prefix_len) == 0) {
+                    memmove(identifier, identifier + prefix_len, strlen(identifier) - prefix_len + 1);
+                
+                    char bundle[256];
+                    char name[256];
+
+                    if (strchr(identifier, ',') != NULL) {
+                        sscanf(identifier, "%[^,],%[^\n]", bundle, name);
+                        // printf("%s,%s\n", bundle, name);
+
+                        plist_t currentApp = plist_dict_get_item(apps, bundle);
+                        if (currentApp == NULL) {
+                            currentApp = plist_new_dict();
+                            plist_dict_set_item(apps, bundle, currentApp);
+                            plist_dict_set_item(currentApp, "old_webclip_exists", plist_new_bool(false));
+                            plist_dict_set_item(currentApp, "name", plist_new_string(name));
+                        }
+
+                        char* pngdata = NULL;
+                        uint64_t pngsize = 0;
+                        sbservices_error_t sb_icon_err_code = sbservices_get_icon_pngdata(sbservice_t, identifier, &pngdata, &pngsize);
+                        if (sb_icon_err_code == SBSERVICES_E_SUCCESS)
+                        {
+                            plist_dict_set_item(currentApp, "themed_icon", plist_new_data(pngdata, pngsize));
+                        }
+                    } else {
+                        plist_t currentApp = plist_dict_get_item(apps, bundle);
+                        if (currentApp == NULL) {
+                            currentApp = plist_new_dict();
+                            plist_dict_set_item(apps, bundle, currentApp);
+                        }
+                        plist_dict_set_item(currentApp, "old_webclip_exists", plist_new_bool(true));
+                    }
+                }
             }
             else
             {
@@ -44,7 +104,7 @@ void scoutArray(plist_t array)
                             for (int i = 0; i < size; i++)
                             {
                                 plist_t iconListsArray = plist_array_get_item(iconLists, i);
-                                scoutArray(iconListsArray);
+                                scoutArray(iconListsArray, apps, sbservice_t);
                             }
                         }
                     }
@@ -54,13 +114,13 @@ void scoutArray(plist_t array)
     }
 }
 
-void scoutAllApps(plist_t icon_state)
+void scoutAllApps(plist_t icon_state, plist_t apps, sbservices_client_t sbservice_t)
 {
     int size = plist_array_get_size(icon_state);
     for (int i = 0; i < size; i++)
     {
         plist_t array = plist_array_get_item(icon_state, i);
-        scoutArray(array);
+        scoutArray(array, apps, sbservice_t);
     }
 }
 
@@ -141,7 +201,9 @@ int main(int argc, char *argv[])
         if (getNumPages) {
             printf("%d\n", plist_array_get_size(icon_state) - 1);
         } else {
-            scoutAllApps(icon_state);
+            plist_t apps = plist_new_dict();
+            scoutAllApps(icon_state, apps, sbservice_t);
+            plist_write(apps, "apps.plist");
         }
         // plist_write(icon_state, "sb_before.plist");
 

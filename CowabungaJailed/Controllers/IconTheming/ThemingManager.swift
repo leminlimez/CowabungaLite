@@ -22,7 +22,6 @@ class ThemingManager: ObservableObject {
     
     struct Theme: Codable, Identifiable, Equatable {
         var id = UUID()
-        
         var name: String
         var iconCount: Int
     }
@@ -79,8 +78,8 @@ class ThemingManager: ObservableObject {
         return val
     }
     
-    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false) throws {
-        let folderName: String = "Cowabunga_" + bundleID + ".webclip"// + String(bundleID.data(using: .utf8)!.base64EncodedString()) + ".webclip"
+    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, hideDisplayName: Bool = false) throws {
+        let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
         }
@@ -89,7 +88,7 @@ class ThemingManager: ObservableObject {
                 try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: false)
             }
             // create the info plist
-            let infoPlist = try makeInfoPlist(displayName: displayName, bundleID: bundleID, isAppClip: isAppClip)
+            let infoPlist = try makeInfoPlist(displayName: hideDisplayName ? " " : displayName, bundleID: bundleID, isAppClip: isAppClip)
             try? FileManager.default.removeItem(at: folderURL.appendingPathComponent("Info.plist")) // delete if info plist already exists
             try infoPlist.write(to: folderURL.appendingPathComponent("Info.plist"))
             // write the icon file
@@ -196,14 +195,10 @@ class ThemingManager: ObservableObject {
             // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
             // IF NOT, CONTINUE
             if apps[bundleID] == nil { continue }
-            var displayName: String = " "
-            if !hideDisplayNames {
-                // get the display name from the bundle id
-                displayName = apps[bundleID]!
-            }
+            let displayName = apps[bundleID]!
             do {
                 let imgData = try Data(contentsOf: file)
-                try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips)
+                try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips, hideDisplayName: hideDisplayNames)
             } catch {
                 Logger.shared.logMe(error.localizedDescription)
             }
