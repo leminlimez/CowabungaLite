@@ -10,20 +10,12 @@ import Foundation
 let fm = FileManager.default
 @usableFromInline let documentsDirectory = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("com.leemin.CowabungaJailed")
 
-class AppInfo {
+struct AppInfo {
     let bundleId: String
     let name: String
     let oldWebclipExists: Bool
     let icon: Data?
     let themedIcon: Data?
-
-    init(bundleId: String, name: String, oldWebclipExists: Bool, icon: Data?, themedIcon: Data?) {
-        self.bundleId = bundleId
-        self.name = name
-        self.oldWebclipExists = oldWebclipExists
-        self.icon = icon
-        self.themedIcon = themedIcon
-    }
 }
 
 struct Device {
