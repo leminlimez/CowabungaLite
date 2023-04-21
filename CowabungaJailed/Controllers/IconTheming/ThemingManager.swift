@@ -191,29 +191,35 @@ class ThemingManager: ObservableObject {
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
         }
-        let apps = getHomeScreenApps()
+        let apps = getHomeScreenAppsNew()
         
-        for (bundleID, name) in apps {
+        for app in apps {
             // get the name to display
-            let displayName = name
+            let displayName = hideDisplayNames ? " " : app.name
             
             // STEP 1: Apply it if it is an alt icon
             // TODO: Alt Icon Applying
             
             // STEP 2: Apply it if it is in the main theme
-            if FileManager.default.fileExists(atPath: themeFolder.appendingPathComponent(bundleID + ".png").path) {
+            if FileManager.default.fileExists(atPath: themeFolder.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
-                    let imgData = try Data(contentsOf: themeFolder.appendingPathComponent(bundleID + ".png"))
-                    try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                    let imgData = try Data(contentsOf: themeFolder.appendingPathComponent(app.bundleId + ".png"))
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
                 } catch {
                     Logger.shared.logMe(error.localizedDescription)
                 }
             }
             
             // STEP 3: Apply it if applying all icons
-            // TODO: All Icon Applying
             else if themeAllIcons {
                 // get the image data
+                if let imgData = app.icon {
+                    do {
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                    } catch {
+                        Logger.shared.logMe(error.localizedDescription)
+                    }
+                }
             }
         }
     }
