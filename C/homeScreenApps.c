@@ -203,9 +203,20 @@ int main(int argc, char *argv[])
         } else {
             plist_t apps = plist_new_dict();
             scoutAllApps(icon_state, apps, sbservice_t);
-            plist_write(apps, "apps.plist");
-        }
+
+            // Convert the plist object to an XML representation
+            char *xml;
+            uint32_t length;
+            plist_to_xml(apps, &xml, &length);
+            
+            // Write the XML representation to stdout
+            fwrite(xml, length, 1, stdout);
+            fflush(stdout);
+            
+            // Free the memory allocated for the XML representation
+            free(xml);
         // plist_write(icon_state, "sb_before.plist");
+        }
 
 
         // Set icon state
