@@ -141,7 +141,7 @@ class ThemingManager: ObservableObject {
         processing = false
     }
     
-    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, deletingTheme: Bool = false) throws {
+    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, themeAllApps: Bool? = nil, deletingTheme: Bool = false) throws {
         guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return }
         var plist: [String: Any] = [:]
         if FileManager.default.fileExists(atPath: infoPlistPath.path) {
@@ -163,6 +163,9 @@ class ThemingManager: ObservableObject {
         if appClips != nil {
             plist["AsAppClips"] = appClips!
         }
+        if themeAllApps != nil {
+            plist["ThemeAllApps"] = themeAllApps!
+        }
         let newPlist = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
         try newPlist.write(to: infoPlistPath)
     }
@@ -175,7 +178,7 @@ class ThemingManager: ObservableObject {
             Logger.shared.logMe("Applying icon themes...")
             eraseAppliedTheme()
             do {
-                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"))
+                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
                 Logger.shared.logMe("Successfully applied icon themes!")
             } catch {
                 Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
@@ -183,24 +186,34 @@ class ThemingManager: ObservableObject {
         }
     }
     
-    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false) throws {
+    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false) throws {
         let themeFolder = getThemesFolder().appendingPathComponent(themeName)
         if !FileManager.default.fileExists(atPath: themeFolder.path) {
             throw "No theme folder found for \(themeName)!"
         }
         let apps = getHomeScreenApps()
         
-        for file in try FileManager.default.contentsOfDirectory(at: themeFolder, includingPropertiesForKeys: nil) {
-            let bundleID: String = file.deletingPathExtension().lastPathComponent
-            // CHECK IF THE USER HAS THE BUNDLE ID INSTALLED
-            // IF NOT, CONTINUE
-            if apps[bundleID] == nil { continue }
-            let displayName = apps[bundleID]!
-            do {
-                let imgData = try Data(contentsOf: file)
-                try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips, hideDisplayName: hideDisplayNames)
-            } catch {
-                Logger.shared.logMe(error.localizedDescription)
+        for (bundleID, name) in apps {
+            // get the name to display
+            let displayName = name
+            
+            // STEP 1: Apply it if it is an alt icon
+            // TODO: Alt Icon Applying
+            
+            // STEP 2: Apply it if it is in the main theme
+            if FileManager.default.fileExists(atPath: themeFolder.appendingPathComponent(bundleID + ".png").path) {
+                do {
+                    let imgData = try Data(contentsOf: themeFolder.appendingPathComponent(bundleID + ".png"))
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: bundleID, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                } catch {
+                    Logger.shared.logMe(error.localizedDescription)
+                }
+            }
+            
+            // STEP 3: Apply it if applying all icons
+            // TODO: All Icon Applying
+            else if themeAllIcons {
+                // get the image data
             }
         }
     }
