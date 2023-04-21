@@ -173,7 +173,17 @@ class ThemingManager: ObservableObject {
     public func applyTheme() {
         let t = getCurrentAppliedTheme()
         if t == nil {
+            Logger.shared.logMe("Applying icon themes...")
             eraseAppliedTheme()
+            if getThemeToggleSetting("ThemeAllApps") == true {
+                do {
+                    try applyTheme(themeName: nil, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
+                    Logger.shared.logMe("Successfully applied icon themes!")
+                } catch {
+                    Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
+                }
+            }
+            
         } else {
             Logger.shared.logMe("Applying icon themes...")
             eraseAppliedTheme()
@@ -186,10 +196,10 @@ class ThemingManager: ObservableObject {
         }
     }
     
-    public func applyTheme(themeName: String, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false) throws {
-        let themeFolder = getThemesFolder().appendingPathComponent(themeName)
-        if !FileManager.default.fileExists(atPath: themeFolder.path) {
-            throw "No theme folder found for \(themeName)!"
+    public func applyTheme(themeName: String?, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false) throws {
+        let themeFolder = themeName != nil ? getThemesFolder().appendingPathComponent(themeName!) : nil
+        if themeFolder != nil && !FileManager.default.fileExists(atPath: themeFolder!.path) {
+            throw "No theme folder found for \(themeName!)!"
         }
         let apps = getHomeScreenAppsNew()
         
@@ -201,9 +211,9 @@ class ThemingManager: ObservableObject {
             // TODO: Alt Icon Applying
             
             // STEP 2: Apply it if it is in the main theme
-            if FileManager.default.fileExists(atPath: themeFolder.appendingPathComponent(app.bundleId + ".png").path) {
+            if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
-                    let imgData = try Data(contentsOf: themeFolder.appendingPathComponent(app.bundleId + ".png"))
+                    let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
                     try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
                 } catch {
                     Logger.shared.logMe(error.localizedDescription)
