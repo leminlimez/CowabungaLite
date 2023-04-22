@@ -205,7 +205,7 @@ class ThemingManager: ObservableObject {
         
         for app in apps {
             // get the name to display
-            let displayName = hideDisplayNames ? " " : app.name
+            let displayName = app.name
             
             // STEP 1: Apply it if it is an alt icon
             // TODO: Alt Icon Applying
