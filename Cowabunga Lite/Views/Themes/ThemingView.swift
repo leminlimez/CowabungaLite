@@ -54,7 +54,7 @@ struct ThemingView: View {
                 }
                 Divider()
             }
-            if true || dataSingleton.deviceAvailable {
+            if dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
                         Text("No themes found.\nDownload themes in the Explore tab or import them using the Import button.\nThemes must contain icons of the form \"com.developer.app.png\".")
@@ -120,10 +120,10 @@ struct ThemingView: View {
                             }
                         ), action: {})
                     }
-                }.disabled(false && !enableTweak)
+                }.disabled(!enableTweak)
             }
         }
-        .disabled(false && !dataSingleton.deviceAvailable)
+        .disabled(!dataSingleton.deviceAvailable)
         .onAppear {
             themeManager.getThemes()
             hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
