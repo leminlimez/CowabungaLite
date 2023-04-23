@@ -66,16 +66,16 @@ struct ThemingView: View {
                             .frame(maxWidth: .infinity)
                     } else {
                         Group {
-                            Toggle(isOn: $hideAppLabels) {
-                                Text("Hide App Labels")
-                            }.onChange(of: hideAppLabels, perform: { nv in
-                                try? themeManager.setThemeSettings(hideDisplayNames: nv)
-                            })
-                            Toggle(isOn: $isAppClips) {
-                                Text("As App Clips")
-                            }.onChange(of: isAppClips, perform: { nv in
-                                try? themeManager.setThemeSettings(appClips: nv)
-                            })
+//                            Toggle(isOn: $hideAppLabels) {
+//                                Text("Hide App Labels")
+//                            }.onChange(of: hideAppLabels, perform: { nv in
+//                                try? themeManager.setThemeSettings(hideDisplayNames: nv)
+//                            })
+//                            Toggle(isOn: $isAppClips) {
+//                                Text("As App Clips")
+//                            }.onChange(of: isAppClips, perform: { nv in
+//                                try? themeManager.setThemeSettings(appClips: nv)
+//                            })
 //                            Toggle(isOn: $themeAllApps) {
 //                                Text("Theme All Apps (Includes apps not included in the selected theme)")
 //                            }.onChange(of: themeAllApps, perform: { nv in
@@ -92,36 +92,26 @@ struct ThemingView: View {
                     }
                     Divider()
                     HStack {
+                        Text("Current Icons").bold()
                         Spacer()
-                        VStack {
-                            HStack {
-                                Text("Current Icons").bold()
-                                Spacer()
-                                Text("Selecting \"Enabled\" will add a webclip or update an existing one.")
-                            }
-                            HStack {
-                                Spacer()
-                                Button("Enable all"){}
-                                Button("Disable all"){}
-                            }
-                        }
+                        Text("To remove a themed app, manually delete the webclip.")
                     }
                     VStack {
                         HStack(spacing: 20) {
                             Image(systemName: "app").resizable().frame(width: 50, height: 50)
                             Text("App Store")
-                            Text("com.apple.AppStore").foregroundColor(.secondary)
                             Spacer()
                             NiceButton(text: AnyView(Text("Select Icon")), action: {})
-                            Toggle("Enabled", isOn: .constant(true))
+                            Toggle("Hide Label", isOn: .constant(true))
+                            Toggle("App Clip", isOn: .constant(true))
                         }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
                         HStack(spacing: 20) {
                             Image(systemName: "app").resizable().frame(width: 50, height: 50)
                             Text("Phone")
-                            Text("com.apple.Phone").foregroundColor(.secondary)
                             Spacer()
                             NiceButton(text: AnyView(Text("Remove Icon")), action: {})
-                            Toggle("Enabled", isOn: .constant(true))
+                            Toggle("Hide Label", isOn: .constant(true))
+                            Toggle("App Clip", isOn: .constant(true))
                         }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
                     }
                 }.disabled(false && !enableTweak)
