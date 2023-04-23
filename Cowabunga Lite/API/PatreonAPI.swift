@@ -20,7 +20,7 @@ class PatreonAPI: ObservableObject {
         guard response.statusCode == 200 else { throw "Could not connect to server" }
         let patrons = (try JSONDecoder().decode([Patron].self, from: data))
         
-        return patrons
+        return patrons.shuffled()
     }
     
     func getCommitHash() async throws -> String {
