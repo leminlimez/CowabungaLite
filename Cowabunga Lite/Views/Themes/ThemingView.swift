@@ -44,12 +44,12 @@ struct ThemingView: View {
                         }
                     }
                     Spacer()
-                    Button(action: {
-                        showPicker.toggle()
-                    }) {
-                        Image(systemName: "square.and.arrow.down")
-                        Text("Import")
-                    }
+                    NiceButton(text: AnyView(
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                            Text("Import .theme")
+                        }
+                    ), action: { showPicker.toggle() })
                     .padding(.horizontal, 15)
                 }
                 Divider()
@@ -57,7 +57,7 @@ struct ThemingView: View {
             if true || dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
-                        Text("No themes found.\nDownload themes in the Explore tab or import them using the button in the top right corner.\nThemes have to contain icons in the format of <id>.png.")
+                        Text("No themes found.\nDownload themes in the Explore tab or import them using the Import button.\nThemes must contain icons of the form \"com.developer.app.png\".")
                             .padding()
                             .background(Color.cowGray)
                             .multilineTextAlignment(.center)
@@ -94,7 +94,7 @@ struct ThemingView: View {
                     HStack {
                         Text("Current Icons").bold()
                         Spacer()
-                        Text("To remove a themed app, manually delete the webclip.")
+                        Text("To remove a themed app, delete its icon on your device.")
                     }
                     VStack {
                         HStack(spacing: 20) {
@@ -113,6 +113,12 @@ struct ThemingView: View {
                             Toggle("Hide Label", isOn: .constant(true))
                             Toggle("App Clip", isOn: .constant(true))
                         }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
+                        NiceButton(text: AnyView(
+                            HStack {
+                                Image(systemName: "square.and.arrow.up")
+                                Text("Export .theme")
+                            }
+                        ), action: {})
                     }
                 }.disabled(false && !enableTweak)
             }

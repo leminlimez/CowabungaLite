@@ -220,9 +220,6 @@ struct SupervisionView: View {
                 }.disabled(!enableTweak)
             }
         }.disabled(!dataSingleton.deviceAvailable)
-        Button("beans") {
-            print(getHomeScreenAppsNew())
-        }
     }
 }
 
