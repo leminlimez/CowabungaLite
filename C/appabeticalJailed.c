@@ -1,3 +1,5 @@
+// Rory Madden 2023
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,8 +10,6 @@
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/sbservices.h>
 #include "uthash.h"
-
-// const char *UUID = "00008030-001219041E7A402E";
 
 typedef struct
 {

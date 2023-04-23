@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Rory Madden 2023
+
 if [ $# -ne 2 ]; then
 	echo "Usage: $0 <indir> <outdir>"
 	exit 1

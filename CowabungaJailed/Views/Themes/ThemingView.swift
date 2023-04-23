@@ -19,7 +19,7 @@ struct ThemingView: View {
     @State private var themeAllApps: Bool = false
     
     @State private var showPicker: Bool = false
-    
+        
     var body: some View {
         List {
             Group {
@@ -54,7 +54,7 @@ struct ThemingView: View {
                 }
                 Divider()
             }
-            if dataSingleton.deviceAvailable {
+            if true || dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
                         Text("No themes found.\nDownload themes in the Explore tab or import them using the button in the top right corner.\nThemes have to contain icons in the format of <id>.png.")
@@ -76,11 +76,11 @@ struct ThemingView: View {
                             }.onChange(of: isAppClips, perform: { nv in
                                 try? themeManager.setThemeSettings(appClips: nv)
                             })
-                            Toggle(isOn: $themeAllApps) {
-                                Text("Theme All Apps (Includes apps not included in the selected theme)")
-                            }.onChange(of: themeAllApps, perform: { nv in
-                                try? themeManager.setThemeSettings(themeAllApps: nv)
-                            })
+//                            Toggle(isOn: $themeAllApps) {
+//                                Text("Theme All Apps (Includes apps not included in the selected theme)")
+//                            }.onChange(of: themeAllApps, perform: { nv in
+//                                try? themeManager.setThemeSettings(themeAllApps: nv)
+//                            })
                         }
                         Group {
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
@@ -91,11 +91,43 @@ struct ThemingView: View {
                         }
                     }
                     Divider()
-                    Text("Alternative Icons")
-                }.disabled(!enableTweak)
+                    HStack {
+                        Spacer()
+                        VStack {
+                            HStack {
+                                Text("Current Icons").bold()
+                                Spacer()
+                                Text("Selecting \"Enabled\" will add a webclip or update an existing one.")
+                            }
+                            HStack {
+                                Spacer()
+                                Button("Enable all"){}
+                                Button("Disable all"){}
+                            }
+                        }
+                    }
+                    VStack {
+                        HStack(spacing: 20) {
+                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
+                            Text("App Store")
+                            Text("com.apple.AppStore").foregroundColor(.secondary)
+                            Spacer()
+                            NiceButton(text: AnyView(Text("Select Icon")), action: {})
+                            Toggle("Enabled", isOn: .constant(true))
+                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
+                        HStack(spacing: 20) {
+                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
+                            Text("Phone")
+                            Text("com.apple.Phone").foregroundColor(.secondary)
+                            Spacer()
+                            NiceButton(text: AnyView(Text("Remove Icon")), action: {})
+                            Toggle("Enabled", isOn: .constant(true))
+                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
+                    }
+                }.disabled(false && !enableTweak)
             }
         }
-        .disabled(!dataSingleton.deviceAvailable)
+        .disabled(false && !dataSingleton.deviceAvailable)
         .onAppear {
             themeManager.getThemes()
             hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
