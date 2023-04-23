@@ -8,7 +8,7 @@
 import Foundation
 
 let fm = FileManager.default
-@usableFromInline let documentsDirectory = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("com.leemin.CowabungaJailed")
+@usableFromInline let documentsDirectory = fm.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("com.leemin.CowabungaLite")
 
 struct AppInfo {
     let bundleId: String

@@ -8,13 +8,13 @@
 import SwiftUI
 
 @main
-struct CowabungaJailedApp: App {
+struct CowabungaLiteApp: App {
     init() {
         if !fm.fileExists(atPath: documentsDirectory.path) {
             do {
                 try fm.createDirectory(at: documentsDirectory, withIntermediateDirectories: false)
             } catch {
-                Logger.shared.logMe("Error creating directory com.leemin.CowabungaJailed")
+                Logger.shared.logMe("Error creating directory com.leemin.CowabungaLite")
             }
         }
     }

@@ -35,11 +35,9 @@
 		25B8341829CAF95800176095 /* StatusSetter15.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341229CAF95800176095 /* StatusSetter15.m */; };
 		25B8341929CAF95800176095 /* StatusSetter16.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341529CAF95800176095 /* StatusSetter16.m */; };
 		25B8341C29CB04CA00176095 /* StatusSetter16_3.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B8341B29CB04CA00176095 /* StatusSetter16_3.m */; };
-		25F98A5929E5000D0084A894 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 25F98A5829E5000D0084A894 /* SDWebImageSwiftUI */; };
-		25F98A6129E50A340084A894 /* libswiftCore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F98A6029E50A150084A894 /* libswiftCore.tbd */; };
 		6F2D468E29E45BE2006B18A8 /* PatreonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
-		6F700AB629C37DF50085964B /* CowabungaJailedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */; };
+		6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */; };
 		6F700AB829C37DF50085964B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB729C37DF50085964B /* HomeView.swift */; };
 		6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700AB929C37DF60085964B /* Assets.xcassets */; };
 		6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700ABC29C37DF60085964B /* Preview Assets.xcassets */; };
@@ -55,7 +53,6 @@
 		6FFA738129CE7DC500E4DCBC /* ThemingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738029CE7DC500E4DCBC /* ThemingView.swift */; };
 		6FFA738629D0FA6A00E4DCBC /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */; };
 		6FFA738929D11A4900E4DCBC /* CowabungaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738829D11A4900E4DCBC /* CowabungaAPI.swift */; };
-		6FFA738C29D11AB300E4DCBC /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 6FFA738B29D11AB300E4DCBC /* ZIPFoundation */; };
 		6FFA738E29D11C8100E4DCBC /* ThemesExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738D29D11C8100E4DCBC /* ThemesExploreView.swift */; };
 		6FFA739429D1E7F400E4DCBC /* SupervisionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA739329D1E7F400E4DCBC /* SupervisionView.swift */; };
 		7207595829F262C80053E26F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7207595729F262C80053E26F /* Logger.swift */; };
@@ -63,6 +60,8 @@
 		7207595C29F263270053E26F /* FileManager+MergeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */; };
 		7207595E29F263480053E26F /* ExecShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7207595D29F263480053E26F /* ExecShell.swift */; };
 		7207596029F2648E0053E26F /* homeScreenAppsNew in Resources */ = {isa = PBXBuildFile; fileRef = 7207595F29F2648E0053E26F /* homeScreenAppsNew */; };
+		7207596229F4D4390053E26F /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7207596129F4D4390053E26F /* ZIPFoundation */; };
+		7207596429F4D43C0053E26F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7207596329F4D43C0053E26F /* SDWebImageSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,7 +87,7 @@
 		2539F1AE29CA701C00FAD711 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2539F1B029CA791100FAD711 /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		2539F1B229CA9BA100FAD711 /* SkipSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipSetupView.swift; sourceTree = "<group>"; };
-		2539F1B429CAE33000FAD711 /* CowabungaJailed-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CowabungaJailed-Bridging-Header.h"; sourceTree = "<group>"; };
+		2539F1B429CAE33000FAD711 /* Cowabunga_Lite-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cowabunga_Lite-Bridging-Header.h"; sourceTree = "<group>"; };
 		2544926D29C7F5C900B6D82E /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		2544927029C7F79F00B6D82E /* CreateBackup.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = CreateBackup.sh; sourceTree = "<group>"; };
 		2544927129C7F79F00B6D82E /* idevicebackup2 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = idevicebackup2; sourceTree = "<group>"; };
@@ -117,8 +116,8 @@
 		25F98A6029E50A150084A894 /* libswiftCore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCore.tbd; path = usr/lib/swift/libswiftCore.tbd; sourceTree = SDKROOT; };
 		6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
-		6F700AB229C37DF50085964B /* CowabungaJailed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CowabungaJailed.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowabungaJailedApp.swift; sourceTree = "<group>"; };
+		6F700AB229C37DF50085964B /* Cowabunga Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cowabunga Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CowabungaLiteApp.swift; sourceTree = "<group>"; };
 		6F700AB729C37DF50085964B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		6F700AB929C37DF60085964B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6F700ABC29C37DF60085964B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -149,13 +148,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25F98A5929E5000D0084A894 /* SDWebImageSwiftUI in Frameworks */,
+				7207596429F4D43C0053E26F /* SDWebImageSwiftUI in Frameworks */,
 				2544928829C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib in Frameworks */,
-				25F98A6129E50A340084A894 /* libswiftCore.tbd in Frameworks */,
 				2544928529C8091F00B6D82E /* libusbmuxd-2.0.6.dylib in Frameworks */,
 				2544927F29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib in Frameworks */,
 				2544928B29C8097900B6D82E /* libplist-2.0.3.dylib in Frameworks */,
-				6FFA738C29D11AB300E4DCBC /* ZIPFoundation in Frameworks */,
+				7207596229F4D4390053E26F /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +215,7 @@
 		6F700AA929C37DF50085964B = {
 			isa = PBXGroup;
 			children = (
-				6F700AB429C37DF50085964B /* CowabungaJailed */,
+				6F700AB429C37DF50085964B /* Cowabunga Lite */,
 				6F700AB329C37DF50085964B /* Products */,
 				25F98A5F29E50A140084A894 /* Frameworks */,
 			);
@@ -226,19 +224,19 @@
 		6F700AB329C37DF50085964B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6F700AB229C37DF50085964B /* CowabungaJailed.app */,
+				6F700AB229C37DF50085964B /* Cowabunga Lite.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6F700AB429C37DF50085964B /* CowabungaJailed */ = {
+		6F700AB429C37DF50085964B /* Cowabunga Lite */ = {
 			isa = PBXGroup;
 			children = (
 				6FFA738729D11A3C00E4DCBC /* API */,
 				6F886A2529C8BEE200B73E40 /* Controllers */,
 				6F886A2829C8C77700B73E40 /* Extensions */,
 				6F886A1829C899FC00B73E40 /* Views */,
-				6F700AB529C37DF50085964B /* CowabungaJailedApp.swift */,
+				6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */,
 				6F700AB929C37DF60085964B /* Assets.xcassets */,
 				6F700ABE29C37DF60085964B /* CowabungaJailed.entitlements */,
 				6F700ABB29C37DF60085964B /* Preview Content */,
@@ -253,9 +251,9 @@
 				2544928329C808EB00B6D82E /* Libraries */,
 				25B47F1C29C91BA800BD9F7E /* Files */,
 				2544926F29C7F79F00B6D82E /* Scripts */,
-				2539F1B429CAE33000FAD711 /* CowabungaJailed-Bridging-Header.h */,
+				2539F1B429CAE33000FAD711 /* Cowabunga_Lite-Bridging-Header.h */,
 			);
-			path = CowabungaJailed;
+			path = "Cowabunga Lite";
 			sourceTree = "<group>";
 		};
 		6F700ABB29C37DF60085964B /* Preview Content */ = {
@@ -350,9 +348,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6F700AB129C37DF50085964B /* CowabungaJailed */ = {
+		6F700AB129C37DF50085964B /* Cowabunga Lite */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F700AC129C37DF60085964B /* Build configuration list for PBXNativeTarget "CowabungaJailed" */;
+			buildConfigurationList = 6F700AC129C37DF60085964B /* Build configuration list for PBXNativeTarget "Cowabunga Lite" */;
 			buildPhases = (
 				6F700AAE29C37DF50085964B /* Sources */,
 				6F700AAF29C37DF50085964B /* Frameworks */,
@@ -363,13 +361,13 @@
 			);
 			dependencies = (
 			);
-			name = CowabungaJailed;
+			name = "Cowabunga Lite";
 			packageProductDependencies = (
-				6FFA738B29D11AB300E4DCBC /* ZIPFoundation */,
-				25F98A5829E5000D0084A894 /* SDWebImageSwiftUI */,
+				7207596129F4D4390053E26F /* ZIPFoundation */,
+				7207596329F4D43C0053E26F /* SDWebImageSwiftUI */,
 			);
 			productName = CowabungaJailed;
-			productReference = 6F700AB229C37DF50085964B /* CowabungaJailed.app */;
+			productReference = 6F700AB229C37DF50085964B /* Cowabunga Lite.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -387,7 +385,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6F700AAD29C37DF50085964B /* Build configuration list for PBXProject "CowabungaJailed" */;
+			buildConfigurationList = 6F700AAD29C37DF50085964B /* Build configuration list for PBXProject "Cowabunga Lite" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -404,7 +402,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6F700AB129C37DF50085964B /* CowabungaJailed */,
+				6F700AB129C37DF50085964B /* Cowabunga Lite */,
 			);
 		};
 /* End PBXProject section */
@@ -438,7 +436,7 @@
 				7207595829F262C80053E26F /* Logger.swift in Sources */,
 				6F700AB829C37DF50085964B /* HomeView.swift in Sources */,
 				6F886A2229C8AC0300B73E40 /* LockScreenFootnoteView.swift in Sources */,
-				6F700AB629C37DF50085964B /* CowabungaJailedApp.swift in Sources */,
+				6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */,
 				6F886A2E29C8CFB300B73E40 /* PlistManager.swift in Sources */,
 				6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */,
 				6F7B3EEF29F198170080FFDA /* ListOfAppsView.swift in Sources */,
@@ -614,7 +612,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = U67AKNW8PW;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -624,8 +622,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/CowabungaJailed/Libraries",
-					"$(SDKROOT)/usr/lib/swift",
+					"$(PROJECT_DIR)/Cowabunga",
+					Lite/Libraries,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.9.0;
@@ -633,7 +631,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "CowabungaJailed/CowabungaJailed-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cowabunga Lite/Cowabunga_Lite-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -648,7 +646,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_ASSET_PATHS = "\"CowabungaJailed/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -659,8 +657,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/CowabungaJailed/Libraries",
-					"$(SDKROOT)/usr/lib/swift",
+					"$(PROJECT_DIR)/Cowabunga",
+					Lite/Libraries,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 0.9.0;
@@ -668,7 +666,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "CowabungaJailed/CowabungaJailed-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Cowabunga Lite/Cowabunga_Lite-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -676,7 +674,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6F700AAD29C37DF50085964B /* Build configuration list for PBXProject "CowabungaJailed" */ = {
+		6F700AAD29C37DF50085964B /* Build configuration list for PBXProject "Cowabunga Lite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F700ABF29C37DF60085964B /* Debug */,
@@ -685,7 +683,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F700AC129C37DF60085964B /* Build configuration list for PBXNativeTarget "CowabungaJailed" */ = {
+		6F700AC129C37DF60085964B /* Build configuration list for PBXNativeTarget "Cowabunga Lite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F700AC229C37DF60085964B /* Debug */,
@@ -716,15 +714,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		25F98A5829E5000D0084A894 /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 25F98A5729E5000D0084A894 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
-		};
-		6FFA738B29D11AB300E4DCBC /* ZIPFoundation */ = {
+		7207596129F4D4390053E26F /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6FFA738A29D11AB300E4DCBC /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
+		};
+		7207596329F4D43C0053E26F /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25F98A5729E5000D0084A894 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

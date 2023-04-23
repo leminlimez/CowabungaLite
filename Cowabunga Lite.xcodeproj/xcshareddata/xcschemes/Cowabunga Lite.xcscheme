@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6F700AB129C37DF50085964B"
-               BuildableName = "CowabungaJailed.app"
-               BlueprintName = "CowabungaJailed"
-               ReferencedContainer = "container:CowabungaJailed.xcodeproj">
+               BuildableName = "Cowabunga Lite.app"
+               BlueprintName = "Cowabunga Lite"
+               ReferencedContainer = "container:Cowabunga Lite.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F700AB129C37DF50085964B"
-            BuildableName = "CowabungaJailed.app"
-            BlueprintName = "CowabungaJailed"
-            ReferencedContainer = "container:CowabungaJailed.xcodeproj">
+            BuildableName = "Cowabunga Lite.app"
+            BlueprintName = "Cowabunga Lite"
+            ReferencedContainer = "container:Cowabunga Lite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F700AB129C37DF50085964B"
-            BuildableName = "CowabungaJailed.app"
-            BlueprintName = "CowabungaJailed"
-            ReferencedContainer = "container:CowabungaJailed.xcodeproj">
+            BuildableName = "Cowabunga Lite.app"
+            BlueprintName = "Cowabunga Lite"
+            ReferencedContainer = "container:Cowabunga Lite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

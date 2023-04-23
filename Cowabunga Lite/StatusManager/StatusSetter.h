@@ -1,6 +1,6 @@
 #pragma once
 #import <Foundation/Foundation.h>
-#import "CowabungaJailed-Swift.h"
+#import "Cowabunga_Lite-Swift.h"
 
 @protocol StatusSetter <NSObject>
 - (bool) isCarrierOverridden;
