@@ -78,7 +78,7 @@ class ThemingManager: ObservableObject {
         return val
     }
     
-    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, hideDisplayName: Bool = false) throws {
+    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!) throws {
         let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
@@ -88,7 +88,7 @@ class ThemingManager: ObservableObject {
                 try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: false)
             }
             // create the info plist
-            let infoPlist = try makeInfoPlist(displayName: hideDisplayName ? " " : displayName, bundleID: bundleID, isAppClip: isAppClip)
+            let infoPlist = try makeInfoPlist(displayName: nameToDisplay != nil ? nameToDisplay! : displayName, bundleID: bundleID, isAppClip: isAppClip)
             try? FileManager.default.removeItem(at: folderURL.appendingPathComponent("Info.plist")) // delete if info plist already exists
             try infoPlist.write(to: folderURL.appendingPathComponent("Info.plist"))
             // write the icon file
@@ -202,16 +202,34 @@ class ThemingManager: ObservableObject {
             throw "No theme folder found for \(themeName!)!"
         }
         let apps = getHomeScreenAppsNew()
+        let altIcons = getAltIcons()
         
         for app in apps {
             // get the name to display
             let displayName = app.name
             
             // STEP 1: Apply it if it is an alt icon
-            // TODO: Alt Icon Applying
+            if altIcons[app.bundleId] != nil, let properties = altIcons[app.bundleId] as? [String: String] {
+                let name: String? = properties["DisplayName"]
+                let imgPath: String? = properties["ImagePath"]
+                
+                if name == nil && imgPath == "Hidden" { continue; } // do not theme
+                
+                if imgPath == nil && name != nil {
+                    // TODO: theme normally but with custom name
+                } else if imgPath != nil {
+                    if imgPath == "Default", let imgData = app.icon {
+                        do {
+                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
+                        }
+                    }
+                }
+            }
             
             // STEP 2: Apply it if it is in the main theme
-            if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
+            else if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
                     let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
                     try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
@@ -313,5 +331,50 @@ class ThemingManager: ObservableObject {
     
     
     // MARK: Alt Icon Theming
+    // Get The Plist File
+    private func getAltIconPlist() -> URL? {
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AltIconThemingPreferences.plist") else { return nil }
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            do {
+                try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: infoPlist)
+            } catch {
+                return nil
+            }
+        }
+        return infoPlist
+    }
+    
     // Set Alt Icon Settings
+    public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?) throws {
+        guard let infoPlist = getAltIconPlist() else { throw "No alt icon preference plist found!" }
+        var plist: [String: Any] = getAltIcons()
+        
+        var newPrefs: [String: String] = [:]
+        if displayName != nil {
+            newPrefs["DisplayName"] = displayName!
+        }
+        if imagePath != nil {
+            // Format for image path property:
+            // Hidden = no icon theming
+            // Default = use default icon
+            // Anything else = path to icon in themes folder
+            newPrefs["ImagePath"] = imagePath!
+        }
+        if displayName == nil && imagePath == nil {
+            plist[bundleId] = nil // reset/delete
+        } else {
+            plist[bundleId] = newPrefs
+        }
+        
+        let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        try newData.write(to: infoPlist)
+    }
+    
+    // Get Alt Icon Settings
+    public func getAltIcons() -> [String: Any] {
+        guard let infoPlist = getAltIconPlist() else { return [:] }
+        guard let plistData = try? Data(contentsOf: infoPlist) else { return [:] }
+        guard let plist = try? PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as? [String: Any] else { return [:] }
+        return plist
+    }
 }
