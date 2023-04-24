@@ -89,6 +89,11 @@ struct ThemingView: View {
                                 }
                             }
                         }
+                        Group {
+                            NiceButton(text: AnyView(Text("Alt Icons")), action: {
+                                
+                            })
+                        }
                     }
                     Divider()
                     HStack {
