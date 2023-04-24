@@ -310,4 +310,8 @@ class ThemingManager: ObservableObject {
             return ""
         }
     }
+    
+    
+    // MARK: Alt Icon Theming
+    // Set Alt Icon Settings
 }
