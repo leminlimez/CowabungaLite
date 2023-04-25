@@ -47,8 +47,7 @@ for domain in "$1"/*; do
 				printf $fileHash | xxd -r -p >>$output_file
 				printf "FFFF81FF0000000000000000000001F5000001F5" | xxd -r -p >>$output_file
 				printf "%08x%08x%08x" $RANDOM$RANDOM $RANDOM$RANDOM $RANDOM$RANDOM | xxd -r -p >>$output_file
-				printf "000000000000" | xxd -r -p >>$output_file
-				printf "%04x" $(stat -f %z "$file") | xxd -r -p >>$output_file
+				printf "%016x" $(stat -f %z "$file") | xxd -r -p >>$output_file
 				printf "0400" | xxd -r -p >>$output_file
 
 				printf " - written structure to Manifest.mbdb"
