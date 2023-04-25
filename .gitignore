@@ -2,6 +2,7 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+.vscode/
 *.DRM
 DRM/
 .DS_Store
