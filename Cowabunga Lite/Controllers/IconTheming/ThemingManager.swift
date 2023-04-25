@@ -220,7 +220,7 @@ class ThemingManager: ObservableObject {
                 } else if imgPath != nil {
                     if imgPath == "Default", let imgData = app.icon {
                         do {
-                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name)
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
                         }
@@ -232,7 +232,7 @@ class ThemingManager: ObservableObject {
             else if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
                     let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
-                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil)
                 } catch {
                     Logger.shared.logMe(error.localizedDescription)
                 }
@@ -243,7 +243,7 @@ class ThemingManager: ObservableObject {
                 // get the image data
                 if let imgData = app.icon {
                     do {
-                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, hideDisplayName: hideDisplayNames)
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
