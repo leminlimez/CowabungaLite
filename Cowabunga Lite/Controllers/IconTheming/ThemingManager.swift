@@ -216,13 +216,32 @@ class ThemingManager: ObservableObject {
                 if name == nil && imgPath == "Hidden" { continue; } // do not theme
                 
                 if imgPath == nil && name != nil {
-                    // TODO: theme normally but with custom name
+                    // theme normally but with custom name
+                    do {
+                        let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: name)
+                    } catch {
+                        Logger.shared.logMe(error.localizedDescription)
+                    }
+                    
                 } else if imgPath != nil {
                     if imgPath == "Default", let imgData = app.icon {
+                        // theme with the default icon
                         do {
                             try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name)
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
+                        }
+                    } else if imgPath != nil {
+                        let imgURL = getThemesFolder().appendingPathComponent(imgPath!)
+                        if FileManager.default.fileExists(atPath: imgURL.path) {
+                            // theme with the alternate icon
+                            do {
+                                let imgData = try Data(contentsOf: imgURL)
+                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name)
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                            }
                         }
                     }
                 }
