@@ -363,6 +363,13 @@ class ThemingManager: ObservableObject {
         return infoPlist
     }
     
+    // Get Values of Alt Icon
+    public func getAltIconData(bundleId: String) -> [String: String] {
+        let plist = getAltIcons()
+        guard let info = plist[bundleId] as? [String: String] else { return [:] }
+        return info
+    }
+    
     // Set Alt Icon Settings
     public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?) throws {
         guard let infoPlist = getAltIconPlist() else { throw "No alt icon preference plist found!" }
