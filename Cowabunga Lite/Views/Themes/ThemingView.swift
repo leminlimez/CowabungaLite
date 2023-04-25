@@ -90,8 +90,8 @@ struct ThemingView: View {
                             }
                         }
                         Group {
-                            NiceButton(text: AnyView(Text("Alt Icons")), action: {
-                                
+                            NavigationLink(destination: ListOfAppsView(), label: {
+                                Text("Alt Icons")
                             })
                         }
                     }

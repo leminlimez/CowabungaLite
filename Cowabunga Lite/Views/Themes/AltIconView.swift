@@ -10,11 +10,11 @@ import SwiftUI
 struct AltIconView: View {
     @StateObject var themeManager = ThemingManager.shared
     @Binding var app: AppOption
-    @State private var newIcon: String? = nil
-    @State private var replaceName: Bool = false
-    @State private var newDisplayName: String = ""
+    @State var newIcon: String? = nil
+    @State var replaceName: Bool = false
+    @State var newDisplayName: String = ""
     
-    private var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
+    var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
     
     struct IconData: Identifiable {
         var id = UUID()
@@ -23,7 +23,7 @@ struct AltIconView: View {
         var systemImage: String? = nil
     }
     
-    @State private var icons: [IconData] = [
+    @State var icons: [IconData] = [
         .init(imgPath: "Hidden", systemImage: "xmark.app")
     ]
     

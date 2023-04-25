@@ -19,17 +19,15 @@ struct AppOption: Identifiable {
 struct ListOfAppsView: View {
     private var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
     
-    @State private var apps: [AppOption] = []
+    @State var apps: [AppOption] = []
     
     var body: some View {
         VStack {
             LazyVGrid(columns: gridItemLayout, spacing: 10) {
-                ForEach(apps) { app in
+                ForEach($apps) { app in
                     VStack {
-                        Button(action: {
-                            
-                        }) {
-                            if app.icon != nil, let img = NSImage(data: app.icon!) {
+                        NavigationLink(destination: AltIconView(app: app)) {
+                            if app.icon.wrappedValue != nil, let img = NSImage(data: app.icon.wrappedValue!) {
                                 Image(nsImage: img)
                                     .resizable()
                                     .frame(width: 45, height: 45)
@@ -38,7 +36,7 @@ struct ListOfAppsView: View {
                                     .frame(width: 45, height: 45)
                             }
                         }
-                        Text(app.name)
+                        Text(app.name.wrappedValue)
                     }
                 }
             }
