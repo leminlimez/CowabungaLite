@@ -89,10 +89,9 @@ struct ThemingView: View {
                                 }
                             }
                         }
-                        Group {
-                            NavigationLink(destination: ListOfAppsView(), label: {
-                                Text("Alt Icons")
-                            })
+                        // TODO: DOES NOT WORK -- NEEDS FIXING
+                        NavigationLink(destination: ListOfAppsView()) {
+                            Text("App Settings")
                         }
                     }
                     Divider()
