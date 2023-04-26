@@ -43,7 +43,7 @@ struct AltIconView: View {
                 Button(action: {
                     // save
                     do {
-                        try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? newDisplayName : nil, imagePath: newIcon)
+                        try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? (newDisplayName != "" ? newDisplayName : app.name) : nil, imagePath: newIcon)
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -101,7 +101,7 @@ struct AltIconView: View {
                 }
                 // Text box for display name
                 TextField(text: $newDisplayName) {
-                    Text("Display Name")
+                    Text(app.name)
                 }.disabled(!replaceName)
             }
         }
