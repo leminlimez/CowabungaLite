@@ -16,7 +16,7 @@ struct AltIconView: View {
     @State var replaceName: Bool = false
     @State var newDisplayName: String = ""
     
-    var gridItemLayout = [GridItem(.adaptive(minimum: 60))]
+    var gridItemLayout = [GridItem(.adaptive(minimum: 70))]
     
     struct IconData: Identifiable {
         var id = UUID()
@@ -31,7 +31,7 @@ struct AltIconView: View {
     
     var body: some View {
         VStack {
-            ScrollView {
+            ZStack {
                 HStack {
                     // MARK: Cancel Button
                     Button(action: {
@@ -40,11 +40,6 @@ struct AltIconView: View {
                         Text("Cancel")
                     }
                     .padding(10)
-                    
-                    Spacer()
-                    
-                    Text(app.name)
-                        .font(.title)
                     
                     Spacer()
                     
@@ -62,8 +57,19 @@ struct AltIconView: View {
                     }
                     .padding(10)
                 }
-                .padding(.bottom, 10)
-                
+                HStack {
+                    Spacer()
+                    
+                    Text(app.name)
+                        .font(.title)
+                        .padding(10)
+                    
+                    Spacer()
+                }
+            }
+            .padding(.bottom, 10)
+            
+            ScrollView {
                 // MARK: Icon Choice
                 Group {
                     Text("Icon")
@@ -84,7 +90,7 @@ struct AltIconView: View {
                                             .frame(width: 45, height: 45)
                                             .cornerRadius(10)
                                             .padding(2)
-                                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                            .overlay(RoundedRectangle(cornerRadius: 14)
                                                 .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                                     } else {
                                         Image(systemName: "questionmark.app")
@@ -110,6 +116,7 @@ struct AltIconView: View {
                     // Other Icons From Themes
                     // + Icon (Import from png)
                 }
+                .padding(.bottom, 15)
                 
                 // MARK: Display Name
                 Group {

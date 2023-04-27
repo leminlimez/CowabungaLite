@@ -26,21 +26,27 @@ struct ListOfAppsView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: {
-                    viewType = 0
-                }) {
-                    Text("􀆁 Back")
+            ZStack {
+                HStack {
+                    Button(action: {
+                        viewType = 0
+                    }) {
+                        Text("􀆁 Back")
+                    }
+                    .padding(10)
+                    Spacer()
                 }
-                .padding(10)
-                Spacer()
-                Text("App Settings")
-                    .font(.title)
-                Spacer()
+                HStack {
+                    Spacer()
+                    Text("App Settings")
+                        .font(.title)
+                        .padding(10)
+                    Spacer()
+                }
             }
             
             ScrollView {
-                LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                LazyVGrid(columns: gridItemLayout, spacing: 7) {
                     ForEach($apps) { app in
                         NiceButton(text: AnyView(
                             VStack {
@@ -62,6 +68,7 @@ struct ListOfAppsView: View {
                         .padding(5)
                     }
                 }
+                .padding(.horizontal, 10)
             }
         }
         .onAppear {
