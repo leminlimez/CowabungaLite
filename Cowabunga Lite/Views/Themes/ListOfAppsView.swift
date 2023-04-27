@@ -17,11 +17,12 @@ struct AppOption: Identifiable {
 }
 
 struct ListOfAppsView: View {
-    var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
+    var gridItemLayout = [GridItem(.adaptive(minimum: 80))]
     
     @State var apps: [AppOption] = []
     
     @Binding var viewType: Int
+    @Binding var currentApp: AppOption
     
     var body: some View {
         VStack {
@@ -31,26 +32,34 @@ struct ListOfAppsView: View {
                 }) {
                     Text("􀆁 Back")
                 }
-                .padding(5)
+                .padding(10)
+                Spacer()
+                Text("App Settings")
+                    .font(.title)
                 Spacer()
             }
             
             ScrollView {
                 LazyVGrid(columns: gridItemLayout, spacing: 10) {
                     ForEach($apps) { app in
-                        VStack {
-                            NavigationLink(destination: AltIconView(app: app)) {
+                        NiceButton(text: AnyView(
+                            VStack {
                                 if app.icon.wrappedValue != nil, let img = NSImage(data: app.icon.wrappedValue!) {
                                     Image(nsImage: img)
                                         .resizable()
-                                        .frame(width: 45, height: 45)
+                                        .frame(width: 65, height: 65)
                                 } else {
                                     Rectangle()
-                                        .frame(width: 45, height: 45)
+                                        .frame(width: 65, height: 65)
                                 }
+                                Text(app.name.wrappedValue)
                             }
-                            Text(app.name.wrappedValue)
-                        }
+                                .frame(height: 90)
+                        ), action: {
+                            currentApp = app.wrappedValue
+                            viewType = 2
+                        })
+                        .padding(5)
                     }
                 }
             }

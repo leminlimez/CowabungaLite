@@ -233,8 +233,8 @@ func getHomeScreenAppsNew() -> [AppInfo] {
     for (bundleId, appDict) in plistDict {
         guard let name = appDict["name"] as? String,
               let oldWebclipExists = appDict["old_webclip_exists"] as? Bool else {
-                  Logger.shared.logMe("Error reading old_webclip_exists")
-                  return []
+                  Logger.shared.logMe("Error reading old_webclip_exists for bundle id \(bundleId)")
+                  continue
         }
 
         let iconData = appDict["icon"] as? Data
