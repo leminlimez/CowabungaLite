@@ -13,6 +13,7 @@ import Foundation
     @Published var logText = ""
 
     @objc func logMe(_ message: String) {
+        print(message)
         logText += "\(message)\n"
     }
 }
