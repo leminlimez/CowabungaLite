@@ -22,7 +22,7 @@ struct RootView: View {
         
         // Tools View
         .init(title: "Tools", options: [
-            .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: ThemingView()),
+            .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: IconThemingMainView()),
             .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView()),
 //            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),

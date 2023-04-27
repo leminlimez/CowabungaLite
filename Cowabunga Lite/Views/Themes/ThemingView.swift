@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct ThemingView: View {
-    @State private var enableTweak = false
-    @StateObject private var dataSingleton = DataSingleton.shared
-    @StateObject private var themeManager = ThemingManager.shared
-    @State private var easterEgg = false
-    private var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
+    @State var enableTweak = false
+    @StateObject var dataSingleton = DataSingleton.shared
+    @StateObject var themeManager = ThemingManager.shared
+    @State var easterEgg = false
+    var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
     
-    @State private var isAppClips: Bool = false
-    @State private var hideAppLabels: Bool = false
-    @State private var themeAllApps: Bool = false
+    @State var isAppClips: Bool = false
+    @State var hideAppLabels: Bool = false
+    @State var themeAllApps: Bool = false
     
-    @State private var showPicker: Bool = false
+    @State var showPicker: Bool = false
+    
+    @Binding var viewType: Int
         
     var body: some View {
         List {
@@ -90,9 +92,9 @@ struct ThemingView: View {
                             }
                         }
                         // TODO: DOES NOT WORK -- NEEDS FIXING
-                        NavigationLink(destination: ListOfAppsView()) {
+                        NiceButton(text: AnyView(
                             Text("App Settings")
-                        }
+                        ), action: { viewType = 1 })
                     }
                     Divider()
                     HStack {
@@ -138,11 +140,5 @@ struct ThemingView: View {
             guard let url = try? result.get().first else { return }
             try? ThemingManager.shared.importTheme(from: url)
         })
-    }
-}
-
-struct ThemingView_Previews: PreviewProvider {
-    static var previews: some View {
-        ThemingView()
     }
 }

@@ -17,29 +17,48 @@ struct AppOption: Identifiable {
 }
 
 struct ListOfAppsView: View {
-    private var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
+    var gridItemLayout = [GridItem(.adaptive(minimum: 45))]
     
     @State var apps: [AppOption] = []
     
+    @Binding var viewType: Int
+    
     var body: some View {
         VStack {
-            LazyVGrid(columns: gridItemLayout, spacing: 10) {
-                ForEach($apps) { app in
-                    VStack {
-                        NavigationLink(destination: AltIconView(app: app)) {
-                            if app.icon.wrappedValue != nil, let img = NSImage(data: app.icon.wrappedValue!) {
-                                Image(nsImage: img)
-                                    .resizable()
-                                    .frame(width: 45, height: 45)
-                            } else {
-                                Rectangle()
-                                    .frame(width: 45, height: 45)
+            HStack {
+                Button(action: {
+                    viewType = 0
+                }) {
+                    Text("􀆁 Back")
+                }
+                .padding(5)
+                Spacer()
+            }
+            
+            ScrollView {
+                LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                    ForEach($apps) { app in
+                        VStack {
+                            NavigationLink(destination: AltIconView(app: app)) {
+                                if app.icon.wrappedValue != nil, let img = NSImage(data: app.icon.wrappedValue!) {
+                                    Image(nsImage: img)
+                                        .resizable()
+                                        .frame(width: 45, height: 45)
+                                } else {
+                                    Rectangle()
+                                        .frame(width: 45, height: 45)
+                                }
                             }
+                            Text(app.name.wrappedValue)
                         }
-                        Text(app.name.wrappedValue)
                     }
                 }
             }
+        }
+        .onAppear {
+            // pause before using
+            grabApps()
+            print(apps.count)
         }
     }
     
