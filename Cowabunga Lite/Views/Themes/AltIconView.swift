@@ -82,16 +82,12 @@ struct AltIconView: View {
                                         Image(systemName: icon.systemImage!)
                                             .font(.system(size: 45))
                                             .padding(2)
-                                            .overlay(RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                                     } else if icon.icon != nil {
                                         Image(nsImage: icon.icon!)
                                             .resizable()
                                             .frame(width: 45, height: 45)
-                                            .cornerRadius(10)
+                                            .cornerRadius(8)
                                             .padding(2)
-                                            .overlay(RoundedRectangle(cornerRadius: 14)
-                                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                                     } else {
                                         Image(systemName: "questionmark.app")
                                             .font(.system(size: 45))
@@ -108,6 +104,8 @@ struct AltIconView: View {
                                     }
                                 }
                             })
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                         }
                     }
                     .padding(.horizontal, 25)
