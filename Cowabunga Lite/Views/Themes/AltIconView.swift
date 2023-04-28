@@ -72,8 +72,12 @@ struct AltIconView: View {
             ScrollView {
                 // MARK: Icon Choice
                 Group {
-                    Text("Icon")
-                        .font(.title2)
+                    HStack {
+                        Text("Icon")
+                            .bold()
+                            .padding(.horizontal, 10)
+                        Spacer()
+                    }
                     LazyVGrid(columns: gridItemLayout, spacing: 10) {
                         ForEach(icons) { icon in
                             NiceButton(text: AnyView(
@@ -108,7 +112,7 @@ struct AltIconView: View {
                                 .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                         }
                     }
-                    .padding(.horizontal, 25)
+                    .padding(.horizontal, 10)
                     // Do Not Theme Button
                     // Default Icon Button
                     // Other Icons From Themes
@@ -116,10 +120,17 @@ struct AltIconView: View {
                 }
                 .padding(.bottom, 15)
                 
+                Divider()
+                
                 // MARK: Display Name
                 Group {
-                    Text("App Display Name")
-                        .font(.title2)
+                    HStack {
+                        Text("App Display Name")
+                            .bold()
+                            .padding(.horizontal, 10)
+                        Spacer()
+                    }
+                    .padding(.top, 10)
                     
                     HStack {
                         // Use Default Toggle (Grays out textbox)
@@ -131,7 +142,7 @@ struct AltIconView: View {
                             Text(app.name)
                         }.disabled(!replaceName)
                     }
-                    .padding(10)
+                    .padding(.horizontal, 10)
                 }
             }
             .onAppear {

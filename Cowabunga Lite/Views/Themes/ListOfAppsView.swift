@@ -31,7 +31,7 @@ struct ListOfAppsView: View {
                     Button(action: {
                         viewType = 0
                     }) {
-                        Text("􀆁 Back")
+                        Text("Back")
                     }
                     .padding(10)
                     Spacer()
