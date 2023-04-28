@@ -31,45 +31,65 @@ struct AltIconView: View {
     
     var body: some View {
         VStack {
-            ZStack {
-                HStack {
-                    // MARK: Cancel Button
-                    Button(action: {
-                        viewType = 1
-                    }) {
-                        Text("Cancel")
-                    }
-                    .padding(10)
-                    
-                    Spacer()
-                    
-                    // MARK: Save Button
-                    Button(action: {
-                        // save
-                        do {
-                            try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? (newDisplayName != "" ? newDisplayName : app.name) : nil, imagePath: newIcon)
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                        viewType = 1
-                    }) {
-                        Text("Save")
-                    }
-                    .padding(10)
+            HStack {
+                // MARK: Cancel Button
+                Button(action: {
+                    viewType = 1
+                }) {
+                    Text("Cancel")
                 }
-                HStack {
-                    Spacer()
-                    
-                    Text(app.name)
-                        .font(.title)
-                        .padding(10)
-                    
-                    Spacer()
+                .padding(10)
+                
+                Spacer()
+                
+                // MARK: Save Button
+                Button(action: {
+                    // save
+                    do {
+                        try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? (newDisplayName != "" ? newDisplayName : app.name) : nil, imagePath: newIcon)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                    viewType = 1
+                }) {
+                    Text("Save")
                 }
+                .padding(10)
             }
             .padding(.bottom, 10)
             
             ScrollView {
+                // MARK: Original Icon and Name
+                Group {
+                    HStack {
+                        if app.icon != nil, let img = NSImage(data: app.icon!) {
+                            Image(nsImage: img)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 35, height: 35)
+                        } else {
+                            Rectangle()
+                                .frame(width: 35, height: 35)
+                                .cornerRadius(10)
+                        }
+                        VStack {
+                            HStack {
+                                Text(app.name)
+                                    .bold()
+                                Spacer()
+                            }
+                            HStack {
+                                Text(app.changed ? "Custom" : "Default")
+                                    .foregroundColor(app.changed ? .green : .blue)
+                                Spacer()
+                            }
+                        }
+                    }
+                    .padding(.bottom, 5)
+                    Divider()
+                }
+                .padding(10)
+                
                 // MARK: Icon Choice
                 Group {
                     HStack {
