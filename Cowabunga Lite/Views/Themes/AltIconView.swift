@@ -121,6 +121,7 @@ struct AltIconView: View {
                 .padding(.bottom, 15)
                 
                 Divider()
+                    .padding(10)
                 
                 // MARK: Display Name
                 Group {
