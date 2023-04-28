@@ -158,9 +158,8 @@ struct AltIconView: View {
                             Text("Replace Display Name")
                         }
                         // Text box for display name
-                        TextField(text: $newDisplayName) {
-                            Text(app.name)
-                        }.disabled(!replaceName)
+                        TextField(app.name, text: $newDisplayName)
+                            .disabled(!replaceName)
                     }
                     .padding(.horizontal, 10)
                 }
