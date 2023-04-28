@@ -27,23 +27,14 @@ struct ListOfAppsView: View {
     
     var body: some View {
         VStack {
-            ZStack {
-                HStack {
-                    Button(action: {
-                        viewType = 0
-                    }) {
-                        Text("Back")
-                    }
-                    .padding(10)
-                    Spacer()
+            HStack {
+                Button(action: {
+                    viewType = 0
+                }) {
+                    Text("Back")
                 }
-                HStack {
-                    Spacer()
-                    Text("App Settings")
-                        .font(.title)
-                        .padding(10)
-                    Spacer()
-                }
+                .padding(10)
+                Spacer()
             }
             
             if apps.count == 0 {
@@ -60,15 +51,15 @@ struct ListOfAppsView: View {
                             NiceButton(text: AnyView(
                                 ZStack {
                                     VStack {
-                                        if app.icon.wrappedValue != nil, let img = NSImage(data: app.icon.wrappedValue!) {
+                                        if app.themedIcon.wrappedValue != nil, let img = NSImage(data: app.themedIcon.wrappedValue!) {
                                             Image(nsImage: img)
                                                 .resizable()
                                                 .frame(width: 65, height: 65)
-                                                .cornerRadius(10)
+                                                .cornerRadius(15)
                                         } else {
                                             Rectangle()
                                                 .frame(width: 65, height: 65)
-                                                .cornerRadius(25)
+                                                .cornerRadius(15)
                                         }
                                         Text(app.name.wrappedValue)
                                     }
@@ -109,17 +100,17 @@ struct ListOfAppsView: View {
         let changes = themeManager.getAltIcons()
         for app in newApps {
             var checked = false
-            var icon = app.icon
+            var themedIcon = app.themedIcon ?? app.icon
             if let altData = changes[app.bundleId] as? [String: String] {
                 checked = true
                 if let imgPath = altData["ImagePath"], imgPath != "Hidden", imgPath != "Default" {
                     let fullPath = themeManager.getThemesFolder().appendingPathComponent(imgPath)
                     if FileManager.default.fileExists(atPath: fullPath.path) {
-                        icon = try? Data(contentsOf: fullPath)
+                        themedIcon = try? Data(contentsOf: fullPath)
                     }
                 }
             }
-            apps.append(.init(name: app.name, bundle: app.bundleId, icon: icon, themedIcon: app.themedIcon, changed: checked))
+            apps.append(.init(name: app.name, bundle: app.bundleId, icon: app.icon, themedIcon: themedIcon, changed: checked))
         }
     }
 }
