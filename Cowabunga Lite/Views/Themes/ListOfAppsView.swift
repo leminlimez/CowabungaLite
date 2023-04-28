@@ -69,10 +69,10 @@ struct ListOfAppsView: View {
                                         HStack {
                                             Spacer()
                                             if app.changed.wrappedValue {
-                                                Image(systemName: "lock.fill")
-                                                    .foregroundColor(.blue)
+                                                Image(systemName: "pencil")
+                                                    .foregroundColor(.green)
                                                     .font(.system(size: 25))
-                                                    .padding(.bottom, 14)
+                                                    .padding(.bottom, 22)
                                             }
                                         }
                                     }
@@ -100,7 +100,7 @@ struct ListOfAppsView: View {
         let changes = themeManager.getAltIcons()
         for app in newApps {
             var checked = false
-            var themedIcon = app.themedIcon ?? app.icon
+            var themedIcon = app.icon
             if let altData = changes[app.bundleId] as? [String: String] {
                 checked = true
                 if let imgPath = altData["ImagePath"], imgPath != "Hidden", imgPath != "Default" {
