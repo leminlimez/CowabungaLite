@@ -91,41 +91,46 @@ struct ThemingView: View {
                                 }
                             }
                         }
-                        // TODO: DOES NOT WORK -- NEEDS FIXING
+                    }
+                    
+                    Divider()
+                    HStack {
+                        Spacer()
                         NiceButton(text: AnyView(
                             Text("App Settings")
                         ), action: { viewType = 1 })
-                    }
-                    Divider()
-                    HStack {
-                        Text("Current Icons").bold()
                         Spacer()
-                        Text("To remove a themed app, delete its icon on your device.")
                     }
-                    VStack {
-                        HStack(spacing: 20) {
-                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
-                            Text("App Store")
-                            Spacer()
-                            NiceButton(text: AnyView(Text("Select Icon")), action: {})
-                            Toggle("Hide Label", isOn: .constant(true))
-                            Toggle("App Clip", isOn: .constant(true))
-                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
-                        HStack(spacing: 20) {
-                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
-                            Text("Phone")
-                            Spacer()
-                            NiceButton(text: AnyView(Text("Remove Icon")), action: {})
-                            Toggle("Hide Label", isOn: .constant(true))
-                            Toggle("App Clip", isOn: .constant(true))
-                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
-                        NiceButton(text: AnyView(
-                            HStack {
-                                Image(systemName: "square.and.arrow.up")
-                                Text("Export .theme")
-                            }
-                        ), action: {})
-                    }
+//                    Divider()
+//                    HStack {
+//                        Text("Current Icons").bold()
+//                        Spacer()
+//                        Text("To remove a themed app, delete its icon on your device.")
+//                    }
+//                    VStack {
+//                        HStack(spacing: 20) {
+//                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
+//                            Text("App Store")
+//                            Spacer()
+//                            NiceButton(text: AnyView(Text("Select Icon")), action: {})
+//                            Toggle("Hide Label", isOn: .constant(true))
+//                            Toggle("App Clip", isOn: .constant(true))
+//                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
+//                        HStack(spacing: 20) {
+//                            Image(systemName: "app").resizable().frame(width: 50, height: 50)
+//                            Text("Phone")
+//                            Spacer()
+//                            NiceButton(text: AnyView(Text("Remove Icon")), action: {})
+//                            Toggle("Hide Label", isOn: .constant(true))
+//                            Toggle("App Clip", isOn: .constant(true))
+//                        }.padding(20).background(RoundedRectangle(cornerRadius: 20).fill(Color.cowGray))
+//                        NiceButton(text: AnyView(
+//                            HStack {
+//                                Image(systemName: "square.and.arrow.up")
+//                                Text("Export .theme")
+//                            }
+//                        ), action: {})
+//                    }
                 }.disabled(!enableTweak)
             }
         }
