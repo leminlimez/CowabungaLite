@@ -8,12 +8,14 @@
 import Foundation
 import SwiftUI
 
+// MARK: Color Extension
 extension Color {
     static var cowGray:Color {
         return Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2)
     }
 }
 
+// MARK: Nice Button Struct
 struct NiceButton: View {
     var text: AnyView
     var action: () -> ()

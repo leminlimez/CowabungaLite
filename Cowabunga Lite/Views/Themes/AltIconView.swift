@@ -56,7 +56,6 @@ struct AltIconView: View {
                 }
                 .padding(10)
             }
-            .padding(.bottom, 10)
             
             ScrollView {
                 // MARK: Original Icon and Name
