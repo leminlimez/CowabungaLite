@@ -97,7 +97,7 @@ class ThemingManager: ObservableObject {
         } catch {
             // remove from backup
             try? FileManager.default.removeItem(at: folderURL)
-            throw "Error creating WebClip for icon bundle \(bundleID)"
+            throw "Error creating WebClip for icon bundle \(bundleID)\n\(error.localizedDescription)"
         }
     }
     

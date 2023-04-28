@@ -68,22 +68,23 @@ struct ThemingView: View {
                             .frame(maxWidth: .infinity)
                     } else {
                         Group {
-//                            Toggle(isOn: $hideAppLabels) {
-//                                Text("Hide App Labels")
-//                            }.onChange(of: hideAppLabels, perform: { nv in
-//                                try? themeManager.setThemeSettings(hideDisplayNames: nv)
-//                            })
-//                            Toggle(isOn: $isAppClips) {
-//                                Text("As App Clips")
-//                            }.onChange(of: isAppClips, perform: { nv in
-//                                try? themeManager.setThemeSettings(appClips: nv)
-//                            })
-//                            Toggle(isOn: $themeAllApps) {
-//                                Text("Theme All Apps (Includes apps not included in the selected theme)")
-//                            }.onChange(of: themeAllApps, perform: { nv in
-//                                try? themeManager.setThemeSettings(themeAllApps: nv)
-//                            })
+                            Toggle(isOn: $hideAppLabels) {
+                                Text("Hide App Labels")
+                            }.onChange(of: hideAppLabels, perform: { nv in
+                                try? themeManager.setThemeSettings(hideDisplayNames: nv)
+                            })
+                            Toggle(isOn: $isAppClips) {
+                                Text("As App Clips")
+                            }.onChange(of: isAppClips, perform: { nv in
+                                try? themeManager.setThemeSettings(appClips: nv)
+                            })
+                            Toggle(isOn: $themeAllApps) {
+                                Text("Theme All Apps (Includes apps not included in the selected theme)")
+                            }.onChange(of: themeAllApps, perform: { nv in
+                                try? themeManager.setThemeSettings(themeAllApps: nv)
+                            })
                         }
+                        .padding(.bottom, 5)
                         Group {
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
                                 ForEach(themeManager.themes, id: \.name) { theme in
