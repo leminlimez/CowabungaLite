@@ -16,6 +16,8 @@ struct AltIconView: View {
     @State var replaceName: Bool = false
     @State var newDisplayName: String = ""
     
+    @State var showPicker: Bool = false
+    
     var gridItemLayout = [GridItem(.adaptive(minimum: 70))]
     
     struct IconData: Identifiable {
@@ -130,6 +132,18 @@ struct AltIconView: View {
                             .overlay(RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                         }
+                        
+                        // MARK: Import Icon Button
+                        NiceButton(text: AnyView(
+                            VStack {
+                                Image(systemName: "plus.app")
+                                    .font(.system(size: 45))
+                                    .padding(2)
+                            }
+                                .frame(width: 50, height: 50)
+                        ), action: {
+                            showPicker.toggle()
+                        })
                     }
                     .padding(.horizontal, 10)
                     // Do Not Theme Button
@@ -177,11 +191,21 @@ struct AltIconView: View {
                 // add the icons from the other theme
                 do {
                     for p in try FileManager.default.contentsOfDirectory(at: themeManager.getThemesFolder(), includingPropertiesForKeys: nil) {
-                        let imgPath = p.appendingPathComponent(app.bundle + ".png")
-                        if FileManager.default.fileExists(atPath: imgPath.path) {
-                            let imgData = try Data(contentsOf: imgPath)
-                            let img = NSImage(data: imgData)
-                            icons.append(.init(imgPath: p.lastPathComponent + "/\(app.bundle).png", icon: img))
+                        if p.lastPathComponent == "Custom" {
+                            if FileManager.default.fileExists(atPath: p.appendingPathComponent(app.bundle).path) {
+                                for i in try FileManager.default.contentsOfDirectory(at: p.appendingPathComponent(app.bundle), includingPropertiesForKeys: nil) {
+                                    let imgData = try Data(contentsOf: i)
+                                    let img = NSImage(data: imgData)
+                                    icons.append(.init(imgPath: "Custom/\(app.bundle)/\(i.lastPathComponent)", icon: img))
+                                }
+                            }
+                        } else {
+                            let imgPath = p.appendingPathComponent(app.bundle + ".png")
+                            if FileManager.default.fileExists(atPath: imgPath.path) {
+                                let imgData = try Data(contentsOf: imgPath)
+                                let img = NSImage(data: imgData)
+                                icons.append(.init(imgPath: p.lastPathComponent + "/\(app.bundle).png", icon: img))
+                            }
                         }
                     }
                 } catch {
@@ -194,6 +218,12 @@ struct AltIconView: View {
                 replaceName = appData["Name"] != nil
                 newDisplayName = appData["Name"] ?? ""
             }
+            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.png], allowsMultipleSelection: false, onCompletion: { result in
+                guard let url = try? result.get().first else { return }
+                guard let (imgData, p) = try? ThemingManager.shared.importAltIcon(from: url, bundleId: app.bundle) else { return }
+                let img = NSImage(data: imgData)
+                icons.append(.init(imgPath: p, icon: img))
+            })
         }
     }
 }

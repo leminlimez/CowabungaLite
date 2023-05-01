@@ -276,8 +276,10 @@ class ThemingManager: ObservableObject {
         themes.removeAll(keepingCapacity: true)
         do {
             for t in try FileManager.default.contentsOfDirectory(at: themesFolder, includingPropertiesForKeys: nil) {
-                guard let c = try? FileManager.default.contentsOfDirectory(at: t, includingPropertiesForKeys: nil) else { continue }
-                themes.append(.init(name: t.lastPathComponent, iconCount: (c).count))
+                if t.lastPathComponent != "Custom" {
+                    guard let c = try? FileManager.default.contentsOfDirectory(at: t, includingPropertiesForKeys: nil) else { continue }
+                    themes.append(.init(name: t.lastPathComponent, iconCount: (c).count))
+                }
             }
         } catch {
             print(error.localizedDescription)
@@ -402,5 +404,27 @@ class ThemingManager: ObservableObject {
         guard let plistData = try? Data(contentsOf: infoPlist) else { return [:] }
         guard let plist = try? PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as? [String: Any] else { return [:] }
         return plist
+    }
+    
+    // Import an Icon
+    public func importAltIcon(from importURL: URL, bundleId: String) throws -> (Data, String) {
+        let customFolder = getThemesFolder().appendingPathComponent("Custom")
+        if !FileManager.default.fileExists(atPath: customFolder.path) {
+            try FileManager.default.createDirectory(at: customFolder, withIntermediateDirectories: false)
+        }
+        let imgData = try Data(contentsOf: importURL)
+        let newFolder = customFolder.appendingPathComponent(bundleId)
+        if !FileManager.default.fileExists(atPath: newFolder.path) {
+            try FileManager.default.createDirectory(at: newFolder, withIntermediateDirectories: false)
+        }
+        
+        // get the new icon name
+        var newName: Int = 0
+        while FileManager.default.fileExists(atPath: newFolder.appendingPathComponent("Icon\(newName).png").path) {
+            newName += 1
+        }
+        
+        try imgData.write(to: newFolder.appendingPathComponent("Icon\(newName).png"))
+        return (imgData, "Custom/\(bundleId)/Icon\(newName).png")
     }
 }
