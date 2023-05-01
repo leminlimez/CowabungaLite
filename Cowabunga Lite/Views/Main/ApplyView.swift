@@ -32,7 +32,7 @@ struct ApplyView: View {
             )) {
                 applyTweaks()
             }
-            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).lineLimit(nil)
+            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).lineLimit(nil).focusable(false)
         }.disabled(!dataSingleton.deviceAvailable)
     }
 }

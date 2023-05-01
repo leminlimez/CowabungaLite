@@ -15,6 +15,8 @@ struct SpringboardOptionsView: View {
     @State private var footnoteText = ""
     @State private var animSpeed: Double = 1
     
+    @State private var showWiFiDebugger: Bool = false
+    
     enum FileLocation: String {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
@@ -22,6 +24,7 @@ struct SpringboardOptionsView: View {
         case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
         case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
+        case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
     }
     
     struct SBOption: Identifiable {
@@ -39,12 +42,12 @@ struct SpringboardOptionsView: View {
         .init(key: "SBIconVisibility", name: "Mute Module in CC", fileLocation: .mute),
         .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
         .init(key: "AccessoryDeveloperEnabled", name: "Accessory Developer", fileLocation: .globalPreferences),
-        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi),
+        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi)
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
-        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", fileLocation: .springboard),
-        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
-        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", fileLocation: .springboard)
+//        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", fileLocation: .springboard),
+//        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
+//        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", fileLocation: .springboard)
     ]
     
     var body: some View {
@@ -103,6 +106,40 @@ struct SpringboardOptionsView: View {
                                     Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                     return
                                 }
+                            }
+                        }
+                        
+                        Toggle(isOn: $showWiFiDebugger) {
+                            Text("Show WiFi Debugger")
+                                .minimumScaleFactor(0.5)
+                        }.onChange(of: showWiFiDebugger, perform: { new in
+                            do {
+                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.wifiDebug.rawValue) else {
+                                    Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                    return
+                                }
+                                if new == true {
+                                    try PlistManager.setPlistValues(url: plistURL, values: [
+                                        "WiFiManagerLoggingEnabled": "true"
+                                    ])
+                                } else {
+                                    try PlistManager.setPlistValues(url: plistURL, values: [:])
+                                }
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                                return
+                            }
+                        })
+                        .onAppear {
+                            do {
+                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.wifiDebug.rawValue) else {
+                                    Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                    return
+                                }
+                                showWiFiDebugger =  (try PlistManager.getPlistValues(url: plistURL, key: "WiFiManagerLoggingEnabled") as? String ?? "false") == "true"
+                            } catch {
+                                Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                return
                             }
                         }
                         
