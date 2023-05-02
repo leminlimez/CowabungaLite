@@ -59,7 +59,9 @@ struct AltIconView: View {
                 }) {
                     Text("Save")
                 }
-                .padding(10)
+                .padding(.horizontal, 10)
+                .padding(.top, 10)
+                .padding(.bottom, 5)
             }
             
             ScrollView {
@@ -92,7 +94,8 @@ struct AltIconView: View {
                     .padding(.bottom, 5)
                     Divider()
                 }
-                .padding(10)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
                 
                 // MARK: Display Name
                 Group {
@@ -117,7 +120,8 @@ struct AltIconView: View {
                 }
                 
                 Divider()
-                    .padding(10)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
                 
                 // MARK: Icon Choice
                 Group {
@@ -139,7 +143,7 @@ struct AltIconView: View {
                                         Image(nsImage: icon.icon!)
                                             .resizable()
                                             .frame(width: 55, height: 55)
-                                            .cornerRadius(8)
+                                            .cornerRadius(12)
                                             .padding(2)
                                     } else {
                                         Image(systemName: "questionmark.app")
@@ -158,12 +162,12 @@ struct AltIconView: View {
                                     }
                                 }
                             })
-                            .overlay(RoundedRectangle(cornerRadius: 17)
+                            .overlay(RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
                         }
                     }
                     .padding(.horizontal, 10)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 5)
                     
                     LazyVGrid(columns: gridItemLayout, spacing: 10) {
                         // MARK: Import Icon Button
@@ -189,7 +193,7 @@ struct AltIconView: View {
                                         Image(nsImage: icon.icon!)
                                             .resizable()
                                             .frame(width: 55, height: 55)
-                                            .cornerRadius(8)
+                                            .cornerRadius(12)
                                             .padding(2)
                                     } else {
                                         Image(systemName: "questionmark.app")
@@ -217,7 +221,7 @@ struct AltIconView: View {
                     // Other Icons From Themes
                     // + Icon (Import from png)
                 }
-                .padding(.bottom, 15)
+                .padding(.bottom, 5)
             }
             .onAppear {
                 // MARK: Generate the Icons

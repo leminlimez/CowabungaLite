@@ -10,6 +10,7 @@ import SwiftUI
 struct ApplyView: View {
     @StateObject private var logger = Logger.shared
     @StateObject private var dataSingleton = DataSingleton.shared
+    @State private var canApply: Bool = true
     
     var body: some View {
         List {
@@ -30,9 +31,19 @@ struct ApplyView: View {
                     Text("Apply Tweaks")
                 }
             )) {
-                applyTweaks()
+                if canApply {
+                    canApply = false
+                    Task {
+                        applyTweaks()
+                        canApply = true
+                    }
+                }
             }
-            TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).lineLimit(nil).focusable(false)
+            .disabled(!canApply)
+            TextEditor(text: .constant(logger.logText))
+                .font(Font.system(.body, design: .monospaced))
+                .frame(height: 250)
+                .lineLimit(nil)
         }.disabled(!dataSingleton.deviceAvailable)
     }
 }

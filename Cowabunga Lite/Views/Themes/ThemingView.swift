@@ -68,6 +68,8 @@ struct ThemingView: View {
                             .frame(maxWidth: .infinity)
                     } else {
                         Group {
+                            Text("Preferences")
+                                .bold()
                             Toggle(isOn: $hideAppLabels) {
                                 Text("Hide App Labels")
                             }.onChange(of: hideAppLabels, perform: { nv in
@@ -83,24 +85,27 @@ struct ThemingView: View {
                             }.onChange(of: themeAllApps, perform: { nv in
                                 try? themeManager.setThemeSettings(themeAllApps: nv)
                             })
+                            HStack {
+                                Spacer()
+                                NiceButton(text: AnyView(
+                                    Text("App Settings")
+                                ), action: { viewType = 1 })
+                                Spacer()
+                            }
                         }
-                        .padding(.bottom, 5)
+                        
+                        Divider()
+                            .padding(.vertical, 5)
+                        
                         Group {
+                            Text("Themes")
+                                .bold()
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
                                 ForEach(themeManager.themes, id: \.name) { theme in
                                     ThemeView(theme: theme)
                                 }
                             }
                         }
-                    }
-                    
-                    Divider()
-                    HStack {
-                        Spacer()
-                        NiceButton(text: AnyView(
-                            Text("App Settings")
-                        ), action: { viewType = 1 })
-                        Spacer()
                     }
 //                    Divider()
 //                    HStack {
