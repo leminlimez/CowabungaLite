@@ -18,18 +18,21 @@ struct AltIconView: View {
     
     @State var showPicker: Bool = false
     
-    var gridItemLayout = [GridItem(.adaptive(minimum: 70))]
+    var gridItemLayout = [GridItem(.adaptive(minimum: 80))]
     
     struct IconData: Identifiable {
         var id = UUID()
+        var title: String
         var imgPath: String
         var icon: NSImage? = nil
         var systemImage: String? = nil
     }
     
     @State var icons: [IconData] = [
-        .init(imgPath: "Hidden", systemImage: "xmark.app")
+        .init(title: "No Theme", imgPath: "Hidden", systemImage: "xmark.app")
     ]
+    
+    @State var customIcons: [IconData] = []
     
     var body: some View {
         VStack {
@@ -91,71 +94,6 @@ struct AltIconView: View {
                 }
                 .padding(10)
                 
-                // MARK: Icon Choice
-                Group {
-                    HStack {
-                        Text("Icon")
-                            .bold()
-                            .padding(.horizontal, 10)
-                        Spacer()
-                    }
-                    LazyVGrid(columns: gridItemLayout, spacing: 10) {
-                        ForEach(icons) { icon in
-                            NiceButton(text: AnyView(
-                                VStack {
-                                    if icon.systemImage != nil {
-                                        Image(systemName: icon.systemImage!)
-                                            .font(.system(size: 45))
-                                            .padding(2)
-                                    } else if icon.icon != nil {
-                                        Image(nsImage: icon.icon!)
-                                            .resizable()
-                                            .frame(width: 45, height: 45)
-                                            .cornerRadius(8)
-                                            .padding(2)
-                                    } else {
-                                        Image(systemName: "questionmark.app")
-                                            .font(.system(size: 45))
-                                            .padding(2)
-                                    }
-                                }
-                                    .frame(width: 50, height: 50)
-                            ), action: {
-                                if icon.icon != nil || icon.systemImage != nil {
-                                    if newIcon == icon.imgPath {
-                                        newIcon = nil
-                                    } else {
-                                        newIcon = icon.imgPath
-                                    }
-                                }
-                            })
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
-                        }
-                        
-                        // MARK: Import Icon Button
-                        NiceButton(text: AnyView(
-                            VStack {
-                                Image(systemName: "plus.app")
-                                    .font(.system(size: 45))
-                                    .padding(2)
-                            }
-                                .frame(width: 50, height: 50)
-                        ), action: {
-                            showPicker.toggle()
-                        })
-                    }
-                    .padding(.horizontal, 10)
-                    // Do Not Theme Button
-                    // Default Icon Button
-                    // Other Icons From Themes
-                    // + Icon (Import from png)
-                }
-                .padding(.bottom, 15)
-                
-                Divider()
-                    .padding(10)
-                
                 // MARK: Display Name
                 Group {
                     HStack {
@@ -177,15 +115,118 @@ struct AltIconView: View {
                     }
                     .padding(.horizontal, 10)
                 }
+                
+                Divider()
+                    .padding(10)
+                
+                // MARK: Icon Choice
+                Group {
+                    HStack {
+                        Text("Icon")
+                            .bold()
+                            .padding(.horizontal, 10)
+                        Spacer()
+                    }
+                    LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                        ForEach(icons) { icon in
+                            NiceButton(text: AnyView(
+                                VStack {
+                                    if icon.systemImage != nil {
+                                        Image(systemName: icon.systemImage!)
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    } else if icon.icon != nil {
+                                        Image(nsImage: icon.icon!)
+                                            .resizable()
+                                            .frame(width: 55, height: 55)
+                                            .cornerRadius(8)
+                                            .padding(2)
+                                    } else {
+                                        Image(systemName: "questionmark.app")
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    }
+                                    Text(icon.title)
+                                }
+                                    .frame(width: 70, height: 80)
+                            ), action: {
+                                if icon.icon != nil || icon.systemImage != nil {
+                                    if newIcon == icon.imgPath {
+                                        newIcon = nil
+                                    } else {
+                                        newIcon = icon.imgPath
+                                    }
+                                }
+                            })
+                            .overlay(RoundedRectangle(cornerRadius: 17)
+                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
+                        }
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.bottom, 10)
+                    
+                    LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                        // MARK: Import Icon Button
+                        NiceButton(text: AnyView(
+                            VStack {
+                                Image(systemName: "plus.app")
+                                    .font(.system(size: 55))
+                                    .padding(2)
+                            }
+                                .frame(width: 70, height: 70)
+                        ), action: {
+                            showPicker.toggle()
+                        })
+                        
+                        ForEach(customIcons) { icon in
+                            NiceButton(text: AnyView(
+                                VStack {
+                                    if icon.systemImage != nil {
+                                        Image(systemName: icon.systemImage!)
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    } else if icon.icon != nil {
+                                        Image(nsImage: icon.icon!)
+                                            .resizable()
+                                            .frame(width: 55, height: 55)
+                                            .cornerRadius(8)
+                                            .padding(2)
+                                    } else {
+                                        Image(systemName: "questionmark.app")
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    }
+                                }
+                                    .frame(width: 70, height: 70)
+                            ), action: {
+                                if icon.icon != nil || icon.systemImage != nil {
+                                    if newIcon == icon.imgPath {
+                                        newIcon = nil
+                                    } else {
+                                        newIcon = icon.imgPath
+                                    }
+                                }
+                            })
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: newIcon == icon.imgPath ? 4 : 0))
+                        }
+                    }
+                    .padding(.horizontal, 10)
+                    // Do Not Theme Button
+                    // Default Icon Button
+                    // Other Icons From Themes
+                    // + Icon (Import from png)
+                }
+                .padding(.bottom, 15)
             }
             .onAppear {
                 // MARK: Generate the Icons
                 // add default
                 if app.icon != nil {
                     let img = NSImage(data: app.icon!)
-                    icons.append(.init(imgPath: "Default", icon: img))
+                    icons.append(.init(title: "Default", imgPath: "Default", icon: img))
                 } else {
-                    icons.append(.init(imgPath: "Default", systemImage: "questionmark.app"))
+                    icons.append(.init(title: "Default", imgPath: "Default", systemImage: "questionmark.app"))
                 }
                 
                 // add the icons from the other theme
@@ -196,7 +237,7 @@ struct AltIconView: View {
                                 for i in try FileManager.default.contentsOfDirectory(at: p.appendingPathComponent(app.bundle), includingPropertiesForKeys: nil) {
                                     let imgData = try Data(contentsOf: i)
                                     let img = NSImage(data: imgData)
-                                    icons.append(.init(imgPath: "Custom/\(app.bundle)/\(i.lastPathComponent)", icon: img))
+                                    customIcons.append(.init(title: "Custom", imgPath: "Custom/\(app.bundle)/\(i.lastPathComponent)", icon: img))
                                 }
                             }
                         } else {
@@ -204,7 +245,7 @@ struct AltIconView: View {
                             if FileManager.default.fileExists(atPath: imgPath.path) {
                                 let imgData = try Data(contentsOf: imgPath)
                                 let img = NSImage(data: imgData)
-                                icons.append(.init(imgPath: p.lastPathComponent + "/\(app.bundle).png", icon: img))
+                                icons.append(.init(title: p.lastPathComponent, imgPath: p.lastPathComponent + "/\(app.bundle).png", icon: img))
                             }
                         }
                     }
@@ -222,7 +263,7 @@ struct AltIconView: View {
                 guard let url = try? result.get().first else { return }
                 guard let (imgData, p) = try? ThemingManager.shared.importAltIcon(from: url, bundleId: app.bundle) else { return }
                 let img = NSImage(data: imgData)
-                icons.append(.init(imgPath: p, icon: img))
+                customIcons.append(.init(title: "Custom", imgPath: p, icon: img))
             })
         }
     }

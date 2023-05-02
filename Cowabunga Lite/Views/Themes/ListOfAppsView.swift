@@ -64,16 +64,15 @@ struct ListOfAppsView: View {
                                         Text(app.name.wrappedValue)
                                     }
                                     
-                                    VStack {
+                                    HStack {
                                         Spacer()
-                                        HStack {
-                                            Spacer()
+                                        VStack {
                                             if app.changed.wrappedValue {
-                                                Image(systemName: "pencil")
-                                                    .foregroundColor(.green)
-                                                    .font(.system(size: 25))
-                                                    .padding(.bottom, 22)
+                                                Image(systemName: "gear")
+                                                    .foregroundColor(.gray)
+                                                    .font(.system(size: 20))
                                             }
+                                            Spacer()
                                         }
                                     }
                                 }
