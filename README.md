@@ -103,6 +103,9 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
 ## Building
 Just build like a normal Xcode project. Sign using your own team and bundle identifier. You can also build the .app file by running the command `xcodebuild CODE_SIGNING_ALLOWED=NO -scheme Cowabunga\ Lite -configuration release` inside the folder containing the xcodeproj.
 
+## How it works
+Cowabunga Lite applies tweaks by creating a partial restore of only the files being changed without wiping the device. It uses [libimobiledevice](https://libimobiledevice.org) to create the backups, restore them to the device, and read information about the device such as the device name, iOS version, and home screen apps.
+
 ## Credits
 - [Avangelista](https://github.com/Avangelista) for much of the restore backend and initial UI.
 - [iTech Expert](https://twitter.com/iTechExpert21) for various tweaks.
