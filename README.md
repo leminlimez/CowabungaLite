@@ -54,15 +54,10 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
     - Set Supervision Organization Name
 
 ## Screenshots
-![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png)
-![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Explore.png)
-![Theming](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Theming.png)
-![App Settings](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/AppSettings.png)
-![Single App Settings](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SingleApp.png)
-![Status Bar](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/StatusBar.png)
-![Springboard Options](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SpringboardOptions.png)
-![Setup Options](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SetupOptions.png)
-![Apply Page](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Apply.png)
+![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png) ![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Explore.png)
+![Theming](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Theming.png) ![App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/AppSettings.png) ![Single App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SingleApp.png)
+![Status Bar](https://github.com/Avangelista/CowabungaLite/blob/main/Images/StatusBar.png) ![Springboard Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SpringboardOptions.png)
+![Setup Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SetupOptions.png) ![Apply Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Apply.png)
 
 ## Building
 Just build like a normal Xcode project. Sign using your own team and bundle identifier. You can also build the .app file by running the command `xcodebuild CODE_SIGNING_ALLOWED=NO -scheme Cowabunga\ Lite -configuration release` inside the folder containing the xcodeproj.
