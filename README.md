@@ -54,7 +54,13 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
     - Set Supervision Organization Name
 
 ## Screenshots
-![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png) ![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Explore.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Home.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/Home.png">
+  <img alt="Home Page" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Home.png">
+</picture>
+![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png)
+![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Explore.png)
 ![Theming](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Theming.png) ![App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/AppSettings.png) ![Single App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SingleApp.png)
 ![Status Bar](https://github.com/Avangelista/CowabungaLite/blob/main/Images/StatusBar.png) ![Springboard Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SpringboardOptions.png)
 ![Setup Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SetupOptions.png) ![Apply Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Apply.png)
