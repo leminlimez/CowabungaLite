@@ -54,6 +54,7 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
     - Set Supervision Organization Name
 
 ## Screenshots
+![TestImage](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/AppSettings.png)
 <img src="/Images/Home.png" width="900" height="500"/> <img src="/Images/Explore.png" width="900" height="500"/>
 <img src="/Images/Theming.png" width="900" height="500"/> <img src="/Images/AppSettings.png" width="900" height="500"/> <img src="/Images/SingleApp.png" width="900" height="500"/>
 <img src="/Images/StatusBar.png" width="900" height="500"/> <img src="/Images/SpringboardOptions.png" width="900" height="500"/>
