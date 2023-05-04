@@ -59,11 +59,46 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/Home.png">
   <img alt="Home Page" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Home.png">
 </picture>
-![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png)
-![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Explore.png)
-![Theming](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Theming.png) ![App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/AppSettings.png) ![Single App Settings](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SingleApp.png)
-![Status Bar](https://github.com/Avangelista/CowabungaLite/blob/main/Images/StatusBar.png) ![Springboard Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SpringboardOptions.png)
-![Setup Options](https://github.com/Avangelista/CowabungaLite/blob/main/Images/SetupOptions.png) ![Apply Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Apply.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Explore.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/Explore.png">
+  <img alt="Explore Page" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Explore.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Theming.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/Theming.png">
+  <img alt="Theming" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Theming.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/AppSettings.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/AppSettings.png">
+  <img alt="App Settings" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/AppSettings.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SingleApp.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/SingleApp.png">
+  <img alt="Single App Settings" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SingleApp.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/StatusBar.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/StatusBar.png">
+  <img alt="Status Bar" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/StatusBar.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SpringboardOptions.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/SpringboardOptions.png">
+  <img alt="Springboard Options" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SpringboardOptions.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SetupOptions.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/SetupOptions.png">
+  <img alt="Setup Options" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/SetupOptions.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Apply.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Light/Apply.png">
+  <img alt="Apply Page" src="https://github.com/Avangelista/CowabungaLite/blob/main/Images/Dark/Apply.png">
+</picture>
 
 ## Building
 Just build like a normal Xcode project. Sign using your own team and bundle identifier. You can also build the .app file by running the command `xcodebuild CODE_SIGNING_ALLOWED=NO -scheme Cowabunga\ Lite -configuration release` inside the folder containing the xcodeproj.
