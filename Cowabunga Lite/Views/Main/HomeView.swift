@@ -85,8 +85,11 @@ struct HomeView: View {
                 }
                 Divider()
                 HStack {
-                    LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
                     LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
+                    LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
+                }
+                HStack {
+                    LinkCell(imageName: "iTechExpert", url: "https://twitter.com/iTechExpert21", title: "iTech Expert", contribution: "Airdrop to Everyone, Known WiFi Networks")
                 }
                 Divider()
                 Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown") (\(versionBuildString ?? "Release"))")
