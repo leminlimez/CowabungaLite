@@ -158,7 +158,7 @@ struct SpringboardOptionsView: View {
                                 
                                 if new == true {
                                     if !FileManager.default.fileExists(atPath: url.path) {
-                                        try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
+                                        try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0)
                                     }
                                 } else {
                                     if FileManager.default.fileExists(atPath: url.path) {
