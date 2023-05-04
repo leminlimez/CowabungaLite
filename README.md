@@ -54,11 +54,15 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
     - Set Supervision Organization Name
 
 ## Screenshots
-![TestImage](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/AppSettings.png)
-<img src="/Images/Home.png" width="900" height="500"/> <img src="/Images/Explore.png" width="900" height="500"/>
-<img src="/Images/Theming.png" width="900" height="500"/> <img src="/Images/AppSettings.png" width="900" height="500"/> <img src="/Images/SingleApp.png" width="900" height="500"/>
-<img src="/Images/StatusBar.png" width="900" height="500"/> <img src="/Images/SpringboardOptions.png" width="900" height="500"/>
-<img src="/Images/SetupOptions.png" width="900" height="500"/> <img src="/Images/Apply.png" width="900" height="500"/>
+![Home Page](https://github.com/Avangelista/CowabungaLite/blob/main/Images/Home.png)
+![Explore Page](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Explore.png)
+![Theming](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Theming.png)
+![App Settings](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/AppSettings.png)
+![Single App Settings](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SingleApp.png)
+![Status Bar](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/StatusBar.png)
+![Springboard Options](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SpringboardOptions.png)
+![Setup Options](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/SetupOptions.png)
+![Apply Page](https://github.com/Avangelista/CowabungaLite/blob/5e9179372317bd636eb6d1860f60c1295fd6ab2b/Images/Apply.png)
 
 ## Building
 Just build like a normal Xcode project. Sign using your own team and bundle identifier. You can also build the .app file by running the command `xcodebuild CODE_SIGNING_ALLOWED=NO -scheme Cowabunga\ Lite -configuration release` inside the folder containing the xcodeproj.
