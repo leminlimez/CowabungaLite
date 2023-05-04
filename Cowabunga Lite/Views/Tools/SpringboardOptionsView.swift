@@ -16,6 +16,7 @@ struct SpringboardOptionsView: View {
     @State private var animSpeed: Double = 1
     
     @State private var showWiFiDebugger: Bool = false
+    @State private var airdropEveryone: Bool = false
     
     enum FileLocation: String {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
@@ -39,6 +40,7 @@ struct SpringboardOptionsView: View {
         .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", fileLocation: .springboard),
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
+        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
         .init(key: "SBIconVisibility", name: "Mute Module in CC", fileLocation: .mute),
         .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
         .init(key: "AccessoryDeveloperEnabled", name: "Accessory Developer", fileLocation: .globalPreferences),
@@ -46,7 +48,6 @@ struct SpringboardOptionsView: View {
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
 //        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", fileLocation: .springboard),
-//        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
 //        .init(key: "SBControlCenterDemo", name: "CC AirPlay Radar", fileLocation: .springboard)
     ]
     
@@ -141,6 +142,41 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
                                 return
                             }
+                        }
+                        
+                        // MARK: Set Airdrop to Everyone
+                        Toggle(isOn: $airdropEveryone) {
+                            Text("Set Airdrop to Everyone")
+                                .minimumScaleFactor(0.5)
+                        }.onChange(of: airdropEveryone, perform: { new in
+                            do {
+                                let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
+                                guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
+                                    Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
+                                    return
+                                }
+                                
+                                if new == true {
+                                    if !FileManager.default.fileExists(atPath: url.path) {
+                                        try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
+                                    }
+                                } else {
+                                    if FileManager.default.fileExists(atPath: url.path) {
+                                        try FileManager.default.removeItem(at: url)
+                                    }
+                                }
+                            } catch {
+                                Logger.shared.logMe(error.localizedDescription)
+                                return
+                            }
+                        })
+                        .onAppear {
+                            let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
+                            guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
+                                Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
+                                return
+                            }
+                            airdropEveryone = FileManager.default.fileExists(atPath: url.path)
                         }
                         
                         Divider()
