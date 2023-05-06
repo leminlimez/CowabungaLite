@@ -157,13 +157,9 @@ struct SpringboardOptionsView: View {
                                 }
                                 
                                 if new == true {
-                                    if !FileManager.default.fileExists(atPath: url.path) {
-                                        try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0)
-                                    }
+                                    try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: url)
                                 } else {
-                                    if FileManager.default.fileExists(atPath: url.path) {
-                                        try FileManager.default.removeItem(at: url)
-                                    }
+                                    try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: url)
                                 }
                             } catch {
                                 Logger.shared.logMe(error.localizedDescription)
@@ -176,7 +172,11 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
                                 return
                             }
-                            airdropEveryone = FileManager.default.fileExists(atPath: url.path)
+                            // Add a getPlistValues func to PlistManager pls
+                            guard let plist = NSDictionary(contentsOf: url) as? [String:Any] else {
+                                return
+                            }
+                            airdropEveryone = plist["DiscoverableMode"] as? String ?? "" == "Everyone"
                         }
                         
                         Divider()
