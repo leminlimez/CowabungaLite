@@ -15,6 +15,8 @@ import Foundation
     @Published var deviceAvailable = false
     @Published var deviceTested = false
     
+    private var lastTestedVersion: String = "16.6"
+    
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
             enabledTweaks.insert(tweak)
@@ -37,7 +39,7 @@ import Foundation
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {
-            if Int(device.version.split(separator: ".")[0])! < 16 || Int(device.version.split(separator: ".")[1]) ?? 0 <= 5 {
+            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending {
                 deviceTested = true
             }
             setupWorkspaceForUUID(device.uuid)

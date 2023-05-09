@@ -27,7 +27,7 @@ struct RootView: View {
 //            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
-            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
+//            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         
         // Apply
@@ -61,7 +61,7 @@ struct RootView: View {
         NavigationView {
             List {
                 HStack {
-                    Picker(selection: $selectedDeviceIndex, label: Image(systemName: "iphone")) {
+                    Picker(selection: $selectedDeviceIndex, label: Image(systemName: dataSingleton.currentDevice?.ipad == true ? "ipad" : "iphone")) {
                         if let devices = devices {
                             if devices.isEmpty {
                                 Text("None").tag(0)

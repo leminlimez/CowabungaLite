@@ -58,7 +58,7 @@ struct HomeView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: "iphone")
+                    Image(systemName: dataSingleton.currentDevice?.ipad == true ? "ipad" : "iphone")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35)
