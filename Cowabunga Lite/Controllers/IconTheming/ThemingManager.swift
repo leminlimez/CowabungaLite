@@ -172,27 +172,13 @@ class ThemingManager: ObservableObject {
     
     public func applyTheme() {
         let t = getCurrentAppliedTheme()
-        if t == nil {
-            Logger.shared.logMe("Applying icon themes...")
-            eraseAppliedTheme()
-            if getThemeToggleSetting("ThemeAllApps") == true {
-                do {
-                    try applyTheme(themeName: nil, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
-                    Logger.shared.logMe("Successfully applied icon themes!")
-                } catch {
-                    Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
-                }
-            }
-            
-        } else {
-            Logger.shared.logMe("Applying icon themes...")
-            eraseAppliedTheme()
-            do {
-                try applyTheme(themeName: t!, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
-                Logger.shared.logMe("Successfully applied icon themes!")
-            } catch {
-                Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
-            }
+        Logger.shared.logMe("Applying icon themes...")
+        eraseAppliedTheme()
+        do {
+            try applyTheme(themeName: t, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
+            Logger.shared.logMe("Successfully applied icon themes!")
+        } catch {
+            Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
         }
     }
     
