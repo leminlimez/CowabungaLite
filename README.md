@@ -1,6 +1,8 @@
 # Cowabunga Lite
 A jailed customization toolbox for iOS 15+ on all devices.
 
+Please back up your devices before using this software! We are not responsible for damage to your device.
+
 Join the [Discord](https://discord.gg/Cowabunga) for additional support and sneak peaks.
 Support us on [Patreon](https://patreon.com/Cowabunga_iOS) to be featured in the home screen and to get access to exclusive private beta builds!
 
@@ -8,6 +10,7 @@ Support us on [Patreon](https://patreon.com/Cowabunga_iOS) to be featured in the
 - A Mac running MacOS 11.0 (Big Sur) or higher (Can be a virtual machine/hackintosh)
 - An iOS device on iOS 15.0 or higher
 - Find My must be turned off while applying (can be turned back on afterwards)
+- Your device must not have MDM with backup encryption enabled
 
 ## Installing
 Simply download the .zip that is for your MacOS version and run the app. Plug in your phone and start tweaking!
