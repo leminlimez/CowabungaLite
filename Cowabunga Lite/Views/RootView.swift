@@ -24,10 +24,10 @@ struct RootView: View {
         .init(title: "Tools", options: [
             .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: IconThemingMainView()),
             .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView()),
-//            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
+            .init(tweak: .controlCenter, title: "Control Center", icon: "switch.2", view: ControlCenterView()),
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
+            .init(tweak: .internalOptions, title: "Internal Options", icon: "internaldrive", view: InternalOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
-            .init(tweak: .controlCenter, title: "Control Center", icon: "switch.2", view: ControlCenterView())
 //            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         
