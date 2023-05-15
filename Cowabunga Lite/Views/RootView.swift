@@ -27,6 +27,7 @@ struct RootView: View {
 //            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
+            .init(tweak: .controlCenter, title: "Control Center", icon: "switch.2", view: ControlCenterView())
 //            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         

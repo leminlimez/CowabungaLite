@@ -32,6 +32,7 @@ enum Tweak: String {
     case skipSetup = "SkipSetup"
     case themes = "AppliedTheme"
     case dynamicIsland = "DynamicIsland"
+    case controlCenter = "ControlCenter"
     case testing = "Testing"
     case none = "None"
 }
