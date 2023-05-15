@@ -13,6 +13,7 @@ struct LinkCell: View {
     var title: String
     var contribution: String
     var systemImage: Bool = false
+    var circle: Bool = true
     @Environment(\.openURL) var openURL
     
     var body: some View {
@@ -31,7 +32,7 @@ struct LinkCell: View {
                         }
                     }
                 }
-                .cornerRadius(.infinity)
+                .cornerRadius(circle ? .infinity : 0)
                 .frame(width: 24, height: 24)
                 Text(title).fontWeight(.bold)
                 Text(contribution).foregroundColor(.secondary)
@@ -89,12 +90,19 @@ struct HomeView: View {
                     }
                 }
                 Divider()
-                HStack {
-                    LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
-                    LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
+                Group {
+                    HStack {
+                        LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")
+                        LinkCell(imageName: "avangelista", url: "https://github.com/Avangelista", title: "Avangelista", contribution: "Main Dev")
+                    }
+                    HStack {
+                        LinkCell(imageName: "iTechExpert", url: "https://twitter.com/iTechExpert21", title: "iTech Expert", contribution: "Airdrop to Everyone, Known WiFi Networks")
+                    }
                 }
+                Divider()
                 HStack {
-                    LinkCell(imageName: "iTechExpert", url: "https://twitter.com/iTechExpert21", title: "iTech Expert", contribution: "Airdrop to Everyone, Known WiFi Networks")
+                    LinkCell(imageName: "discord.fill", url: "https://discord.gg/Cowabunga", title: "Join the Discord", contribution: "", circle: false)
+                    LinkCell(imageName: "heart.fill", url: "https://patreon.com/Cowabunga_iOS", title: "Support us on Patreon", contribution: "", systemImage: true, circle: false)
                 }
                 Divider()
                 Text("Cowabunga Lite - Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown") (\(versionBuildString ?? "Release"))")
