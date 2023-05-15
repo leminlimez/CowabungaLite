@@ -33,6 +33,7 @@ enum Tweak: String {
     case themes = "AppliedTheme"
     case dynamicIsland = "DynamicIsland"
     case controlCenter = "ControlCenter"
+    case internalOptions = "InternalOptions"
     case testing = "Testing"
     case none = "None"
 }
