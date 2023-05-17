@@ -2,7 +2,7 @@
 //  ProfilesView.swift
 //  Cowabunga Lite
 //
-//  Created by Stephen Bove on 5/17/23.
+//  Created by BluStik on 5/17/23.
 //
 
 import SwiftUI
