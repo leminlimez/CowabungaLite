@@ -15,8 +15,10 @@ struct InternalOptionsView: View {
     
     enum FileLocation: String {
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case maps = "InternalOptions/Apps/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
-        case weather = "InternalOptions/Apps/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
+        case appStore = "InternalOptions/HomeDomain/Library/Preferences/com.apple.AppStore.plist"
+        case notes = "InternalOptions/HomeDomain/Library/Preferences/com.apple.mobilenotes.plist"
+//        case maps = "InternalOptions/AppDomain/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
+//        case weather = "InternalOptions/AppDomain/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
     }
     
     struct SBOption: Identifiable {
@@ -30,14 +32,17 @@ struct InternalOptionsView: View {
     
     @State private var sbOptions: [SBOption] = [
         .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences),
+        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences, dividerBelow: true),
+        .init(key: "MetalForceHudEnabled", name: "Force Metal HUD Debug", fileLocation: .globalPreferences),
         .init(key: "AccessoryDeveloperEnabled", name: "Accessory Diagnostics", fileLocation: .globalPreferences),
         .init(key: "iMessageDiagnosticsEnabled", name: "iMessage Diagnostics", fileLocation: .globalPreferences),
         .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
         .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "DebugConsoleEnabled", name: "Maps App Debug Console", fileLocation: .maps),
-        .init(key: "VKConsoleEnabledKey", name: "Maps App VK Console", fileLocation: .maps, dividerBelow: true),
-        .init(key: "weather.vfx.overrideConditionBackground", name: "Weather App Override Condition Background", fileLocation: .weather)
+        .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
+        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes)
+//        .init(key: "DebugConsoleEnabled", name: "Maps App Debug Console", fileLocation: .maps),
+//        .init(key: "VKConsoleEnabledKey", name: "Maps App VK Console", fileLocation: .maps, dividerBelow: true),
+//        .init(key: "weather.vfx.overrideConditionBackground", name: "Weather App Override Condition Background", fileLocation: .weather)
     ]
     
     var body: some View {

@@ -12,9 +12,9 @@ struct ControlCenterView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     
     enum FileLocation: String {
-        case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
-        case focus = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
-        case spoken = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
+        case mute = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
+        case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
+        case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
     }
     
     private struct ModuleType: Identifiable {
@@ -46,6 +46,7 @@ struct ControlCenterView: View {
                                 Rectangle()
                                     .cornerRadius(50)
                                     .foregroundColor(.blue)
+                                    .frame(maxWidth: 50)
                                 Text("Beta")
                                     .foregroundColor(.white)
                             }
