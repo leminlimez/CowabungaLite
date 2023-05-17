@@ -25,8 +25,9 @@ struct RootView: View {
             .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: IconThemingMainView()),
             .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView()),
 //            .init(tweak: .footnote, title: "Lock Screen Footnote", icon: "platter.filled.bottom.iphone", view: LockScreenFootnoteView()),
-            .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
+            .init(title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
+            .init(tweak: .skipSetup, title: "Profiles", icon: "folder", view: ProfilesView()),
 //            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         
