@@ -120,7 +120,7 @@ struct ControlCenterView: View {
                             }
                         }
                     }
-                }
+                }.disabled(!enableTweak)
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
