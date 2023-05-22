@@ -14,6 +14,9 @@ struct StatusBarView: View {
     @State private var primaryServiceBadgeText: String = ""
     @State private var primaryServiceBadgeTextEnabled: Bool = false
     
+    @State private var secondCellularServiceEnabled: Bool = false
+    @State private var secondaryCellularServiceValue: Bool = false
+    
     @State private var secondaryCarrierText: String = ""
     @State private var secondaryCarrierTextEnabled: Bool = false
     
@@ -216,6 +219,7 @@ struct StatusBarView: View {
                     Divider()
                     
                     Group {
+                        Text("Primary Carrier").bold()
                         Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
                             if nv {
                                 StatusManager.sharedInstance().setCarrier(carrierText)
@@ -297,6 +301,30 @@ struct StatusBarView: View {
                         }.onAppear(perform: {
                             dataNetworkType = Int(StatusManager.sharedInstance().getDataNetworkTypeOverride())
                         })
+                    }
+                    
+                    Divider()
+                    
+                    Group {
+                        Text("Secondary Carrier").bold()
+                        Toggle("Change Secondary Service Status", isOn: $secondCellularServiceEnabled).onChange(of: secondCellularServiceEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setSecondaryCellularService(secondaryCellularServiceValue)
+                            } else {
+                                StatusManager.sharedInstance().unsetSecondaryCellularService()
+                            }
+                        }).onAppear(perform: {
+                            secondCellularServiceEnabled = StatusManager.sharedInstance().isSecondaryCellularServiceOverridden()
+                        })
+                        if secondCellularServiceEnabled {
+                            Toggle("Secondary Cellular Service Enabled", isOn: $secondaryCellularServiceValue).onChange(of: secondaryCellularServiceValue, perform: { nv in
+                                if secondCellularServiceEnabled {
+                                    StatusManager.sharedInstance().setSecondaryCellularService(nv)
+                                }
+                            }).onAppear(perform: {
+                                secondaryCellularServiceValue = StatusManager.sharedInstance().getSecondaryCellularServiceOverride()
+                            })
+                        }
                         
                         Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
                             if nv {
