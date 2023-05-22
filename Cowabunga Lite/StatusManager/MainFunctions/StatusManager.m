@@ -55,7 +55,7 @@
                 _setter = [StatusSetter16 new];
             } else if (subversion <= 2) {
                 _setter = [StatusSetter16_1 new];
-            } else if (subversion <= 5) {
+            } else if (subversion <= 6) {
                 _setter = [StatusSetter16_3 new];
             }
         }
