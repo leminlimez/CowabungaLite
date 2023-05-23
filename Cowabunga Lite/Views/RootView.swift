@@ -11,7 +11,6 @@ struct RootView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var devices: [Device]?
     @State private var selectedDeviceIndex = 0
-    @State private var lastWasEmpty: Bool = true
     
     @State private var options: [Category] = [
         .init(options: [
@@ -50,17 +49,10 @@ struct RootView: View {
             }
         }
         // Return to Home view
-        if let devices = devices, !devices.isEmpty, (lastWasEmpty && !devices.isEmpty) || (!lastWasEmpty && devices.isEmpty) {
-            options[0].options[0].active = true
-            for i in 1..<options.count {
-                for j in 0..<options[i].options.count {
-                    options[i].options[j].active = false
-                }
-            }
-            if !devices.isEmpty {
-                lastWasEmpty = false
-            } else {
-                lastWasEmpty = true
+        options[0].options[0].active = true
+        for i in 1..<options.count {
+            for j in 0..<options[i].options.count {
+                options[i].options[j].active = false
             }
         }
     }
