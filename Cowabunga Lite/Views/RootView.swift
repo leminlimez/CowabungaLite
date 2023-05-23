@@ -76,6 +76,9 @@ struct RootView: View {
                         }
                     }.onAppear {
                         updateDevices()
+                        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                            updateDevices()
+                        }
                     }.onChange(of: selectedDeviceIndex) { nv in
                         if let devices = devices {
                             DataSingleton.shared.setCurrentDevice(devices[nv])
@@ -84,12 +87,18 @@ struct RootView: View {
                         }
                         updateDevices()
                     }
-                    
-                    Button(action: {
-                        updateDevices()
-                    }) {
-                        Image(systemName: "arrow.clockwise")
+                    if let devices = devices {
+                        if devices.isEmpty {
+                            ProgressView()
+                                .scaleEffect(0.6)
+                        }
                     }
+                    
+//                    Button(action: {
+//                        updateDevices()
+//                    }) {
+//                        Image(systemName: "arrow.clockwise")
+//                    }
                 }
                 
                 ForEach($options) { cat in
