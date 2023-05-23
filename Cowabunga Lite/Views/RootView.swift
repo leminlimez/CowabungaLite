@@ -126,9 +126,6 @@ struct RootView: View {
             }
             .frame(minWidth: 300)
         }
-        .onAppear {
-            updateDevices()
-        }
     }
     
     struct Category: Identifiable {
