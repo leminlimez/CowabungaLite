@@ -59,10 +59,17 @@ struct HomeView: View {
         List {
             Group {
                 HStack {
-                    Image(systemName: dataSingleton.currentDevice?.ipad == true ? "ipad" : "iphone")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 35, height: 35)
+                    if dataSingleton.currentDevice?.name != nil {
+                        Image(systemName: dataSingleton.currentDevice?.ipad == true ? "ipad" : "iphone")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 35, height: 35)
+                    } else {
+                        Image(systemName: "iphone.slash")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 35, height: 35)
+                    }
                     VStack {
                         HStack {
                             Text(dataSingleton.currentDevice?.name ?? "No Device")
