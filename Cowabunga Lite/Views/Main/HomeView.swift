@@ -77,7 +77,7 @@ struct HomeView: View {
                                         .foregroundColor(.red)
                                 } else {
                                     if (!DataSingleton.shared.deviceTested) {
-                                        Text("Possibly Supported (Untested).")
+                                        Text("Untested.")
                                             .foregroundColor(.yellow)
                                     } else {
                                         Text("Supported!")
