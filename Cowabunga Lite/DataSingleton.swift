@@ -15,7 +15,7 @@ import Foundation
     @Published var deviceAvailable = false
     @Published var deviceTested = false
     
-    private var lastTestedVersion: String = "16.6"
+    private var lastTestedVersion: String = "16.7"
     
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
