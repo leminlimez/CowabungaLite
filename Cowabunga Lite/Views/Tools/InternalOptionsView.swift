@@ -17,8 +17,8 @@ struct InternalOptionsView: View {
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
         case appStore = "InternalOptions/HomeDomain/Library/Preferences/com.apple.AppStore.plist"
         case notes = "InternalOptions/HomeDomain/Library/Preferences/com.apple.mobilenotes.plist"
-//        case maps = "InternalOptions/AppDomain/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
-//        case weather = "InternalOptions/AppDomain/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
+        case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
+        case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
     }
     
     struct SBOption: Identifiable {
