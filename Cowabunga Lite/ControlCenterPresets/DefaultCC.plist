@@ -2,8 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>preset-identifier</key>
-	<string>DefaultCC</string>
+	<key>preset-identifiers</key>
+	<dict>
+		<key>title</key>
+		<string>Default</string>
+		<key>enabled-modules</key>
+		<array>
+			<integer>2</integer>
+		</array>
+		<key>identification</key>
+		<string>DefaultCC</string>
+	</dict>
 	<key>disabled-module-identifiers</key>
 	<array>
 		<string>com.apple.accessibility.controlcenter.general</string>

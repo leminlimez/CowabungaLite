@@ -17,6 +17,7 @@ struct CowabungaLiteApp: App {
                 Logger.shared.logMe("Error creating directory com.leemin.CowabungaLite")
             }
         }
+        let _ = CCManager.getPresetsFolder()
     }
     
     var body: some Scene {
