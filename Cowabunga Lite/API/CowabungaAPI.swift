@@ -57,9 +57,12 @@ class CowabungaAPI: ObservableObject {
         
         var saveURL = documentsDirectory
         
+        // Get the save path
         switch theme.type {
         case .icon:
             saveURL = saveURL.appendingPathComponent("Themes")
+        case .cc:
+            saveURL = saveURL.appendingPathComponent("CC_Presets")
         default:
             throw "unknown theme type"
         }
@@ -74,8 +77,10 @@ class CowabungaAPI: ObservableObject {
         guard response1.statusCode == 200 else { throw "Could not connect to server while downloading theme" }
         try data1.write(to: tempThemeDownloadURL)
         
+        // Extract the main files
         switch theme.type {
         case .icon:
+            // Case for Icon Themes
             let tmpExtract = saveURL.deletingLastPathComponent().appendingPathComponent("tmp_extract")
             if FileManager.default.fileExists(atPath: tmpExtract.path) {
                 try? FileManager.default.removeItem(at: tmpExtract)
@@ -85,6 +90,23 @@ class CowabungaAPI: ObservableObject {
             try ThemingManager.shared.importTheme(from: tmpExtract.appendingPathComponent(theme.name))
             
             try fm.removeItem(at: tmpExtract)
+        case .cc:
+            // Case for CC Presets
+            if !FileManager.default.fileExists(atPath: saveURL.path) {
+                try FileManager.default.createDirectory(at: saveURL, withIntermediateDirectories: false)
+            }
+            // Apply the properties
+            let plistData = try Data(contentsOf: tempThemeDownloadURL)
+            var plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
+            let info: [String: Any] = [
+                "title": theme.name,
+                "identification": theme.identification ?? theme.name,
+                "author": theme.contact["Twitter"] ?? "Unknown",
+                "modules": theme.modules ?? []
+            ]
+            plist["preset-identifiers"] = info
+            let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+            try newData.write(to: saveURL.appendingPathComponent("ModuleConfiguration.plist"))
         default:
             throw "unknown theme type"
         }
@@ -177,10 +199,12 @@ class CowabungaAPI: ObservableObject {
 
 class DownloadableTheme: Identifiable, Codable {
     var name: String
+    var identification: String?
     var description: String
     var url: String
     var preview: String
     var contact: [String: String]
+    var modules: [Int]? = nil
     var type: ThemeType?
     var version: String
 
@@ -193,7 +217,18 @@ class DownloadableTheme: Identifiable, Codable {
         self.version = version
     }
     
+    init(name: String, identification: String, description: String, contact: [String : String], modules: [Int], preview: String, url: String, version: String) {
+        self.name = name
+        self.identification = identification
+        self.description = description
+        self.contact = contact
+        self.modules = modules
+        self.preview = preview
+        self.url = url
+        self.version = version
+    }
+    
     enum ThemeType: String, Codable {
-        case passcode, lock, icon
+        case passcode, lock, icon, cc
     }
 }

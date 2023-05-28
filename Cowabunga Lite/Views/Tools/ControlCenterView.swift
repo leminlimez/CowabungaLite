@@ -32,8 +32,9 @@ struct ControlCenterView: View {
     private struct ConfigPreset: Identifiable {
         var id = UUID()
         var title: String
-        var imageName: String
-        var fileName: String
+        var identification: String
+        var image: NSImage
+        var fileLocation: URL?
         var modulesToEnable: [Int] // based on module ID
         var author: String?
     }
@@ -45,9 +46,6 @@ struct ControlCenterView: View {
     ]
     
     @State private var presets: [ConfigPreset] = [
-        .init(title: "Default", imageName: "DefaultCC", fileName: "DefaultCC", modulesToEnable: [2]),
-        .init(title: "Stylistic", imageName: "StylisticCC", fileName: "StylisticCC", modulesToEnable: [1, 2], author: "@LeminLimez"),
-        .init(title: "CC Module++", imageName: "CCModulePlusPlus", fileName: "CCModulePlusPlus", modulesToEnable: [1, 2, 3], author: "@iTechExpert21")
     ]
     
     var body: some View {
@@ -149,7 +147,7 @@ struct ControlCenterView: View {
                     LazyVGrid(columns: gridItemLayout, spacing: 10) {
                         ForEach($presets) { preset in
                             VStack {
-                                Image(preset.imageName.wrappedValue)
+                                Image(nsImage: preset.image.wrappedValue)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(maxWidth: 110)
@@ -158,20 +156,20 @@ struct ControlCenterView: View {
                                     .padding(.bottom, 1)
                                 Text(preset.author.wrappedValue ?? " ")
                                     .font(.caption)
-                                
+
                                 NiceButton(text: AnyView(
-                                    Text(currentCC == preset.fileName.wrappedValue ? "Selected" : "Select")
+                                    Text(currentCC == preset.identification.wrappedValue ? "Selected" : "Select")
                                         .frame(maxWidth: .infinity)
                                 ), action: {
                                     guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
-                                    if currentCC == preset.fileName.wrappedValue {
+                                    if currentCC == preset.identification.wrappedValue {
                                         if FileManager.default.fileExists(atPath: filePath.path) {
                                             try? FileManager.default.removeItem(at: filePath)
                                         }
                                         currentCC = "None"
                                     } else {
                                         do {
-                                            if let ccPlist = Bundle.main.url(forResource: preset.fileName.wrappedValue, withExtension: "plist") {
+                                            if let ccPlist = preset.fileLocation.wrappedValue {
                                                 let ccData = try Data(contentsOf: ccPlist)
                                                 try ccData.write(to: filePath)
                                                 // enable the modules associated with it
@@ -184,16 +182,16 @@ struct ControlCenterView: View {
                                                         }
                                                     }
                                                 }
-                                                currentCC = preset.fileName.wrappedValue
+                                                currentCC = preset.identification.wrappedValue
                                             } else {
-                                                throw "No bundle for resource \(preset.fileName.wrappedValue) found!"
+                                                throw "No url for preset \(preset.identification.wrappedValue) found!"
                                             }
                                         } catch {
                                             currentCC = "None"
                                             print(error.localizedDescription)
                                         }
                                     }
-                                }, background: currentCC == preset.fileName.wrappedValue ? .blue : Color.cowGray)
+                                }, background: currentCC == preset.identification.wrappedValue ? .blue : Color.cowGray)
                             }
                         }
                     }.onAppear {
@@ -202,8 +200,8 @@ struct ControlCenterView: View {
                             if FileManager.default.fileExists(atPath: filePath.path) {
                                 let plistData = try Data(contentsOf: filePath)
                                 let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                                if let pIdentifier = plist["preset-identifier"] as? String {
-                                    currentCC = pIdentifier
+                                if let pIdentifier = plist["preset-identifier"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
+                                    currentCC = pID
                                 } else {
                                     currentCC = "None"
                                 }
@@ -213,6 +211,36 @@ struct ControlCenterView: View {
                         }
                     }
                 }.disabled(!enableTweak)
+                .onAppear {
+                    // First, get the default cc
+                    presets.removeAll()
+                    presets.append(.init(title: "Default", identification: "DefaultCC", image: NSImage(imageLiteralResourceName: "DefaultCC"), fileLocation: Bundle.main.url(forResource: "DefaultCC", withExtension: ".plist"), modulesToEnable: [2]))
+                    
+                    // Next, get the saved cc presets
+                    let presetsURL = CCManager.getPresetsFolder()
+                    do {
+                        for cc in try FileManager.default.contentsOfDirectory(at: presetsURL, includingPropertiesForKeys: nil) {
+                            do {
+                                let plistData = try Data(contentsOf: cc.appendingPathComponent("ModuleConfiguration.plist"))
+                                let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
+                                if let id = plist["preset-identifiers"] as? [String: Any] {
+                                    if let title = id["title"] as? String, let identification = id["identification"] as? String, let mods = id["modules"] as? [Int] {
+                                        let author = id["author"] as? String
+                                        presets.append(.init(title: title, identification: identification, image: NSImage(contentsOf: cc.appendingPathComponent("preview.png")) ?? NSImage(imageLiteralResourceName: "DefaultCC"), fileLocation: cc.appendingPathComponent("ModuleConfiguration.plist"), modulesToEnable: mods, author: author))
+                                    } else {
+                                        throw "Something was nil"
+                                    }
+                                } else {
+                                    throw "There were no preset identifiers!"
+                                }
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    } catch {
+                        print("Error loading cc presets")
+                    }
+                }
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
