@@ -9,6 +9,15 @@ import Foundation
 
 func setupWorkspaceForUUID(_ UUID: String) {
     let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
+    if !fm.fileExists(atPath: documentsDirectory.path) {
+        do {
+            try fm.createDirectory(atPath: documentsDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            Logger.shared.logMe("Documents folder created")
+        } catch {
+            Logger.shared.logMe("Error creating Documents folder: \(error.localizedDescription)")
+            return
+        }
+    }
     if !fm.fileExists(atPath: workspaceDirectory.path) {
         do {
             try fm.createDirectory(atPath: workspaceDirectory.path, withIntermediateDirectories: false, attributes: nil)
@@ -70,7 +79,17 @@ func generateBackup() {
             Logger.shared.logMe("Error locating CreateBackup.sh")
             return }
         do {
+            #if CLI
+            let task = Process()
+            task.launchPath = "C:\\Program Files\\Git\\git-bash.exe"
+            task.arguments = [script.path, "EnabledTweaks", "Backup"]
+            task.currentDirectoryPath = documentsDirectory.path
+            task.launch()
+            task.waitUntilExit()
+            print("Backup created")
+            #else
             try shell(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
+            #endif
         } catch {
             Logger.shared.logMe("Error running CreateBackup.sh")
         }
@@ -105,10 +124,22 @@ func applyTweaks() {
     }
     
     // Create the webclip icons
-    if DataSingleton.shared.allEnabledTweaks().contains(.themes) {
-        ThemingManager.shared.applyTheme()
-    }
-
+     if DataSingleton.shared.allEnabledTweaks().contains(.themes) {
+         #if !CLI
+         ThemingManager.shared.applyTheme()
+         #endif
+//         #if CLI
+//         let task = Process()
+//         task.launchPath = "C:\\Program Files\\Git\\git-bash.exe"
+//         task.arguments = [script.path, "EnabledTweaks", "Backup"]
+//         task.currentDirectoryPath = documentsDirectory.path
+//         task.launch()
+//         task.waitUntilExit()
+//         print("Backup created")
+//         #else
+//         ThemingManager.shared.applyTheme()
+//         #endif
+     }
     for tweak in DataSingleton.shared.allEnabledTweaks() {
         do {
             let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("\(tweak.rawValue)"), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
@@ -166,6 +197,7 @@ func applyTweaks() {
     generateBackup()
     
     // Restore files
+    #if !CLI
     guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
         Logger.shared.logMe("Error locating idevicebackup2")
         return
@@ -179,6 +211,7 @@ func applyTweaks() {
     } catch {
         Logger.shared.logMe("Error restoring to device")
     }
+    #endif
 }
 
 func getDevices() -> [Device] {
@@ -299,4 +332,3 @@ func getHomeScreenNumPages() -> Int {
         return 1
     }
 }
-
