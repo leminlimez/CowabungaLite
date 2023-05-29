@@ -14,6 +14,9 @@ struct StatusBarView: View {
     @State private var primaryServiceBadgeText: String = ""
     @State private var primaryServiceBadgeTextEnabled: Bool = false
     
+    @State private var secondCellularServiceEnabled: Bool = false
+    @State private var secondaryCellularServiceValue: Bool = false
+    
     @State private var secondaryCarrierText: String = ""
     @State private var secondaryCarrierTextEnabled: Bool = false
     
@@ -35,6 +38,9 @@ struct StatusBarView: View {
     @State private var dataNetworkType: Int = 0
     @State private var dataNetworkTypeEnabled: Bool = false
     
+    @State private var secondaryDataNetworkType: Int = 0
+    @State private var secondaryDataNetworkTypeEnabled: Bool = false
+    
     @State private var batteryCapacity: Double = 0
     @State private var batteryCapacityEnabled: Bool = false
     
@@ -43,6 +49,9 @@ struct StatusBarView: View {
     
     @State private var gsmStrengthBars: Double = 0
     @State private var gsmStrengthBarsEnabled: Bool = false
+    
+    @State private var secondaryGsmStrengthBars: Double = 0
+    @State private var secondaryGsmStrengthBarsEnabled: Bool = false
     
     @State private var displayingRawWiFiStrength: Bool = false
     @State private var displayingRawGSMStrength: Bool = false
@@ -216,210 +225,296 @@ struct StatusBarView: View {
                     Divider()
                     
                     Group {
-                        Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setCarrier(carrierText)
-                            } else {
-                                StatusManager.sharedInstance().unsetCarrier()
-                            }
-                        }).onAppear(perform: {
-                            carrierTextEnabled = StatusManager.sharedInstance().isCarrierOverridden()
-                        })
-                        TextField("Primary Carrier Text", text: $carrierText).onChange(of: carrierText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            carrierText = safeNv
-                            if carrierTextEnabled {
-                                StatusManager.sharedInstance().setCarrier(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            carrierText = StatusManager.sharedInstance().getCarrierOverride()
-                        })
-                        Toggle("Change Primary Service Badge Text", isOn: $primaryServiceBadgeTextEnabled).onChange(of: primaryServiceBadgeTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setPrimaryServiceBadge(primaryServiceBadgeText)
-                            } else {
-                                StatusManager.sharedInstance().unsetPrimaryServiceBadge()
-                            }
-                        }).onAppear(perform: {
-                            primaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isPrimaryServiceBadgeOverridden()
-                        })
-                        TextField("Primary Service Badge Text", text: $primaryServiceBadgeText).onChange(of: primaryServiceBadgeText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            primaryServiceBadgeText = safeNv
-                            if primaryServiceBadgeTextEnabled {
-                                StatusManager.sharedInstance().setPrimaryServiceBadge(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            primaryServiceBadgeText = StatusManager.sharedInstance().getPrimaryServiceBadgeOverride()
-                        })
                         
-                        Toggle("Change Data Network Type", isOn: $dataNetworkTypeEnabled).onChange(of: dataNetworkTypeEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
-                            } else {
-                                StatusManager.sharedInstance().unsetDataNetworkType()
-                            }
-                        }).onAppear(perform: {
-                            dataNetworkTypeEnabled = StatusManager.sharedInstance().isDataNetworkTypeOverridden()
-                        })
-                        HStack {
-                            Text("Data Network Type")
-                            Spacer()
+                        Group {
+                            Text("Primary Carrier").bold()
+                            Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setCarrier(carrierText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetCarrier()
+                                }
+                            }).onAppear(perform: {
+                                carrierTextEnabled = StatusManager.sharedInstance().isCarrierOverridden()
+                            })
+                            TextField("Primary Carrier Text", text: $carrierText).onChange(of: carrierText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 100
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 100 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                carrierText = safeNv
+                                if carrierTextEnabled {
+                                    StatusManager.sharedInstance().setCarrier(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                carrierText = StatusManager.sharedInstance().getCarrierOverride()
+                            })
+                            Toggle("Change Primary Service Badge Text", isOn: $primaryServiceBadgeTextEnabled).onChange(of: primaryServiceBadgeTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setPrimaryServiceBadge(primaryServiceBadgeText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetPrimaryServiceBadge()
+                                }
+                            }).onAppear(perform: {
+                                primaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isPrimaryServiceBadgeOverridden()
+                            })
+                            TextField("Primary Service Badge Text", text: $primaryServiceBadgeText).onChange(of: primaryServiceBadgeText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 100
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 100 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                primaryServiceBadgeText = safeNv
+                                if primaryServiceBadgeTextEnabled {
+                                    StatusManager.sharedInstance().setPrimaryServiceBadge(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                primaryServiceBadgeText = StatusManager.sharedInstance().getPrimaryServiceBadgeOverride()
+                            })
                             
-                            Menu {
-                                ForEach(Array(NetworkTypes.enumerated()), id: \.offset) { i, net in
-                                    if net != "???" {
-                                        Button(action: {
-                                            dataNetworkType = i
-                                            if dataNetworkTypeEnabled {
-                                                StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
+                            Toggle("Change Data Network Type", isOn: $dataNetworkTypeEnabled).onChange(of: dataNetworkTypeEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
+                                } else {
+                                    StatusManager.sharedInstance().unsetDataNetworkType()
+                                }
+                            }).onAppear(perform: {
+                                dataNetworkTypeEnabled = StatusManager.sharedInstance().isDataNetworkTypeOverridden()
+                            })
+                            HStack {
+                                Text("Data Network Type")
+                                Spacer()
+                                
+                                Menu {
+                                    ForEach(Array(NetworkTypes.enumerated()), id: \.offset) { i, net in
+                                        if net != "???" {
+                                            Button(action: {
+                                                dataNetworkType = i
+                                                if dataNetworkTypeEnabled {
+                                                    StatusManager.sharedInstance().setDataNetworkType(Int32(dataNetworkType))
+                                                }
+                                            }) {
+                                                Text(net)
                                             }
-                                        }) {
-                                            Text(net)
                                         }
                                     }
+                                } label: {
+                                    Text(NetworkTypes[dataNetworkType])
                                 }
-                            } label: {
-                                Text(NetworkTypes[dataNetworkType])
-                            }
-                        }.onAppear(perform: {
-                            dataNetworkType = Int(StatusManager.sharedInstance().getDataNetworkTypeOverride())
-                        })
+                            }.onAppear(perform: {
+                                dataNetworkType = Int(StatusManager.sharedInstance().getDataNetworkTypeOverride())
+                            })
+                        }
                         
-                        Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setSecondaryCarrier(secondaryCarrierText)
-                            } else {
-                                StatusManager.sharedInstance().unsetSecondaryCarrier()
+                        Divider()
+                        
+                        Group {
+                            Text("Secondary Carrier").bold()
+                            Toggle("Change Secondary Service Status", isOn: $secondCellularServiceEnabled).onChange(of: secondCellularServiceEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setSecondaryCellularService(secondaryCellularServiceValue)
+                                } else {
+                                    StatusManager.sharedInstance().unsetSecondaryCellularService()
+                                }
+                            }).onAppear(perform: {
+                                secondCellularServiceEnabled = StatusManager.sharedInstance().isSecondaryCellularServiceOverridden()
+                            })
+                            if secondCellularServiceEnabled {
+                                Toggle("Secondary Cellular Service Enabled", isOn: $secondaryCellularServiceValue).onChange(of: secondaryCellularServiceValue, perform: { nv in
+                                    if secondCellularServiceEnabled {
+                                        StatusManager.sharedInstance().setSecondaryCellularService(nv)
+                                    }
+                                }).onAppear(perform: {
+                                    secondaryCellularServiceValue = StatusManager.sharedInstance().getSecondaryCellularServiceOverride()
+                                })
                             }
-                        }).onAppear(perform: {
-                            secondaryCarrierTextEnabled = StatusManager.sharedInstance().isSecondaryCarrierOverridden()
-                        })
-                        TextField("Secondary Carrier Text", text: $secondaryCarrierText).onChange(of: secondaryCarrierText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            secondaryCarrierText = safeNv
-                            if secondaryCarrierTextEnabled {
-                                StatusManager.sharedInstance().setSecondaryCarrier(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            secondaryCarrierText = StatusManager.sharedInstance().getSecondaryCarrierOverride()
-                        })
-                        Toggle("Change Secondary Service Badge Text", isOn: $secondaryServiceBadgeTextEnabled).onChange(of: secondaryServiceBadgeTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setSecondaryServiceBadge(secondaryServiceBadgeText)
-                            } else {
-                                StatusManager.sharedInstance().unsetSecondaryServiceBadge()
-                            }
-                        }).onAppear(perform: {
-                            secondaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isSecondaryServiceBadgeOverridden()
-                        })
-                        TextField("Secondary Service Badge Text", text: $secondaryServiceBadgeText).onChange(of: secondaryServiceBadgeText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 100
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 100 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            secondaryServiceBadgeText = safeNv
-                            if secondaryServiceBadgeTextEnabled {
-                                StatusManager.sharedInstance().setSecondaryServiceBadge(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            secondaryServiceBadgeText = StatusManager.sharedInstance().getSecondaryServiceBadgeOverride()
-                        })
+                            
+                            Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setSecondaryCarrier(secondaryCarrierText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetSecondaryCarrier()
+                                }
+                            }).onAppear(perform: {
+                                secondaryCarrierTextEnabled = StatusManager.sharedInstance().isSecondaryCarrierOverridden()
+                            })
+                            TextField("Secondary Carrier Text", text: $secondaryCarrierText).onChange(of: secondaryCarrierText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 100
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 100 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                secondaryCarrierText = safeNv
+                                if secondaryCarrierTextEnabled {
+                                    StatusManager.sharedInstance().setSecondaryCarrier(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                secondaryCarrierText = StatusManager.sharedInstance().getSecondaryCarrierOverride()
+                            })
+                            Toggle("Change Secondary Service Badge Text", isOn: $secondaryServiceBadgeTextEnabled).onChange(of: secondaryServiceBadgeTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setSecondaryServiceBadge(secondaryServiceBadgeText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetSecondaryServiceBadge()
+                                }
+                            }).onAppear(perform: {
+                                secondaryServiceBadgeTextEnabled = StatusManager.sharedInstance().isSecondaryServiceBadgeOverridden()
+                            })
+                            TextField("Secondary Service Badge Text", text: $secondaryServiceBadgeText).onChange(of: secondaryServiceBadgeText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 100
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 100 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                secondaryServiceBadgeText = safeNv
+                                if secondaryServiceBadgeTextEnabled {
+                                    StatusManager.sharedInstance().setSecondaryServiceBadge(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                secondaryServiceBadgeText = StatusManager.sharedInstance().getSecondaryServiceBadgeOverride()
+                            })
+                            
+                            Toggle("Change Secondary Data Network Type", isOn: $secondaryDataNetworkTypeEnabled).onChange(of: secondaryDataNetworkTypeEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setSecondaryDataNetworkType(Int32(secondaryDataNetworkType))
+                                } else {
+                                    StatusManager.sharedInstance().unsetSecondaryDataNetworkType()
+                                }
+                            }).onAppear(perform: {
+                                secondaryDataNetworkTypeEnabled = StatusManager.sharedInstance().isSecondaryDataNetworkTypeOverridden()
+                            })
+                            
+                            HStack {
+                                Text("Secondary Data Network Type")
+                                Spacer()
+                                
+                                Menu {
+                                    ForEach(Array(NetworkTypes.enumerated()), id: \.offset) { i, net in
+                                        if net != "???" {
+                                            Button(action: {
+                                                secondaryDataNetworkType = i
+                                                if secondaryDataNetworkTypeEnabled {
+                                                    StatusManager.sharedInstance().setSecondaryDataNetworkType(Int32(secondaryDataNetworkType))
+                                                }
+                                            }) {
+                                                Text(net)
+                                            }
+                                        }
+                                    }
+                                } label: {
+                                    Text(NetworkTypes[secondaryDataNetworkType])
+                                }
+                            }.onAppear(perform: {
+                                secondaryDataNetworkType = Int(StatusManager.sharedInstance().getSecondaryDataNetworkTypeOverride())
+                            })
+                        }
+                        
                     }
                     
-//                    Divider()
-//                    
-//                    Group {
-//                        Toggle("Change Battery Icon Capacity", isOn: $batteryCapacityEnabled).onChange(of: batteryCapacityEnabled, perform: { nv in
-//                            if nv {
-//                                StatusManager.sharedInstance().setBatteryCapacity(Int32(batteryCapacity))
-//                            } else {
-//                                StatusManager.sharedInstance().unsetBatteryCapacity()
-//                            }
-//                        }).onAppear(perform: {
-//                            batteryCapacityEnabled = StatusManager.sharedInstance().isBatteryCapacityOverridden()
-//                        })
-//                        HStack {
-//                            Text("\(Int(batteryCapacity))%")
-//                                .frame(width: 125)
-//                            Spacer()
-//                            Slider(value: $batteryCapacity, in: 0...100, step: 1.0)
-//                                .padding(.horizontal)
-//                                .onChange(of: batteryCapacity) { nv in
-//                                    StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
-//                                }
-////                                .onAppear(perform: {
-////                                    batteryCapacity = StatusManager.sharedInstance().getBatteryCapacityOverride()
-////                                })
-//                        }
-//                        
-//                        Toggle("Change Wi-Fi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
-//                            if nv {
-//                                StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(wiFiStrengthBars))
-//                            } else {
-//                                StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
-//                            }
-//                        }).onAppear(perform: {
-//                            wiFiStrengthBarsEnabled = StatusManager.sharedInstance().isWiFiSignalStrengthBarsOverridden()
-//                        })
-//                        HStack {
-//                            Text("\(Int(wiFiStrengthBars))")
-//                                .frame(width: 125)
-//                            Spacer()
-//                            Slider(value: $wiFiStrengthBars, in: 0...3, step: 1.0)
-//                                .padding(.horizontal)
-//                                .onChange(of: wiFiStrengthBars) { nv in
-//                                    StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
-//                                }
-////                                .onAppear(perform: {
-////                                    wiFiStrengthBars = StatusManager.sharedInstance().getWiFiSignalStrengthBarsOverride()
-////                                })
-//                        }
-//                        
-//                        Toggle("Change Cellular Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
-//                            if nv {
-//                                StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(gsmStrengthBars))
-//                            } else {
-//                                StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
-//                            }
-//                        }).onAppear(perform: {
-//                            gsmStrengthBarsEnabled = StatusManager.sharedInstance().isGsmSignalStrengthBarsOverridden()
-//                        })
-//                        HStack {
-//                            Text("\(Int(gsmStrengthBars))")
-//                                .frame(width: 125)
-//                            Spacer()
-//                            Slider(value: $gsmStrengthBars, in: 0...4, step: 1.0)
-//                                .padding(.horizontal)
-//                                .onChange(of: gsmStrengthBars) { nv in
-//                                    StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
-//                                }
-////                                .onAppear(perform: {
-////                                    gsmStrengthBars = StatusManager.sharedInstance().getGsmSignalStrengthBarsOverride()
-////                                })
-//                        }
-//                    }
+                    Divider()
+                    
+                    Group {
+                        Toggle("Change Battery Icon Capacity", isOn: $batteryCapacityEnabled).onChange(of: batteryCapacityEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setBatteryCapacity(Int32(batteryCapacity))
+                            } else {
+                                StatusManager.sharedInstance().unsetBatteryCapacity()
+                            }
+                        }).onAppear(perform: {
+                            batteryCapacityEnabled = StatusManager.sharedInstance().isBatteryCapacityOverridden()
+                        })
+                        HStack {
+                            Text("\(Int(batteryCapacity))%")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $batteryCapacity, in: 0...100, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: batteryCapacity) { nv in
+                                    StatusManager.sharedInstance().setBatteryCapacity(Int32(nv))
+                                }
+                                .onAppear(perform: {
+                                    batteryCapacity = Double(StatusManager.sharedInstance().getBatteryCapacityOverride())
+                                })
+                        }
+                        
+                        Toggle("Change Wi-Fi Signal Strength Bars", isOn: $wiFiStrengthBarsEnabled).onChange(of: wiFiStrengthBarsEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(wiFiStrengthBars))
+                            } else {
+                                StatusManager.sharedInstance().unsetWiFiSignalStrengthBars()
+                            }
+                        }).onAppear(perform: {
+                            wiFiStrengthBarsEnabled = StatusManager.sharedInstance().isWiFiSignalStrengthBarsOverridden()
+                        })
+                        HStack {
+                            Text("\(Int(wiFiStrengthBars))")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $wiFiStrengthBars, in: 0...3, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: wiFiStrengthBars) { nv in
+                                    StatusManager.sharedInstance().setWiFiSignalStrengthBars(Int32(nv))
+                                }
+                                .onAppear(perform: {
+                                    wiFiStrengthBars = Double(StatusManager.sharedInstance().getWiFiSignalStrengthBarsOverride())
+                                })
+                        }
+                        
+                        Toggle("Change Primary GSM Signal Strength Bars", isOn: $gsmStrengthBarsEnabled).onChange(of: gsmStrengthBarsEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(gsmStrengthBars))
+                            } else {
+                                StatusManager.sharedInstance().unsetGsmSignalStrengthBars()
+                            }
+                        }).onAppear(perform: {
+                            gsmStrengthBarsEnabled = StatusManager.sharedInstance().isGsmSignalStrengthBarsOverridden()
+                        })
+                        HStack {
+                            Text("\(Int(gsmStrengthBars))")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $gsmStrengthBars, in: 0...4, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: gsmStrengthBars) { nv in
+                                    StatusManager.sharedInstance().setGsmSignalStrengthBars(Int32(nv))
+                                }
+                                .onAppear(perform: {
+                                    gsmStrengthBars = Double(StatusManager.sharedInstance().getGsmSignalStrengthBarsOverride())
+                                })
+                        }
+                        
+                        Toggle("Change Secondary GSM Signal Strength Bars", isOn: $secondaryGsmStrengthBarsEnabled).onChange(of: secondaryGsmStrengthBarsEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setSecondaryGsmSignalStrengthBars(Int32(secondaryGsmStrengthBars))
+                            } else {
+                                StatusManager.sharedInstance().unsetSecondaryGsmSignalStrengthBars()
+                            }
+                        }).onAppear(perform: {
+                            secondaryGsmStrengthBarsEnabled = StatusManager.sharedInstance().isSecondaryGsmSignalStrengthBarsOverridden()
+                        })
+                        HStack {
+                            Text("\(Int(secondaryGsmStrengthBars))")
+                                .frame(width: 125)
+                            Spacer()
+                            Slider(value: $secondaryGsmStrengthBars, in: 0...4, step: 1.0)
+                                .padding(.horizontal)
+                                .onChange(of: secondaryGsmStrengthBars) { nv in
+                                    StatusManager.sharedInstance().setSecondaryGsmSignalStrengthBars(Int32(nv))
+                                }
+                                .onAppear(perform: {
+                                    secondaryGsmStrengthBars = Double(StatusManager.sharedInstance().getSecondaryGsmSignalStrengthBarsOverride())
+                                })
+                        }
+                    }
                     
                     Divider()
                     
