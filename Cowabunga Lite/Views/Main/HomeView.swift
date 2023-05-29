@@ -55,6 +55,8 @@ struct HomeView: View {
     @ObservedObject var patreonAPI = PatreonAPI.shared
     @State private var patrons: [Patron] = []
     
+    @State private var updateAvailable = false
+    
     var body: some View {
         List {
             Group {
@@ -70,29 +72,38 @@ struct HomeView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 35, height: 35)
                     }
-                    VStack {
-                        HStack {
-                            Text(dataSingleton.currentDevice?.name ?? "No Device")
-                                .bold()
-                            Spacer()
-                        }
-                        HStack {
-                            Text(dataSingleton.currentDevice?.version ?? "Please connect a device.")
-                            if (dataSingleton.currentDevice?.uuid != nil) {
-                                if (!DataSingleton.shared.deviceAvailable) {
-                                    Text("Not Supported.")
-                                        .foregroundColor(.red)
-                                } else {
-                                    if (!DataSingleton.shared.deviceTested) {
-                                        Text("Untested.")
-                                            .foregroundColor(.yellow)
+                    ZStack {
+                        VStack {
+                            HStack {
+                                Text(dataSingleton.currentDevice?.name ?? "No Device")
+                                    .bold()
+                                Spacer()
+                            }
+                            HStack {
+                                Text(dataSingleton.currentDevice?.version ?? "Please connect a device.")
+                                if (dataSingleton.currentDevice?.uuid != nil) {
+                                    if (!DataSingleton.shared.deviceAvailable) {
+                                        Text("Not Supported.")
+                                            .foregroundColor(.red)
                                     } else {
-                                        Text("Supported!")
-                                            .foregroundColor(.green)
+                                        if (!DataSingleton.shared.deviceTested) {
+                                            Text("Untested.")
+                                                .foregroundColor(.yellow)
+                                        } else {
+                                            Text("Supported!")
+                                                .foregroundColor(.green)
+                                        }
                                     }
                                 }
+                                Spacer()
                             }
+                        }
+                        HStack {
                             Spacer()
+                            // if update available then show button
+                            if updateAvailable {
+                                LinkCell(imageName: "arrow.down.circle", url: "https://github.com/leminlimez/CowabungaLite/releases/latest", title: "Update Available", contribution: "", systemImage: true, circle: false)
+                            }
                         }
                     }
                 }
@@ -129,6 +140,7 @@ struct HomeView: View {
                     
                     // add the patreon supporters
                     loadPatrons()
+                    checkUpdate()
                 })
 //                TextEditor(text: $logger.logText).font(Font.system(.body, design: .monospaced)).frame(height: 250).disabled(true)
             }
@@ -142,6 +154,21 @@ struct HomeView: View {
             } catch {
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    func checkUpdate() {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let url = URL(string: "https://api.github.com/repos/leminlimez/CowabungaLite/releases/latest") {
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                guard let data = data else { return }
+                
+                if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if (json["tag_name"] as? String)?.replacingOccurrences(of: "v", with: "").compare(version, options: .numeric) == .orderedDescending {
+                        updateAvailable = true
+                    }
+                }
+            }
+            task.resume()
         }
     }
 }
