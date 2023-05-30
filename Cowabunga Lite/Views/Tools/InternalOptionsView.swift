@@ -13,19 +13,11 @@ struct InternalOptionsView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var enableTweak: Bool = false
     
-    enum FileLocation: String {
-        case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case appStore = "InternalOptions/HomeDomain/Library/Preferences/com.apple.AppStore.plist"
-        case notes = "InternalOptions/HomeDomain/Library/Preferences/com.apple.mobilenotes.plist"
-        case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
-        case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
-    }
-    
     struct SBOption: Identifiable {
         var id = UUID()
         var key: String
         var name: String
-        var fileLocation: FileLocation
+        var fileLocation: MainUtils.FileLocation
         var value: Bool = false
         var dividerBelow: Bool = false
     }
