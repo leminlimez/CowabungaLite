@@ -22,20 +22,11 @@ print("Enabled tweaks: \(tweaks.map { $0.key }.joined(separator: ", "))")
 print("With values: \(tweaks.map { $0.value }.joined(separator: ", "))")
 dataSingleton.setTweakEnabled(.springboardOptions, isEnabled: true)
 print("Configuring tweaks...")
-enum FileLocation: String {
-    case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
-    case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
-    case ota = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
-    case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
-    case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-    case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
-    case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
-}
 struct SBOption: Identifiable {
     var id = UUID()
     var key: String
     var name: String
-    var fileLocation: FileLocation
+    var fileLocation: MainUtils.FileLocation
     var value: Bool = false
 }
 struct NormalTweak: Identifiable {
@@ -167,7 +158,7 @@ for normalTweak in normalTweaks {
                 exit(1)
             }
         case "DisableOTAUpdates":
-            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
+            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.ota.rawValue) else {
                 print("Error finding MobileAsset plist")
                 exit(1)
             }
@@ -186,7 +177,7 @@ for normalTweak in normalTweaks {
                 exit(1)
             }
         case "LockScreenFootnote":
-            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
+            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.footnote.rawValue) else {
                 print("Error finding footnote plist")
                 exit(1)
             }
@@ -199,7 +190,7 @@ for normalTweak in normalTweaks {
                 exit(1)
             }
         case "AnimationSpeed":
-            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.uikit.rawValue) else {
                 print("Error finding UIKit plist")
                 exit(1)
             }
