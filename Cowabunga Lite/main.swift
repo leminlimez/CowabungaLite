@@ -34,16 +34,16 @@ if args[0] == "apply" {
     setupWorkspaceForUUID(args[1])
     for arg in args[2...] {
         if arg == "springboard" {
-            dataSingleton.setTweakEnabled(.springboard, isEnabled: true)
+            dataSingleton.setTweakEnabled(.springboardOptions, isEnabled: true)
         } else if arg == "internal" {
-            dataSingleton.setTweakEnabled(.internal, isEnabled: true)
+            dataSingleton.setTweakEnabled(.internalOptions, isEnabled: true)
         } else if arg == "setup" {
             dataSingleton.setTweakEnabled(.skipSetup, isEnabled: true)
         }
     }
 
     print("Configuring tweaks... Done")
-    print("Enabled tweaks: \(sbOptions.filter { $0.value }.map { $0.name }.joined(separator: ", ")), \(normalTweaks.filter { $0.enabled }.map { $0.name }.joined(separator: ", "))")
+    // print("Enabled tweaks: \(sbOptions.filter { $0.value }.map { $0.name }.joined(separator: ", ")), \(normalTweaks.filter { $0.enabled }.map { $0.name }.joined(separator: ", "))")
     applyTweaks()
     print("Applying tweaks... Done")
     print("Done")
