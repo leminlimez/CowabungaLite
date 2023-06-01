@@ -16,7 +16,7 @@ let package = Package(
                 "Views",
                 "StatusManager",
                 "API",
-                "Controllers/IconTheming/ThemingManager.swift",
+                "Controllers/IconTheming",
                 "Scripts",
                 "Files",
                 "Libraries",
