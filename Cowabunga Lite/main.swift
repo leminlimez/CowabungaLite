@@ -120,8 +120,8 @@ else if args[0] == "set" {
         } else {
             for opt in MainUtils.sbOptions {
                 if opt.key == args[3] {
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(opt.fileLocation.wrappedValue.rawValue) else {
-                        print("Error finding springboard plist \(opt.fileLocation.wrappedValue.rawValue)")
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(opt.fileLocation.rawValue) else {
+                        print("Error finding springboard plist \(opt.fileLocation.rawValue)")
                         exit(1)
                     }
                     do {
@@ -141,8 +141,8 @@ else if args[0] == "set" {
     else if args[2] == "internal" {
         for opt in MainUtils.internalOptions {
             if opt.key == args[3] {
-                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(opt.fileLocation.wrappedValue.rawValue) else {
-                    print("Error finding springboard plist \(opt.fileLocation.wrappedValue.rawValue)")
+                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(opt.fileLocation.rawValue) else {
+                    print("Error finding springboard plist \(opt.fileLocation.rawValue)")
                     exit(1)
                 }
                 do {
