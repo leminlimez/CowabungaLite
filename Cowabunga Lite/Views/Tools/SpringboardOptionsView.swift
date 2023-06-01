@@ -18,21 +18,11 @@ struct SpringboardOptionsView: View {
     @State private var showWiFiDebugger: Bool = false
     @State private var airdropEveryone: Bool = false
     
-    enum FileLocation: String {
-        case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
-        case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
-        case mute = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
-        case globalPreferences = "SpringboardOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
-        case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
-        case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
-    }
-    
     struct SBOption: Identifiable {
         var id = UUID()
         var key: String
         var name: String
-        var fileLocation: FileLocation
+        var fileLocation: MainUtils.FileLocation
         var value: Bool = false
     }
     
@@ -41,10 +31,8 @@ struct SpringboardOptionsView: View {
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
         .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
-        .init(key: "SBIconVisibility", name: "Mute Module in CC", fileLocation: .mute),
-        .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "AccessoryDeveloperEnabled", name: "Accessory Developer", fileLocation: .globalPreferences),
-        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi)
+        .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility)
+//        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi)
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
 //        .init(key: "SBDisableNotificationCenterBlur", name: "Disable Notif Center Blur", fileLocation: .springboard),
@@ -115,8 +103,8 @@ struct SpringboardOptionsView: View {
                                 .minimumScaleFactor(0.5)
                         }.onChange(of: showWiFiDebugger, perform: { new in
                             do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
+                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
                                     return
                                 }
                                 if new == true {
@@ -133,13 +121,13 @@ struct SpringboardOptionsView: View {
                         })
                         .onAppear {
                             do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
+                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
                                     return
                                 }
                                 showWiFiDebugger =  (try PlistManager.getPlistValues(url: plistURL, key: "WiFiManagerLoggingEnabled") as? String ?? "false") == "true"
                             } catch {
-                                Logger.shared.logMe("Error finding springboard plist \(FileLocation.wifiDebug.rawValue)")
+                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
                                 return
                             }
                         }
@@ -185,7 +173,7 @@ struct SpringboardOptionsView: View {
                         VStack {
                             Slider(value: $animSpeed, in: 0.1...2, step: 0.05)
                                 .onChange(of: animSpeed, perform: { nv in
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.uikit.rawValue) else {
                                         Logger.shared.logMe("Error finding uikit plist")
                                         return
                                     }
@@ -199,7 +187,7 @@ struct SpringboardOptionsView: View {
                                 })
                             Text("\(animSpeed, specifier: "%.2f") (\(animSpeed == 1 ? "Default" : (animSpeed < 1 ? "Fast" : "Slow")))")
                         }.onAppear {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.uikit.rawValue) else {
                                 Logger.shared.logMe("Error finding uikit plist")
                                 return
                             }
@@ -212,7 +200,7 @@ struct SpringboardOptionsView: View {
                         
                         Text("Lock Screen Footnote Text")
                         TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.footnote.rawValue) else {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }
@@ -224,7 +212,7 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe(error.localizedDescription)
                             }
                         }).onAppear(perform: {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.footnote.rawValue) else {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }

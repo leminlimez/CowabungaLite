@@ -29,6 +29,9 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
 - Status Bar
     - Change carrier name
     - Change secondary carrier name
+    - Enable/Disable the primary or secondary carriers
+    - Change the number of WiFi/Cellular bars
+    - Change the battery capacity
     - Change battery display detail
     - Change time text
     - Change date text (iPad only)
@@ -36,20 +39,33 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
     - Show numeric WiFi/Cellular strength
     - Hide many icons in the status bar
 
+- Control Center
+    - Enable Mute Module
+    - Enable Focus UI Module
+    - Enable Siri Spoken Notifications Module
+    - Choose Presets (or make your own in the `Control Center` section of the `Settings` app)
+
 - Springboard Options
     - Set UI Animation Speed
     - Set Lock Screen Footnote
     - Toggles:
         - Set Airdrop to Everyone
-        - Enable Accessory Developer
-        - Show Known WiFi Networks (iOS 15)
-        - Show WiFi Debugger
+        - Shutdown Sound from iPhone 14
         - Disable Lock After Respring
         - Disable Screen Dimming While Charging
         - Disable Low Battery Alerts
         - CC Enabled on Lock Screen
-        - Mute Module in CC
-        - Build Version in Status Bar
+
+- Internal Options
+    - Build Version in Status Bar
+    - Force Right to Left
+    - Force Metal HUD Debug
+    - Accessory Diagnostics
+    - iMessage Diagnostics
+    - IDS Diagnostics
+    - VC Diagnostics
+    - App Store Debug Gesture
+    - Notes App Debug Mode
 
 - Setup Options
     - Skip Restore Setup
