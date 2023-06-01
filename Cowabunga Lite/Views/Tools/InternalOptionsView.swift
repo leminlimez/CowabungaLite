@@ -23,15 +23,6 @@ struct InternalOptionsView: View {
     }
     
     @State private var sbOptions: [SBOption] = [
-        .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "MetalForceHudEnabled", name: "Force Metal HUD Debug", fileLocation: .globalPreferences),
-        .init(key: "AccessoryDeveloperEnabled", name: "Accessory Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "iMessageDiagnosticsEnabled", name: "iMessage Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
-        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes)
 //        .init(key: "DebugConsoleEnabled", name: "Maps App Debug Console", fileLocation: .maps),
 //        .init(key: "VKConsoleEnabledKey", name: "Maps App VK Console", fileLocation: .maps, dividerBelow: true),
 //        .init(key: "weather.vfx.overrideConditionBackground", name: "Weather App Override Condition Background", fileLocation: .weather)
@@ -101,6 +92,13 @@ struct InternalOptionsView: View {
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
+                .onAppear {
+                    if sbOptions.isEmpty {
+                        for opt in MainUtils.internalOptions {
+                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, dividerBelow: (opt.key == "NSForceRightToLeftWritingDirection" || opt.key == "VCDiagnosticsEnabled") ? true : false))
+                        }
+                    }
+                }
         }
     }
 }
