@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct StatusBarView: View {
+    @State private var cellularServiceEnabled: Bool = false
+    @State private var cellularServiceValue: Bool = false
+    
     @State private var carrierText: String = ""
     @State private var carrierTextEnabled: Bool = false
     
@@ -228,6 +231,25 @@ struct StatusBarView: View {
                         
                         Group {
                             Text("Primary Carrier").bold()
+                            Toggle("Change Service Status", isOn: $cellularServiceEnabled).onChange(of: cellularServiceEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setCellularService(cellularServiceValue)
+                                } else {
+                                    StatusManager.sharedInstance().unsetCellularService()
+                                }
+                            }).onAppear(perform: {
+                                cellularServiceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
+                            })
+                            if cellularServiceEnabled {
+                                Toggle("Cellular Service Enabled", isOn: $cellularServiceValue).onChange(of: cellularServiceValue, perform: { nv in
+                                    if cellularServiceEnabled {
+                                        StatusManager.sharedInstance().setCellularService(nv)
+                                    }
+                                }).onAppear(perform: {
+                                    cellularServiceValue = StatusManager.sharedInstance().getCellularServiceOverride()
+                                })
+                            }
+                            
                             Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
                                 if nv {
                                     StatusManager.sharedInstance().setCarrier(carrierText)
