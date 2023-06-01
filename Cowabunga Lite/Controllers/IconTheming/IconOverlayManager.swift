@@ -9,7 +9,17 @@ import Foundation
 import SwiftUI
 
 class IconOverlayManager {
-    public static func overlayIcon(_ icon: NSImage, _ overlay: NSImage) {
-//        let renderer = UIGraphicsImageRenderer(size: icon.size)
+    public static func overlayIcon(_ icon: NSImage, _ overlay: NSImage) -> NSImage {
+        let img = NSImage(size: icon.size)
+        img.lockFocus()
+        
+        var newRect: CGRect = .zero
+        newRect.size = img.size
+        
+        icon.draw(in: newRect)
+        overlay.draw(in: newRect)
+
+        img.unlockFocus()
+        return img
     }
 }
