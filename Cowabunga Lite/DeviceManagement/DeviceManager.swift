@@ -225,6 +225,16 @@ func getDevices() -> [Device] {
         
         var deviceStructs: [Device] = []
         for d in devicesArr {
+            #if CLI
+            guard let exec2 = Bundle.main.url(forResource: "WINidevicename", withExtension: "exe") else { continue }
+            let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            guard let exec3 = Bundle.main.url(forResource: "WINideviceinfo", withExtension: "exe") else { continue }
+            let deviceVersion = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
+            let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
+            deviceStructs.append(device)
+            
+            #else
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
             let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             guard let exec3 = Bundle.main.url(forResource: "ideviceinfo", withExtension: "") else { continue }
@@ -232,6 +242,7 @@ func getDevices() -> [Device] {
             let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
             let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
             deviceStructs.append(device)
+            #endif
         }
         return deviceStructs
     } catch {
