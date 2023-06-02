@@ -60,14 +60,6 @@ struct ControlCenterView: View {
                         HStack {
                             Text("Control Center")
                                 .bold()
-                            ZStack {
-                                Rectangle()
-                                    .cornerRadius(50)
-                                    .foregroundColor(.blue)
-                                    .frame(maxWidth: 50)
-                                Text("Beta")
-                                    .foregroundColor(.white)
-                            }
                             Spacer()
                         }
                         HStack {

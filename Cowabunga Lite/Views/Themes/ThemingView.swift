@@ -109,8 +109,18 @@ struct ThemingView: View {
                             .padding(.vertical, 5)
                         
                         Group {
-                            Text("Overlays")
-                                .bold()
+                            HStack {
+                                Text("Overlays")
+                                    .bold()
+                                ZStack {
+                                    Rectangle()
+                                        .cornerRadius(50)
+                                        .foregroundColor(.blue)
+                                        .frame(maxWidth: 50)
+                                    Text("Beta")
+                                        .foregroundColor(.white)
+                                }
+                            }
                             LazyVGrid(columns: overlayGridItemLayout, spacing: 20) {
                                 ForEach(overlays) { ov in
                                     NiceButton(text: AnyView(
