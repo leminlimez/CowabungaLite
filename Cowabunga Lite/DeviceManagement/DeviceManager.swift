@@ -215,7 +215,11 @@ func applyTweaks() {
 }
 
 func getDevices() -> [Device] {
+    #if CLI
+    guard let exec = Bundle.main.url(forResource: "WINidevice_id", withExtension: "") else { return [] }
+    #else
     guard let exec = Bundle.main.url(forResource: "idevice_id", withExtension: "") else { return [] }
+    #endif
     do {
         let devices = try execute2(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
