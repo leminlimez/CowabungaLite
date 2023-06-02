@@ -27,6 +27,19 @@ let package = Package(
                 "ControlCenterPresets",
                 "CLI_Only.swift"
             ],
+            resources: [
+                .process("Windows_Scripts/WINidevice_id.exe"),
+                .process("Windows_Scripts/WINidevicebackup2.exe"),
+                .process("Windows_Scripts/WINideviceinfo.exe"),
+                .process("Windows_Scripts/WINidevicename.exe"),
+
+                .process("Windows_Scripts/libs/libimobiledevice-1.0.dll"),
+                .process("Windows_Scripts/libs/libcrypto-3-x64.dll"),
+                .process("Windows_Scripts/libs/libimobiledevice-glue-1.0.dll"),
+                .process("Windows_Scripts/libs/libplist-2.0.dll"),
+                .process("Windows_Scripts/libs/libssl-3-x64.dll"),
+                .process("Windows_Scripts/libs/libusbmuxd-2.0.dll"),
+            ],
             swiftSettings: [
                 .unsafeFlags(["-D", "CLI"])
             ]),

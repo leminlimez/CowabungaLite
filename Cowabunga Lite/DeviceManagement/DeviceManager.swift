@@ -215,8 +215,18 @@ func applyTweaks() {
 }
 
 func getDevices() -> [Device] {
+    let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
+    if !fm.fileExists(atPath: documentsDirectory.path) {
+        do {
+            try fm.createDirectory(atPath: documentsDirectory.path, withIntermediateDirectories: false, attributes: nil)
+            Logger.shared.logMe("Documents folder created")
+        } catch {
+            Logger.shared.logMe("Error creating Documents folder: \(error.localizedDescription)")
+            return []
+        }
+    }
     #if CLI
-    guard let exec = Bundle.main.url(forResource: "WINidevice_id", withExtension: "") else { return [] }
+    guard let exec = Bundle.module.url(forResource: "WINidevice_id", withExtension: "exe") else { return [] }
     #else
     guard let exec = Bundle.main.url(forResource: "idevice_id", withExtension: "") else { return [] }
     #endif
@@ -230,9 +240,9 @@ func getDevices() -> [Device] {
         var deviceStructs: [Device] = []
         for d in devicesArr {
             #if CLI
-            guard let exec2 = Bundle.main.url(forResource: "WINidevicename", withExtension: "exe") else { continue }
+            guard let exec2 = Bundle.module.url(forResource: "WINidevicename", withExtension: "exe") else { continue }
             let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            guard let exec3 = Bundle.main.url(forResource: "WINideviceinfo", withExtension: "exe") else { continue }
+            guard let exec3 = Bundle.module.url(forResource: "WINideviceinfo", withExtension: "exe") else { continue }
             let deviceVersion = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
             let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
@@ -250,6 +260,7 @@ func getDevices() -> [Device] {
         }
         return deviceStructs
     } catch {
+        print(error.localizedDescription)
         return []
     }
 }
