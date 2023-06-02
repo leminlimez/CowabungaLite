@@ -105,9 +105,19 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
   <img alt="Status Bar" src="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/StatusBar.png">
 </picture>
 <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/ControlCenter.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Light/ControlCenter.png">
+  <img alt="Status Bar" src="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/ControlCenter.png">
+</picture>
+<picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/SpringboardOptions.png">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Light/SpringboardOptions.png">
   <img alt="Springboard Options" src="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/SpringboardOptions.png">
+</picture>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/InternalOptions.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Light/InternalOptions.png">
+  <img alt="Springboard Options" src="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/InternalOptions.png">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/LeminLimez/CowabungaLite/blob/main/Images/Dark/SetupOptions.png">
