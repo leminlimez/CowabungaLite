@@ -262,7 +262,7 @@ class ThemingManager: ObservableObject {
         themes.removeAll(keepingCapacity: true)
         do {
             for t in try FileManager.default.contentsOfDirectory(at: themesFolder, includingPropertiesForKeys: nil) {
-                if t.lastPathComponent != "Custom" {
+                if t.lastPathComponent != "Custom" && t.lastPathComponent != "Overlays" {
                     guard let c = try? FileManager.default.contentsOfDirectory(at: t, includingPropertiesForKeys: nil) else { continue }
                     themes.append(.init(name: t.lastPathComponent, iconCount: (c).count))
                 }
