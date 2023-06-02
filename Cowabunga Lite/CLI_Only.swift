@@ -34,20 +34,18 @@ let dataSingleton = DataSingleton.shared
 var devices = getDevices()
 var selectedDeviceIndex = 0
 
-if let devices = devices {
-    if devices.isEmpty {
-        print("No device connected. Please connect your device and try again.")
-        exit(1)
-    } else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
-        selectedDeviceIndex = index
-    } else {
-        DataSingleton.shared.setCurrentDevice(devices[0])
-    }
+if devices.isEmpty {
+    print("No device connected. Please connect your device and try again.")
+    exit(1)
+} else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
+    selectedDeviceIndex = index
+} else {
+    DataSingleton.shared.setCurrentDevice(devices[0])
 }
 
 while true {
     if dataSingleton.currentDevice?.name != nil {
-        print("Current Device: \(dataSingleton.currentDevice.name!)")
+        print("Current Device: \(dataSingleton.currentDevice?.name ?? "ERROR GETTING DEVICE NAME")")
         print("iOS \(dataSingleton.currentDevice?.version ?? "ERROR DETERMINING VERSION")")
         if (dataSingleton.currentDevice?.uuid != nil) {
             if (!DataSingleton.shared.deviceAvailable) {
@@ -82,9 +80,9 @@ while true {
         else if inp == "1" {
             // MARK: Springboard Options Page
             var i = 1
-            for (idx, opt) in MainUtils.sbOption.enumuterated() {
+            for opt in MainUtils.sbOptions {
                 print("\(i). \(opt.name): \(opt.value)")
-                i++
+                i += 1
             }
             print("\(i). Back")
             if let choice = readLine() {
