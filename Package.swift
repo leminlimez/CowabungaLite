@@ -24,7 +24,8 @@ let package = Package(
                 "Assets.xcassets",
                 "CowabungaJailed.entitlements",
                 "CowabungaLiteApp.swift",
-                "ControlCenterPresets"
+                "ControlCenterPresets",
+                "CLI_Only.swift"
             ],
             swiftSettings: [
                 .unsafeFlags(["-D", "CLI"])
