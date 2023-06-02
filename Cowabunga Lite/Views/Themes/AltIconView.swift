@@ -244,7 +244,7 @@ struct AltIconView: View {
                                     customIcons.append(.init(title: "Custom", imgPath: "Custom/\(app.bundle)/\(i.lastPathComponent)", icon: img))
                                 }
                             }
-                        } else {
+                        } else if p.lastPathComponent != "Overlays" {
                             let imgPath = p.appendingPathComponent(app.bundle + ".png")
                             if FileManager.default.fileExists(atPath: imgPath.path) {
                                 let imgData = try Data(contentsOf: imgPath)

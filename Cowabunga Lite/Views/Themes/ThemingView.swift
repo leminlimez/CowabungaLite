@@ -13,14 +13,23 @@ struct ThemingView: View {
     @StateObject var themeManager = ThemingManager.shared
     @State var easterEgg = false
     var gridItemLayout = [GridItem(.adaptive(minimum: 160))]
+    var overlayGridItemLayout = [GridItem(.adaptive(minimum: 75))]
     
     @State var isAppClips: Bool = false
     @State var hideAppLabels: Bool = false
     @State var themeAllApps: Bool = false
     
     @State var showPicker: Bool = false
+    @State var showPickerForOverlays: Bool = false
     
     @Binding var viewType: Int
+    
+    struct OverlayObj: Identifiable {
+        var id = UUID()
+        var title: String
+        var image: NSImage?
+    }
+    @State var overlays: [OverlayObj] = []
         
     var body: some View {
         List {
@@ -100,6 +109,55 @@ struct ThemingView: View {
                             .padding(.vertical, 5)
                         
                         Group {
+                            Text("Overlays")
+                                .bold()
+                            LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                                ForEach(overlays) { ov in
+                                    NiceButton(text: AnyView(
+                                        VStack {
+                                            if ov.image != nil {
+                                                Image(nsImage: ov.image!)
+                                                    .resizable()
+                                                    .frame(width: 55, height: 55)
+                                                    .cornerRadius(12)
+                                                    .padding(2)
+                                            } else {
+                                                Image(systemName: "questionmark.app")
+                                                    .font(.system(size: 55))
+                                                    .padding(2)
+                                            }
+                                            Text(ov.title)
+                                        }
+                                            .frame(width: 70, height: 80)
+                                    ), action: {
+                                        if themeManager.currentOverlay == ov.title {
+                                            try? themeManager.setThemeSettings(deletingOverlay: true)
+                                        } else {
+                                            try? themeManager.setThemeSettings(overlayName: ov.title)
+                                        }
+                                    })
+                                    .overlay(RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: themeManager.isCurrentOverlay(ov.title) ? 4 : 0))
+                                }
+                                
+                                // MARK: Import Overlay Button
+                                NiceButton(text: AnyView(
+                                    VStack {
+                                        Image(systemName: "plus.app")
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    }
+                                        .frame(width: 70, height: 70)
+                                ), action: {
+                                    showPickerForOverlays.toggle()
+                                })
+                            }
+                        }
+                        
+                        Divider()
+                            .padding(.vertical, 5)
+                        
+                        Group {
                             Text("Themes")
                                 .bold()
                             LazyVGrid(columns: gridItemLayout, spacing: 10) {
@@ -145,13 +203,30 @@ struct ThemingView: View {
         .disabled(!dataSingleton.deviceAvailable)
         .onAppear {
             themeManager.getThemes()
+            themeManager.getOverlays()
             hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
             isAppClips = themeManager.getThemeToggleSetting("AsAppClips")
             themeAllApps = themeManager.getThemeToggleSetting("ThemeAllApps")
+            
+            overlays.removeAll(keepingCapacity: true)
+            for ov in themeManager.overlays {
+                overlays.append(.init(title: ov.name, image: themeManager.getOverlayImage(name: ov.name)))
+            }
         }
         .fileImporter(isPresented: $showPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false, onCompletion: { result in
             guard let url = try? result.get().first else { return }
             try? ThemingManager.shared.importTheme(from: url)
+        })
+        .fileImporter(isPresented: $showPickerForOverlays, allowedContentTypes: [.png], allowsMultipleSelection: true, onCompletion: { result in
+            guard let urls = try? result.get() else { return }
+            for url in urls {
+                do {
+                    let newName = try themeManager.importOverlay(from: url)
+                    overlays.append(.init(title: newName, image: themeManager.getOverlayImage(name: newName)))
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         })
     }
 }
