@@ -103,7 +103,7 @@ class ThemingManager: ObservableObject {
         }
         guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
         guard let val = plist["OverlayTitle"] as? String else { return nil }
-        let overlayURL = getOverlayFolder().appendingPathComponent(val)
+        let overlayURL = getOverlayFolder().appendingPathComponent("\(val).png")
         guard let overlayData = try? Data(contentsOf: overlayURL) else { return nil }
         return overlayData
     }
@@ -127,6 +127,7 @@ class ThemingManager: ObservableObject {
             // add the overlay over the icon
             if overlay != nil {
                 let icnNS = NSImage(data: image)
+                print(icnNS?.size ?? "")
                 let overNS = NSImage(data: overlay!)
                 if let icnNS = icnNS, let overNS = overNS {
                     let overlay = IconOverlayManager.overlayIcon(icnNS, overNS)
@@ -320,7 +321,7 @@ class ThemingManager: ObservableObject {
             for t in try FileManager.default.contentsOfDirectory(at: overlayFolder, includingPropertiesForKeys: nil) {
                 guard let d = try? Data(contentsOf: t) else { continue }
                 guard let i = NSImage(data: d) else { continue }
-                overlays.append(.init(name: t.deletingLastPathComponent().lastPathComponent))
+                overlays.append(.init(name: t.deletingPathExtension().lastPathComponent))
             }
         } catch {
             print(error.localizedDescription)
@@ -363,7 +364,8 @@ class ThemingManager: ObservableObject {
     }
     
     func importOverlay(from overlayURL: URL) throws -> String {
-        let name = overlayURL.deletingLastPathComponent().lastPathComponent
+        print(overlayURL.path)
+        let name = overlayURL.deletingPathExtension().lastPathComponent
         let pngData = try Data(contentsOf: overlayURL)
         
         // Write the png
