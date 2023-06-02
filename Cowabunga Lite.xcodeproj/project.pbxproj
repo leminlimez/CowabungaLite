@@ -43,6 +43,7 @@
 		6F1D5E952A29791100D6E377 /* WINidevicename.exe in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E912A29791100D6E377 /* WINidevicename.exe */; };
 		6F1D5E962A29791100D6E377 /* WINidevicebackup2.exe in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E922A29791100D6E377 /* WINidevicebackup2.exe */; };
 		6F1D5E972A29791100D6E377 /* WINideviceinfo.exe in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E932A29791100D6E377 /* WINideviceinfo.exe */; };
+		6F1D5E992A2A2E0000D6E377 /* NSImage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */; };
 		6F2D468E29E45BE2006B18A8 /* PatreonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
 		6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */; };
@@ -133,6 +134,7 @@
 		6F1D5E912A29791100D6E377 /* WINidevicename.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = WINidevicename.exe; sourceTree = "<group>"; };
 		6F1D5E922A29791100D6E377 /* WINidevicebackup2.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = WINidevicebackup2.exe; sourceTree = "<group>"; };
 		6F1D5E932A29791100D6E377 /* WINideviceinfo.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = WINideviceinfo.exe; sourceTree = "<group>"; };
+		6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage++.swift"; sourceTree = "<group>"; };
 		6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* Cowabunga Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cowabunga Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -408,6 +410,7 @@
 				7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */,
 				6F886A2B29C8CFA900B73E40 /* String++.swift */,
 				2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */,
+				6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				7207595829F262C80053E26F /* Logger.swift in Sources */,
 				6F1D5E8B2A28F01400D6E377 /* IconOverlayManager.swift in Sources */,
 				6F1D5E892A2577FA00D6E377 /* MainUtils.swift in Sources */,
+				6F1D5E992A2A2E0000D6E377 /* NSImage++.swift in Sources */,
 				6F700AB829C37DF50085964B /* HomeView.swift in Sources */,
 				6F886A2229C8AC0300B73E40 /* LockScreenFootnoteView.swift in Sources */,
 				6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */,
@@ -719,7 +723,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -734,7 +738,7 @@
 					Lite/Libraries,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -753,7 +757,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2P4CP47H76;
@@ -769,7 +773,7 @@
 					Lite/Libraries,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
