@@ -18,7 +18,6 @@ let package = Package(
                 "API",
                 "Controllers/IconTheming",
                 "Scripts",
-                "Files",
                 "Libraries",
                 "Preview Content",
                 "Assets.xcassets",
@@ -29,6 +28,8 @@ let package = Package(
                 "Extensions/NSImage++.swift"
             ],
             resources: [
+                .copy("Files"),
+
                 .process("Windows_Scripts/WINidevice_id.exe"),
                 .process("Windows_Scripts/WINidevicebackup2.exe"),
                 .process("Windows_Scripts/WINideviceinfo.exe"),

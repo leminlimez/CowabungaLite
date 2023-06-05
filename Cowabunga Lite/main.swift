@@ -74,6 +74,7 @@ while true {
 
     Type in a number to go to that page.
     """)
+    break
     if let inp = readLine() {
         if inp == "5" {
             break

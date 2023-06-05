@@ -38,12 +38,20 @@ func setupWorkspaceForUUID(_ UUID: String) {
         }
     }
     DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
+    #if CLI
+    guard let docsFolderURL = Bundle.module.url(forResource: "Files", withExtension: nil) else {
+        Logger.shared.logMe("Can't find Bundle URL?")
+        return
+    }
+    #else
     guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
         Logger.shared.logMe("Can't find Bundle URL?")
         return
     }
+    #endif
     do {
         let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        print(files)
         for file in files {
             let newURL = UUIDDirectory.appendingPathComponent(file.lastPathComponent)
             var shouldMergeDirectory = false
