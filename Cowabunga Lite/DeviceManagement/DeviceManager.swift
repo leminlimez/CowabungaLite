@@ -231,7 +231,7 @@ func getDevices() -> [Device] {
     guard let exec = Bundle.main.url(forResource: "idevice_id", withExtension: "") else { return [] }
     #endif
     do {
-        let devices = try execute2(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
+        let devices = try executeWIN(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
             print(devices)
             return []
@@ -242,10 +242,10 @@ func getDevices() -> [Device] {
         for d in devicesArr {
             #if CLI
             guard let exec2 = Bundle.module.url(forResource: "WINidevicename", withExtension: "exe") else { continue }
-            let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            let deviceName = try executeWIN(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             guard let exec3 = Bundle.module.url(forResource: "WINideviceinfo", withExtension: "exe") else { continue }
-            let deviceVersion = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
+            let deviceVersion = try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            let ipad: Bool = (try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
             let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
             deviceStructs.append(device)
             
