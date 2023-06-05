@@ -213,7 +213,9 @@ struct ThemingView: View {
         .disabled(!dataSingleton.deviceAvailable)
         .onAppear {
             themeManager.getThemes()
+            themeManager.currentTheme = themeManager.getCurrentAppliedTheme()
             themeManager.getOverlays()
+            themeManager.currentOverlay = themeManager.getCurrentAppliedOverlay()
             hideAppLabels = themeManager.getThemeToggleSetting("HideDisplayNames")
             isAppClips = themeManager.getThemeToggleSetting("AsAppClips")
             themeAllApps = themeManager.getThemeToggleSetting("ThemeAllApps")
