@@ -233,6 +233,7 @@ func getDevices() -> [Device] {
     do {
         let devices = try execute2(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
+            print(devices)
             return []
         }
         let devicesArr = devices.split(separator: "\n", omittingEmptySubsequences: true)

@@ -25,7 +25,8 @@ let package = Package(
                 "CowabungaJailed.entitlements",
                 "CowabungaLiteApp.swift",
                 "ControlCenterPresets",
-                "CLI_Only.swift"
+                "CLI_Only.swift",
+                "Extensions/NSImage++.swift"
             ],
             resources: [
                 .process("Windows_Scripts/WINidevice_id.exe"),
