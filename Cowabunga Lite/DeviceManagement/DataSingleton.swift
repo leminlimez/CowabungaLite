@@ -36,7 +36,9 @@ class DataSingleton {
 
     func setCurrentDevice(_ device: Device) {
         currentDevice = device
+        #if !CLI
         print("set to \(device)")
+        #endif
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {

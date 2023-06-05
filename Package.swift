@@ -34,12 +34,12 @@ let package = Package(
                 .process("Windows_Scripts/WINideviceinfo.exe"),
                 .process("Windows_Scripts/WINidevicename.exe"),
 
-                .process("Windows_Scripts/libs/libimobiledevice-1.0.dll"),
-                .process("Windows_Scripts/libs/libcrypto-3-x64.dll"),
-                .process("Windows_Scripts/libs/libimobiledevice-glue-1.0.dll"),
-                .process("Windows_Scripts/libs/libplist-2.0.dll"),
-                .process("Windows_Scripts/libs/libssl-3-x64.dll"),
-                .process("Windows_Scripts/libs/libusbmuxd-2.0.dll"),
+                .process("Windows_Scripts/libimobiledevice-1.0.dll"),
+                .process("Windows_Scripts/libcrypto-3-x64.dll"),
+                .process("Windows_Scripts/libimobiledevice-glue-1.0.dll"),
+                .process("Windows_Scripts/libplist-2.0.dll"),
+                .process("Windows_Scripts/libssl-3-x64.dll"),
+                .process("Windows_Scripts/libusbmuxd-2.0.dll"),
             ],
             swiftSettings: [
                 .unsafeFlags(["-D", "CLI"])
