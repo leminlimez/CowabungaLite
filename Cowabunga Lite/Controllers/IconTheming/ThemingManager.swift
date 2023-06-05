@@ -72,6 +72,19 @@ class ThemingManager: ObservableObject {
         return name
     }
     
+    public func getCurrentAppliedOverlay() -> String? {
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return nil }
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            return nil
+        }
+        guard let infoData = try? Data(contentsOf: infoPlist) else {
+            return nil
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
+        guard let name = plist["OverlayTitle"] as? String else { return nil }
+        return name
+    }
+    
     public func getThemeToggleSetting(_ settingName: String) -> Bool {
         guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return false }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
@@ -126,12 +139,13 @@ class ThemingManager: ObservableObject {
             var img = image
             // add the overlay over the icon
             if overlay != nil {
-                let icnNS = NSImage(data: image)
-                print(icnNS?.size ?? "")
-                let overNS = NSImage(data: overlay!)
+                let icnNS = CIImage(data: image)
+                let overNS = CIImage(data: overlay!)
                 if let icnNS = icnNS, let overNS = overNS {
-                    let overlay = IconOverlayManager.overlayIcon(icnNS, overNS)
-                    if let overlayData = overlay.pngData(size: icnNS.size) {
+                    let OL = IconOverlayManager.overlayIcon(icnNS, overNS)
+                    let OLimg = NSImage(ciImage: OL, scale: 1, orientation: .up)
+                    if let overlayData = OLimg.pngData(size: OL.extent.size) {
+                        print(OL.extent.size)
                         img = overlayData
                     }
                 }
