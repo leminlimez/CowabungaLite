@@ -35,6 +35,58 @@ class MainUtils {
         var name: String
         var fileLocation: FileLocation
         var value: Bool = false
+        var dividerBelow: Bool = false
+    }
+    
+    public static func loadToggles(from array: [ToggleOption], workspace: URL) {
+        for (i, opt) in array.enumerated() {
+            let plistURL = workspace.appendingPathComponent(opt.fileLocation.rawValue)
+            do {
+                sbOptions[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
+            } catch {
+                
+            }
+        }
+    }
+    
+    // Load the preferences
+    public static func loadPreferences() {
+        if let workspace = DataSingleton.shared.getCurrentWorkspace() {
+            // Springboard Options
+            loadToggles(from: sbOptions, workspace: workspace)
+            
+            // Internal Options
+            loadToggles(from: internalOptions, workspace: workspace)
+        }
+    }
+    
+    // Apply a toggle
+    public static func applyToggle(index: Int, value: Bool, tweak: Tweak) {
+        var key: String = ""
+        var fileLocation: FileLocation = .springboard
+        if tweak == .springboardOptions {
+            if index < sbOptions.count {
+                sbOptions[index].value = value
+                key = sbOptions[index].key
+                fileLocation = sbOptions[index].fileLocation
+            }
+        } else if tweak == .internalOptions {
+            if index < internalOptions.count {
+                internalOptions[index].value = value
+                key = internalOptions[index].key
+                fileLocation = internalOptions[index].fileLocation
+            }
+        }
+        if key != "", let workspace = DataSingleton.shared.getCurrentWorkspace() {
+            let plistURL = workspace.appendingPathComponent(fileLocation.rawValue)
+            do {
+                try PlistManager.setPlistValues(url: plistURL, values: [
+                    key: value
+                ])
+            } catch {
+                
+            }
+        }
     }
     
     
@@ -51,12 +103,12 @@ class MainUtils {
     // MARK: Internal Options
     public static var internalOptions: [ToggleOption] = [
         .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences),
+        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences, dividerBelow: true),
         .init(key: "MetalForceHudEnabled", name: "Force Metal HUD Debug", fileLocation: .globalPreferences),
         .init(key: "AccessoryDeveloperEnabled", name: "Accessory Diagnostics", fileLocation: .globalPreferences),
         .init(key: "iMessageDiagnosticsEnabled", name: "iMessage Diagnostics", fileLocation: .globalPreferences),
         .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences),
+        .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
         .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
         .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes)
     ]
