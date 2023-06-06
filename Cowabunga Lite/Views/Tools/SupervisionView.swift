@@ -46,7 +46,7 @@ struct SupervisionView: View {
                 Group {
                     // MARK: Skipping Setup
                     Toggle("Skip Setup (recommended)", isOn: $skipSetup).onChange(of: skipSetup, perform: { nv in
-                        MainUtils.setSkipSetup(nv: nv)
+                        MainUtils.setSkipSetup(nv)
                     }).onAppear(perform: {
                         skipSetup = MainUtils.getSkipSetupEnabled()
                     })
@@ -56,7 +56,7 @@ struct SupervisionView: View {
                         Text("Disable OTA Updates")
                             .minimumScaleFactor(0.5)
                             .onChange(of: otaDisabled, perform: { nv in
-                                MainUtils.setOTABlocked(nv: nv)
+                                MainUtils.setOTABlocked(nv)
                             })
                             .onAppear {
                                 otaDisabled = MainUtils.getOTABlocked()
@@ -65,12 +65,12 @@ struct SupervisionView: View {
                     
                     // MARK: Supervision
                     Toggle("Enable Supervision", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
-                        MainUtils.setSupervision(nv: nv)
+                        MainUtils.setSupervision(nv)
                     }).onAppear(perform: {
                         supervisionEnabled = MainUtils.getSupervisionEnabled()
                     })
                     TextField("Organization Name", text: $managedCompanyName).onChange(of: managedCompanyName, perform: { nv in
-                        MainUtils.setOrganizationName(nv: nv)
+                        MainUtils.setOrganizationName(nv)
                     }).onAppear(perform: {
                         managedCompanyName = MainUtils.getOrganizationName()
                     })
