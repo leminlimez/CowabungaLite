@@ -120,7 +120,7 @@ struct StatusBarView: View {
                 }
                 Divider()
             }
-            if dataSingleton.deviceAvailable {
+            if dataSingleton.deviceAvailable && dataSingleton.deviceTested == true {
                 Text("Betas, use with caution. Have a backup.")
                 Group {
                     Group {
@@ -623,6 +623,8 @@ struct StatusBarView: View {
                         Text("*Will also hide carrier name\n^Will also hide cellular data indicator")
                     }
                 }.disabled(!enableTweak)
+            } else if dataSingleton.deviceAvailable && !dataSingleton.deviceTested {
+                Text("Status bar status is untested on your iOS version. It has been disabled for your safety.")
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
