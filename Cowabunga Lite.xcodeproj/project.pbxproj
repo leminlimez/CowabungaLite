@@ -38,6 +38,7 @@
 		6F1D5E812A1CF98B00D6E377 /* DefaultCC.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E802A1CF98B00D6E377 /* DefaultCC.plist */; };
 		6F1D5E872A23DE7B00D6E377 /* CCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D5E862A23DE7B00D6E377 /* CCManager.swift */; };
 		6F1D5E892A2577FA00D6E377 /* MainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D5E882A2577FA00D6E377 /* MainUtils.swift */; };
+		6F1D5E9D2A2F6DB000D6E377 /* RevertCC.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E9C2A2F6DB000D6E377 /* RevertCC.plist */; };
 		6F2D468E29E45BE2006B18A8 /* PatreonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
 		6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */; };
@@ -123,6 +124,7 @@
 		6F1D5E802A1CF98B00D6E377 /* DefaultCC.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultCC.plist; sourceTree = "<group>"; };
 		6F1D5E862A23DE7B00D6E377 /* CCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CCManager.swift; sourceTree = "<group>"; };
 		6F1D5E882A2577FA00D6E377 /* MainUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUtils.swift; sourceTree = "<group>"; };
+		6F1D5E9C2A2F6DB000D6E377 /* RevertCC.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RevertCC.plist; sourceTree = "<group>"; };
 		6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* Cowabunga Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cowabunga Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -280,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				6F1D5E802A1CF98B00D6E377 /* DefaultCC.plist */,
+				6F1D5E9C2A2F6DB000D6E377 /* RevertCC.plist */,
 			);
 			path = ControlCenterPresets;
 			sourceTree = "<group>";
@@ -493,6 +496,7 @@
 				2544928F29C80F5700B6D82E /* ideviceinfo in Resources */,
 				6F1D5E812A1CF98B00D6E377 /* DefaultCC.plist in Resources */,
 				2557663129D2F51B008DF0E2 /* appabeticalJailed in Resources */,
+				6F1D5E9D2A2F6DB000D6E377 /* RevertCC.plist in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
 				2557662F29D2F4E2008DF0E2 /* homeScreenApps in Resources */,

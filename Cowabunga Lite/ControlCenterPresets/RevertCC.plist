@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>preset-identifiers</key>
+	<dict>
+		<key>title</key>
+		<string>Revert to Original (No Gap)</string>
+		<key>enabled-modules</key>
+		<array/>
+		<key>identification</key>
+		<string>RevertCC</string>
+	</dict>
+	<key>disabled-module-identifiers</key>
+	<array>
+		<string>com.apple.accessibility.controlcenter.general</string>
+		<string>com.apple.accessibility.controlcenter.guidedaccess</string>
+		<string>com.apple.accessibility.controlcenter.hearingdevices</string>
+		<string>com.apple.accessibility.controlcenter.sounddetection</string>
+		<string>com.apple.accessibility.controlcenter.text.size</string>
+		<string>com.apple.BarcodeSupport.NFCControlCenterModule</string>
+		<string>com.apple.control-center.AlarmModule</string>
+		<string>com.apple.control-center.AppleTVRemoteModule</string>
+		<string>com.apple.control-center.ConnectivityModule</string>
+		<string>com.apple.control-center.DisplayModule</string>
+		<string>com.apple.control-center.FeedbackAssistantModule</string>
+		<string>com.apple.control-center.MagnifierModule</string>
+		<string>com.apple.control-center.OrientationLockModule</string>
+		<string>com.apple.control-center.PerformanceTraceModule</string>
+		<string>com.apple.control-center.QuickNoteModule</string>
+		<string>com.apple.control-center.VoiceMemosModule</string>
+		<string>com.apple.control-center.WalletModule</string>
+		<string>com.apple.Home.CompactControlCenter</string>
+		<string>com.apple.Home.ControlCenter</string>
+		<string>com.apple.mediaremote.controlcenter.airplaymirroring</string>
+		<string>com.apple.mediaremote.controlcenter.audio</string>
+		<string>com.apple.mediaremote.controlcenter.nowplaying</string>
+		<string>com.apple.mobilenotes.SystemPaperControlCenterModule</string>
+		<string>com.apple.siri.SpokenNotificationsModule</string>
+		<string>com.apple.springboard.SensitiveUIModule</string>
+		<string>com.apple.control-center.AppearanceModule</string>
+		<string>com.apple.control-center.MuteModule</string>
+		<string>com.apple.replaykit.controlcenter.screencapture</string>
+	</array>
+	<key>module-identifiers</key>
+	<array>
+		<string>com.apple.control-center.FlashlightModule</string>
+		<string>com.apple.control-center.stopwatch</string>
+		<string>com.apple.control-center.CalculatorModule</string>
+		<string>com.apple.control-center.CameraModule</string>
+		<string>com.apple.control-center.LowPowerModule</string>
+		<string>com.apple.shazamkit.controlcenter.ShazamModule</string>
+		<string>com.apple.control-center.QRCodeModule</string>
+		<string>com.apple.mobiletimer.controlcenter.timer</string>
+	</array>
+	<key>userenabled-fixed-module-identifiers</key>
+	<array/>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>
