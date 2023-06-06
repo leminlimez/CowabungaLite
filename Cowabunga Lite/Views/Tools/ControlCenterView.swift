@@ -204,8 +204,9 @@ struct ControlCenterView: View {
                     }
                 }.disabled(!enableTweak)
                 .onAppear {
-                    // First, get the default cc
+                    // First, get the default and revert presets
                     presets.removeAll()
+                    presets.append(.init(title: "Revert to Original", identification: "RevertCC", image: NSImage(imageLiteralResourceName: "DefaultCC"), fileLocation: Bundle.main.url(forResource: "RevertCC", withExtension: ".plist"), modulesToEnable: []))
                     presets.append(.init(title: "Default", identification: "DefaultCC", image: NSImage(imageLiteralResourceName: "DefaultCC"), fileLocation: Bundle.main.url(forResource: "DefaultCC", withExtension: ".plist"), modulesToEnable: [2]))
                     
                     // Next, get the saved cc presets
