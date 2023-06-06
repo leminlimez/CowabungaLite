@@ -25,22 +25,13 @@ let package = Package(
                 "CowabungaLiteApp.swift",
                 "ControlCenterPresets",
                 "CLI_Only.swift",
-                "Extensions/NSImage++.swift"
+                "Extensions/NSImage++.swift",
+                "Files/SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles",
+                "Files/SkipSetup/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles" // these files are causing issues due to the length of the folder name
             ],
             resources: [
-                .copy("Files"),
-
-                .process("Windows_Scripts/WINidevice_id.exe"),
-                .process("Windows_Scripts/WINidevicebackup2.exe"),
-                .process("Windows_Scripts/WINideviceinfo.exe"),
-                .process("Windows_Scripts/WINidevicename.exe"),
-
-                .process("Windows_Scripts/libimobiledevice-1.0.dll"),
-                .process("Windows_Scripts/libcrypto-3-x64.dll"),
-                .process("Windows_Scripts/libimobiledevice-glue-1.0.dll"),
-                .process("Windows_Scripts/libplist-2.0.dll"),
-                .process("Windows_Scripts/libssl-3-x64.dll"),
-                .process("Windows_Scripts/libusbmuxd-2.0.dll"),
+                .process("Windows_Scripts"),
+                .copy("Files")
             ],
             swiftSettings: [
                 .unsafeFlags(["-D", "CLI"])
