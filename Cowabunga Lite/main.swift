@@ -22,14 +22,7 @@
 import Foundation
 
 print()
-print("""
-   ___                 _                          _    _ _          ___ _    ___ 
-  / __|_____ __ ____ _| |__ _  _ _ _  __ _ __ _  | |  (_) |_ ___   / __| |  |_ _|
- | (__/ _ \\ V  V / _` | '_ \\ || | ' \\/ _` / _` | | |__| |  _/ -_) | (__| |__ | | 
-  \\___\\___/\\_/\\_/\\__,_|_.__/\\_,_|_||_\\__, \\__,_| |____|_|\\__\\___|  \\___|____|___|
-                                     |___/                                       
-
-""")
+CLI_Pages.printLogo()
 print("Loading...")
 
 let dataSingleton = DataSingleton.shared
@@ -45,18 +38,11 @@ if devices.isEmpty {
     DataSingleton.shared.setCurrentDevice(devices[0])
 }
 
-// MainUtils.loadPreferences()
+MainUtils.loadPreferences()
 
 while true {
     print("\u{001B}[2J")
-    print("""
-       ___                 _                          _    _ _          ___ _    ___
-      / __|_____ __ ____ _| |__ _  _ _ _  __ _ __ _  | |  (_) |_ ___   / __| |  |_ _|
-     | (__/ _ \\ V  V / _` | '_ \\ || | ' \\/ _` / _` | | |__| |  _/ -_) | (__| |__ | |
-      \\___\\___/\\_/\\_/\\__,_|_.__/\\_,_|_||_\\__, \\__,_| |____|_|\\__\\___|  \\___|____|___|
-                                         |___/
-
-    """)
+    CLI_Pages.printLogo()
     if dataSingleton.currentDevice?.name != nil {
         print("Current Device: \(dataSingleton.currentDevice?.name ?? "ERROR GETTING DEVICE NAME")")
         print("iOS \(dataSingleton.currentDevice?.version ?? "ERROR DETERMINING VERSION")")

@@ -11,7 +11,7 @@ class MainUtils {
     enum FileLocation: String {
         // Springboard Options
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
-        case footnote = "SpringboardOptions/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
+        case footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
         case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
         case accessibility = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.Accessibility.plist"
@@ -25,7 +25,7 @@ class MainUtils {
         case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
         
         // Setup Options
-        case skipSetup = "SkipSetup/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
+        case skipSetup = "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
         case ota = "SkipSetup/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
     }
     
@@ -38,25 +38,38 @@ class MainUtils {
         var dividerBelow: Bool = false
     }
     
-    public static func loadToggles(from array: [ToggleOption], workspace: URL) {
+    public static func loadToggles(from array: [ToggleOption], workspace: URL) -> [ToggleOption] {
+        var newArray: [ToggleOption] = array
         for (i, opt) in array.enumerated() {
             let plistURL = workspace.appendingPathComponent(opt.fileLocation.rawValue)
             do {
-                sbOptions[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
+                newArray[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
             } catch {
                 
             }
         }
+        return newArray
     }
     
     // Load the preferences
     public static func loadPreferences() {
         if let workspace = DataSingleton.shared.getCurrentWorkspace() {
             // Springboard Options
-            loadToggles(from: sbOptions, workspace: workspace)
+            sbOptions = loadToggles(from: sbOptions, workspace: workspace)
             
             // Internal Options
-            loadToggles(from: internalOptions, workspace: workspace)
+            internalOptions = loadToggles(from: internalOptions, workspace: workspace)
+
+            // Setup Options
+            for (i, opt) in skipSetupOptions.enumerated() {
+                if opt.key == "Skip" {
+                    skipSetupOptions[i].value = getSkipSetupEnabled()
+                } else if opt.key == "OTA" {
+                    skipSetupOptions[i].value = getOTABlocked()
+                } else if opt.key == "Supervision" {
+                    skipSetupOptions[i].value = getSupervisionEnabled()
+                }
+            }
         }
     }
     
@@ -115,6 +128,12 @@ class MainUtils {
     
     
     // MARK: Setup Option Configuration
+    public static var skipSetupOptions: [ToggleOption] = [
+        .init(key: "Skip", name: "Skip Setup (recommended)", fileLocation: .skipSetup),
+        .init(key: "OTA", name: "Disable OTA Updates", fileLocation: .ota),
+        .init(key: "Supervision", name: "Enable Supervision", fileLocation: .skipSetup)
+    ]
+
     // Skip Setup Getter/Setter
     public static func getSkipSetupEnabled() -> Bool {
         do {
@@ -128,7 +147,7 @@ class MainUtils {
             return false
         }
     }
-    public static func setSkipSetup(nv: Bool) {
+    public static func setSkipSetup(_ nv: Bool) {
         guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.skipSetup.rawValue) else {
             Logger.shared.logMe("Error finding cloud configuration details plist")
             return
@@ -196,7 +215,7 @@ class MainUtils {
             return false
         }
     }
-    public static func setOTABlocked(nv: Bool) {
+    public static func setOTABlocked(_ nv: Bool) {
         if nv {
             do {
                 guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.ota.rawValue) else {
@@ -244,7 +263,7 @@ class MainUtils {
             return false
         }
     }
-    public static func setSupervision(nv: Bool) {
+    public static func setSupervision(_ nv: Bool) {
         guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.skipSetup.rawValue) else {
             Logger.shared.logMe("Error finding cloud configuration details plist")
             return
@@ -272,7 +291,7 @@ class MainUtils {
             return ""
         }
     }
-    public static func setOrganizationName(nv: String) {
+    public static func setOrganizationName(_ nv: String) {
         do {
             guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.skipSetup.rawValue) else {
                 Logger.shared.logMe("Error finding cloud configuration details plist")
