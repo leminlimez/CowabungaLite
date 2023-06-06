@@ -16,7 +16,7 @@ class DataSingleton {
     public var deviceAvailable = false
     public var deviceTested = false
 
-    private var lastTestedVersion: String = "16.7"
+    private var lastTestedVersion: String = "17.0"
 
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
@@ -42,7 +42,7 @@ class DataSingleton {
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {
-            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending {
+            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame {
                 deviceTested = true
             }
             setupWorkspaceForUUID(device.uuid)
@@ -87,7 +87,7 @@ class DataSingleton {
     @Published var deviceAvailable = false
     @Published var deviceTested = false
     
-    private var lastTestedVersion: String = "16.7"
+    private var lastTestedVersion: String = "17.0"
     
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
@@ -111,7 +111,7 @@ class DataSingleton {
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {
-            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending {
+            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame {
                 deviceTested = true
             }
             setupWorkspaceForUUID(device.uuid)
