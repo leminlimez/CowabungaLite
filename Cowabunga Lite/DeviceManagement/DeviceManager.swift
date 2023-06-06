@@ -51,7 +51,6 @@ func setupWorkspaceForUUID(_ UUID: String) {
     #endif
     do {
         let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
-        print(files)
         for file in files {
             let newURL = UUIDDirectory.appendingPathComponent(file.lastPathComponent)
             var shouldMergeDirectory = false
