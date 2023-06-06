@@ -36,8 +36,10 @@ func execute(_ execURL: URL, arguments: [String] = [], workingDirectory: URL? = 
     
     let bundlePath = Bundle.main.bundlePath
     let frameworksPath = (bundlePath as NSString).appendingPathComponent("Contents/Frameworks")
+    #if !CLI
     let environment = ["DYLD_LIBRARY_PATH": frameworksPath]
     task.environment = environment
+    #endif
 
     task.executableURL = execURL
     task.arguments = arguments

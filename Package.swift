@@ -17,7 +17,6 @@ let package = Package(
                 "StatusManager",
                 "API",
                 "Controllers/IconTheming",
-                "Scripts",
                 "Libraries",
                 "Preview Content",
                 "Assets.xcassets",
@@ -25,10 +24,19 @@ let package = Package(
                 "CowabungaLiteApp.swift",
                 "ControlCenterPresets",
                 "CLI_Only.swift",
-                "Extensions/NSImage++.swift"
+                "Extensions/NSImage++.swift",
+
+                "Scripts/appabeticalJailed",
+                "Scripts/homeScreenApps",
+                "Scripts/homeScreenAppsNew",
+                "Scripts/idevice_id",
+                "Scripts/idevicebackup2",
+                "Scripts/ideviceinfo",
+                "Scripts/idevicename"
             ],
             resources: [
                 .process("Windows_Scripts"),
+                .process("Scripts/CreateBackup.sh"),
                 .copy("Files")
             ],
             swiftSettings: [
