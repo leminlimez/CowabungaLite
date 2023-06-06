@@ -16,6 +16,7 @@ class MainUtils {
         case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
         case accessibility = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.Accessibility.plist"
         case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
+        case airdrop = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
         
         // Internal Options
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
@@ -45,6 +46,8 @@ class MainUtils {
             do {
                 if opt.key == "WiFiManagerLoggingEnabled" {
                     newArray[i].value = (try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? String ?? "false" == "true")
+                } else if opt.key == "DiscoverableMode" {
+                    newArray[i].value = (try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? String ?? "" == "Everyone")
                 } else {
                     newArray[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
                 }
@@ -102,6 +105,12 @@ class MainUtils {
                     try PlistManager.setPlistValues(url: plistURL, values: [
                         key: value ? "true" : "false"
                     ])
+                } else if key == "DiscoverableMode" {
+                    if value == true {
+                        try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
+                    } else {
+                        try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                    }
                 } else {
                     try PlistManager.setPlistValues(url: plistURL, values: [
                         key: value
@@ -121,7 +130,8 @@ class MainUtils {
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
         .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
         .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility),
-        .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug)
+        .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug),
+        .init(key: "DiscoverableMode", name: "Set Airdrop to Everyone", fileLocation: .airdrop)
     ]
     
     

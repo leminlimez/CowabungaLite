@@ -15,8 +15,6 @@ struct SpringboardOptionsView: View {
     @State private var footnoteText = ""
     @State private var animSpeed: Double = 1
     
-    @State private var airdropEveryone: Bool = false
-    
     struct SBOption: Identifiable {
         var id = UUID()
         var key: String
@@ -74,6 +72,12 @@ struct SpringboardOptionsView: View {
                                         try PlistManager.setPlistValues(url: plistURL, values: [
                                             option.key.wrappedValue: option.value.wrappedValue ? "true" : "false"
                                         ])
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        if option.value.wrappedValue == true {
+                                            try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
+                                        } else {
+                                            try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                                        }
                                     } else {
                                         try PlistManager.setPlistValues(url: plistURL, values: [
                                             option.key.wrappedValue: option.value.wrappedValue
@@ -92,6 +96,8 @@ struct SpringboardOptionsView: View {
                                     }
                                     if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
                                         option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "false" == "true")
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "" == "Everyone")
                                     } else {
                                         option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
                                     }
@@ -100,41 +106,6 @@ struct SpringboardOptionsView: View {
                                     return
                                 }
                             }
-                        }
-                        
-                        // MARK: Set Airdrop to Everyone
-                        Toggle(isOn: $airdropEveryone) {
-                            Text("Set Airdrop to Everyone")
-                                .minimumScaleFactor(0.5)
-                        }.onChange(of: airdropEveryone, perform: { new in
-                            do {
-                                let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
-                                guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
-                                    Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
-                                    return
-                                }
-                                
-                                if new == true {
-                                    try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: url)
-                                } else {
-                                    try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: url)
-                                }
-                            } catch {
-                                Logger.shared.logMe(error.localizedDescription)
-                                return
-                            }
-                        })
-                        .onAppear {
-                            let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
-                            guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
-                                Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
-                                return
-                            }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: url) as? [String:Any] else {
-                                return
-                            }
-                            airdropEveryone = plist["DiscoverableMode"] as? String ?? "" == "Everyone"
                         }
                         
                         Divider()
