@@ -43,7 +43,11 @@ class MainUtils {
         for (i, opt) in array.enumerated() {
             let plistURL = workspace.appendingPathComponent(opt.fileLocation.rawValue)
             do {
-                newArray[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
+                if opt.key == "WiFiManagerLoggingEnabled" {
+                    newArray[i].value = (try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? String ?? "false" == "true")
+                } else {
+                    newArray[i].value = try PlistManager.getPlistValues(url: plistURL, key: opt.key) as? Bool ?? false
+                }
             } catch {
                 
             }
@@ -94,9 +98,15 @@ class MainUtils {
         if key != "", let workspace = DataSingleton.shared.getCurrentWorkspace() {
             let plistURL = workspace.appendingPathComponent(fileLocation.rawValue)
             do {
-                try PlistManager.setPlistValues(url: plistURL, values: [
-                    key: value
-                ])
+                if key == "WiFiManagerLoggingEnabled" {
+                    try PlistManager.setPlistValues(url: plistURL, values: [
+                        key: value ? "true" : "false"
+                    ])
+                } else {
+                    try PlistManager.setPlistValues(url: plistURL, values: [
+                        key: value
+                    ])
+                }
             } catch {
                 
             }
