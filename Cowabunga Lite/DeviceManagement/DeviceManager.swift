@@ -82,9 +82,15 @@ func setupWorkspaceForUUID(_ UUID: String) {
 }
 
 func generateBackup() {
+    #if CLI
+    guard let script = Bundle.module.url(forResource: "CreateBackup", withExtension: "sh") else {
+            Logger.shared.logMe("Error locating CreateBackup.sh")
+            return }
+    #else
     guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
             Logger.shared.logMe("Error locating CreateBackup.sh")
             return }
+    #endif
         do {
             #if CLI
             let task = Process()
@@ -204,7 +210,21 @@ func applyTweaks() {
     generateBackup()
     
     // Restore files
-    #if !CLI
+    #if CLI
+    guard let exec = Bundle.module.url(forResource: "WINidevicebackup2", withExtension: "exe") else {
+        Logger.shared.logMe("Error locating idevicebackup2")
+        return
+    }
+    guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+        Logger.shared.logMe("Error getting current UUID")
+        return
+    }
+    do {
+        try execute(exec, arguments:["-u", currentUUID, "-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
+    } catch {
+        Logger.shared.logMe("Error restoring to device")
+    }
+    #else
     guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
         Logger.shared.logMe("Error locating idevicebackup2")
         return

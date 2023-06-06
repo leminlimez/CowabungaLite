@@ -24,12 +24,12 @@ printf 'mbdb\x05\x00' >>$output_file
 for domain in "$1"/*; do
 	if [ -d "$domain" ]; then
 		justDomain=$(printf %s $(basename "$domain"))
+		justDomain=$(printf "%s" "$justDomain" | sed 's#ConfigProfileDomain#SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles#')
 
 		find "$domain" ! -name ".*" | while read file; do
 			path=${file#$domain/}
 			path=${path#$domain}
-			path2=$(printf "%s" "$path" | sed 's/ConfigProfileDomain/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/g')
-            pathFixed=$(printf "%s" "$path2" | sed 's/hiddendot/./g')
+            pathFixed=$(printf "%s" "$path" | sed 's/hiddendot/./g')
 
 			# Write domain name string to Manifest.mbdb
 			printf "%04x" $(printf "$justDomain" | wc -c) | xxd -r -p >>$output_file

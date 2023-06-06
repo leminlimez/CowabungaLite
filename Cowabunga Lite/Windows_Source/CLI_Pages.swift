@@ -54,7 +54,7 @@ class CLI_Pages {
     
     // MARK: Page Presets
     public static func printToggle(for opt: MainUtils.ToggleOption, _ i: Int) {
-        print("\(i). \(opt.value ? "✓" : "☐") \(opt.name): \(opt.value)")
+        print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name): \(opt.value)")
     }
     
     
@@ -72,7 +72,7 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("\(i)) Back")
+        print("(\(i)) Back")
         print()
         if let choice = readLine() {
             if choice == "E" {
@@ -108,7 +108,7 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("\(i)) Back")
+        print("(\(i)) Back")
         print()
         if let choice = readLine() {
             if choice == "E" {
@@ -141,7 +141,7 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("\(i)) Back")
+        print("(\(i)) Back")
         print()
         if let choice = readLine() {
             if choice == "E" {

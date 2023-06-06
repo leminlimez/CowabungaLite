@@ -65,13 +65,13 @@ while true {
     print()
     var p = 1
     for page in CLI_Pages.Pages {
-        print("\(p)) \(DataSingleton.shared.isTweakEnabled(page.tweak) ? "✓ " : "")\(page.title)")
+        print("(\(p)) \(DataSingleton.shared.isTweakEnabled(page.tweak) ? "✓ " : "")\(page.title)")
         p += 1
     }
     print()
-    print("\(p)) Apply")
+    print("(\(p)) Apply")
     p += 1
-    print("\(p)) Quit")
+    print("(\(p)) Quit")
     print()
     print("Enter a number to go to that page.")
     
@@ -80,6 +80,21 @@ while true {
             CLI_Pages.activatePage(CLI_Pages.Pages[n-1])
         } else if n == p-1 {
             // Apply
+            print("\u{001B}[2J")
+            CLI_Pages.printLogo()
+            print("Enabled Tweaks:")
+            for tweak in DataSingleton.shared.enabledTweaks {
+                print("• \(tweak.rawValue)")
+            }
+            print()
+            print("(Y) Confirm")
+            print("(N) Cancel")
+            if let choice = readLine() {
+                if choice == "Y" {
+                    applyTweaks()
+                    break
+                }
+            }
         } else if n == p {
             // Quit
             break
