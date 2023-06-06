@@ -70,6 +70,7 @@ class MainUtils {
                     skipSetupOptions[i].value = getSupervisionEnabled()
                 }
             }
+            skipSetupOrganizationName = getOrganizationName()
         }
     }
     
@@ -133,6 +134,7 @@ class MainUtils {
         .init(key: "OTA", name: "Disable OTA Updates", fileLocation: .ota),
         .init(key: "Supervision", name: "Enable Supervision", fileLocation: .skipSetup)
     ]
+    public static var skipSetupOrganizationName: String = ""
 
     // Skip Setup Getter/Setter
     public static func getSkipSetupEnabled() -> Bool {
@@ -297,6 +299,7 @@ class MainUtils {
                 Logger.shared.logMe("Error finding cloud configuration details plist")
                 return
             }
+            skipSetupOrganizationName = nv
             try PlistManager.setPlistValues(url: plistURL, values: [
                 "OrganizationName": nv
             ])

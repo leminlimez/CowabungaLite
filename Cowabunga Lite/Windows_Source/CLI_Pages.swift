@@ -140,6 +140,8 @@ class CLI_Pages {
             printToggle(for: opt, i)
             i += 1
         }
+        print("(\(i)) Organization Name: \(MainUtils.skipSetupOrganizationName)")
+        i += 1
         print()
         print("(\(i)) Back")
         print()
@@ -155,6 +157,12 @@ class CLI_Pages {
             } else if let n = Int(choice) {
                 if n == i {
                     return false
+                } else if n == i-1 {
+                    print()
+                    print("Enter New Organization Name: ")
+                    if let nv = readLine() {
+                        MainUtils.setOrganizationName(nv)
+                    }
                 } else {
                     if n <= MainUtils.skipSetupOptions.count {
                         let nv = !MainUtils.skipSetupOptions[n-1].value
