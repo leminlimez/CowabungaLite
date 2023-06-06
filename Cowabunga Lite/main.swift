@@ -30,6 +30,7 @@ print("""
                                      |___/                                       
 
 """)
+print("Loading...")
 
 let dataSingleton = DataSingleton.shared
 var devices = getDevices()
@@ -44,7 +45,18 @@ if devices.isEmpty {
     DataSingleton.shared.setCurrentDevice(devices[0])
 }
 
+MainUtils.loadPreferences()
+
 while true {
+    print("\u{001B}[2J")
+    print("""
+       ___                 _                          _    _ _          ___ _    ___
+      / __|_____ __ ____ _| |__ _  _ _ _  __ _ __ _  | |  (_) |_ ___   / __| |  |_ _|
+     | (__/ _ \\ V  V / _` | '_ \\ || | ' \\/ _` / _` | | |__| |  _/ -_) | (__| |__ | |
+      \\___\\___/\\_/\\_/\\__,_|_.__/\\_,_|_||_\\__, \\__,_| |____|_|\\__\\___|  \\___|____|___|
+                                         |___/
+
+    """)
     if dataSingleton.currentDevice?.name != nil {
         print("Current Device: \(dataSingleton.currentDevice?.name ?? "ERROR GETTING DEVICE NAME")")
         print("iOS \(dataSingleton.currentDevice?.version ?? "ERROR DETERMINING VERSION")")
@@ -64,34 +76,27 @@ while true {
     print("")
 
     print("Pages:")
-    print("""
-
-    1) Springboard Options
-    2) Internal Options
-    3) Setup Options
-    4) Apply
-    5) Quit
-
-    Type in a number to go to that page.
-    """)
-    break
-    if let inp = readLine() {
-        if inp == "5" {
+    print()
+    var p = 1
+    for page in CLI_Pages.Pages {
+        print("\(p)) \(DataSingleton.shared.isTweakEnabled(page.tweak) ? "✓ " : "")\(page.title)")
+        p += 1
+    }
+    print()
+    print("\(p)) Apply")
+    p += 1
+    print("\(p)) Quit")
+    print()
+    print("Enter a number to go to that page.")
+    
+    if let inp = readLine(), let n = Int(inp) {
+        if n <= CLI_Pages.Pages.count {
+            CLI_Pages.activatePage(CLI_Pages.Pages[n-1])
+        } else if n == p-1 {
+            // Apply
+        } else if n == p {
+            // Quit
             break
-        }
-        else if inp == "1" {
-            // MARK: Springboard Options Page
-            var i = 1
-            for opt in MainUtils.sbOptions {
-                print("\(i). \(opt.name): \(opt.value)")
-                i += 1
-            }
-            print("\(i). Back")
-            if let choice = readLine() {
-                if Int(choice) ?? -1 == i {
-                    exit(0)
-                }
-            }
         }
     }
 }

@@ -95,7 +95,7 @@ struct InternalOptionsView: View {
                 .onAppear {
                     if sbOptions.isEmpty {
                         for opt in MainUtils.internalOptions {
-                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, dividerBelow: (opt.key == "NSForceRightToLeftWritingDirection" || opt.key == "VCDiagnosticsEnabled") ? true : false))
+                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, dividerBelow: opt.dividerBelow))
                         }
                     }
                 }
