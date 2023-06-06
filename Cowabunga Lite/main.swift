@@ -45,7 +45,7 @@ if devices.isEmpty {
     DataSingleton.shared.setCurrentDevice(devices[0])
 }
 
-MainUtils.loadPreferences()
+// MainUtils.loadPreferences()
 
 while true {
     print("\u{001B}[2J")

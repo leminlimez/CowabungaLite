@@ -28,7 +28,8 @@ for domain in "$1"/*; do
 		find "$domain" ! -name ".*" | while read file; do
 			path=${file#$domain/}
 			path=${path#$domain}
-            pathFixed=$(printf "%s" "$path" | sed 's/hiddendot/./g')
+			path2=$(printf "%s" "$path" | sed 's/ConfigProfileDomain/SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles/g')
+            pathFixed=$(printf "%s" "$path2" | sed 's/hiddendot/./g')
 
 			# Write domain name string to Manifest.mbdb
 			printf "%04x" $(printf "$justDomain" | wc -c) | xxd -r -p >>$output_file
