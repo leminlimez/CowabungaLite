@@ -15,7 +15,6 @@ struct SpringboardOptionsView: View {
     @State private var footnoteText = ""
     @State private var animSpeed: Double = 1
     
-    @State private var showWiFiDebugger: Bool = false
     @State private var airdropEveryone: Bool = false
     
     struct SBOption: Identifiable {
@@ -71,9 +70,15 @@ struct SpringboardOptionsView: View {
                                         Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
-                                    try PlistManager.setPlistValues(url: plistURL, values: [
-                                        option.key.wrappedValue: option.value.wrappedValue
-                                    ])
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue ? "true" : "false"
+                                        ])
+                                    } else {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue
+                                        ])
+                                    }
                                 } catch {
                                     Logger.shared.logMe(error.localizedDescription)
                                     return
@@ -85,45 +90,15 @@ struct SpringboardOptionsView: View {
                                         Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
-                                    option.value.wrappedValue =  try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "false" == "true")
+                                    } else {
+                                        option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                    }
                                 } catch {
                                     Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                     return
                                 }
-                            }
-                        }
-                        
-                        Toggle(isOn: $showWiFiDebugger) {
-                            Text("Show WiFi Debugger")
-                                .minimumScaleFactor(0.5)
-                        }.onChange(of: showWiFiDebugger, perform: { new in
-                            do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                    return
-                                }
-                                if new == true {
-                                    try PlistManager.setPlistValues(url: plistURL, values: [
-                                        "WiFiManagerLoggingEnabled": "true"
-                                    ])
-                                } else {
-                                    try PlistManager.setPlistValues(url: plistURL, values: [:])
-                                }
-                            } catch {
-                                Logger.shared.logMe(error.localizedDescription)
-                                return
-                            }
-                        })
-                        .onAppear {
-                            do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                    return
-                                }
-                                showWiFiDebugger =  (try PlistManager.getPlistValues(url: plistURL, key: "WiFiManagerLoggingEnabled") as? String ?? "false") == "true"
-                            } catch {
-                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                return
                             }
                         }
                         

@@ -110,7 +110,8 @@ class MainUtils {
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
         .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
-        .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility)
+        .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility),
+        .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug)
     ]
     
     
