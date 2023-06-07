@@ -132,11 +132,11 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding uikit plist")
                                 return
                             }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                            do {
+                                animSpeed = try PlistManager.getPlistValues(url: plistURL, key: "UIAnimationDragCoefficient") as? Double ?? 1
+                            } catch {
                                 return
                             }
-                            animSpeed = plist["UIAnimationDragCoefficient"] as? Double ?? 1
                         }
                         
                         Text("Lock Screen Footnote Text")
@@ -157,11 +157,11 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                            do {
+                                footnoteText = try PlistManager.getPlistValues(url: plistURL, key: "LockScreenFootnote") as? String ?? ""
+                            } catch {
                                 return
                             }
-                            footnoteText = plist["LockScreenFootnote"] as! String
                         })
                     }.disabled(!enableTweak)
                 }
