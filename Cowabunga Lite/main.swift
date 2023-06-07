@@ -31,6 +31,7 @@ var selectedDeviceIndex = 0
 
 if devices.isEmpty {
     print("No device connected. Please connect your device and try again.")
+    let _ = readLine()
     exit(1)
 } else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
     selectedDeviceIndex = index
@@ -93,6 +94,7 @@ while true {
             if let choice = readLine() {
                 if choice == "Y" {
                     applyTweaks()
+                    let _ = readLine()
                     break
                 }
             }
