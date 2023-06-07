@@ -63,6 +63,16 @@ class MainUtils {
         if let workspace = DataSingleton.shared.getCurrentWorkspace() {
             // Springboard Options
             sbOptions = loadToggles(from: sbOptions, workspace: workspace)
+            do {
+                sbAnimationSpeed = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.uikit.rawValue), key: "UIAnimationDragCoefficient") as? Double ?? 1
+            } catch {
+
+            }
+            do {
+                sbLockScreenFootnote = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.footnote.rawValue), key: "LockScreenFootnote") as? String ?? ""
+            } catch {
+
+            }
             
             // Internal Options
             internalOptions = loadToggles(from: internalOptions, workspace: workspace)
@@ -133,6 +143,40 @@ class MainUtils {
         .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug),
         .init(key: "DiscoverableMode", name: "Set Airdrop to Everyone", fileLocation: .airdrop)
     ]
+    public static var sbAnimationSpeed: Double = 1
+    public static var sbLockScreenFootnote: String = ""
+
+    public static func setLockScreenFootnote(_ nv: String) {
+        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.footnote.rawValue) else {
+            Logger.shared.logMe("Error finding footnote plist")
+            return
+        }
+        do {
+            try PlistManager.setPlistValues(url: plistURL, values: [
+                "LockScreenFootnote": nv
+            ])
+            sbLockScreenFootnote = nv
+        } catch {
+            Logger.shared.logMe(error.localizedDescription)
+            return
+        }
+    }
+    
+    public static func setAnimationSpeed(_ nv: Double) {
+        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.uikit.rawValue) else {
+            Logger.shared.logMe("Error finding uikit plist")
+            return
+        }
+        do {
+            try PlistManager.setPlistValues(url: plistURL, values: [
+                "UIAnimationDragCoefficient": nv
+            ])
+            sbAnimationSpeed = nv
+        } catch {
+            Logger.shared.logMe(error.localizedDescription)
+            return
+        }
+    }
     
     
     // MARK: Internal Options

@@ -72,6 +72,11 @@ class CLI_Pages {
             i += 1
         }
         print()
+        print("(\(i)) UI Animation Speed: \(String(format: "%.2f", MainUtils.sbAnimationSpeed)) (\(MainUtils.sbAnimationSpeed == 1 ? "Default" : (MainUtils.sbAnimationSpeed < 1 ? "Fast" : "Slow")))")
+        i += 1
+        print("(\(i)) Lock Screen Footnote Text: \(MainUtils.sbLockScreenFootnote)")
+        i += 1
+        print()
         print("(\(i)) Back")
         print()
         if let choice = readLine() {
@@ -86,6 +91,22 @@ class CLI_Pages {
             } else if let n = Int(choice) {
                 if n == i {
                     return false
+                } else if n == i-1 {
+                    // Lock Screen Footnote
+                    print()
+                    print("Enter New Lock Screen Footnote Text: ")
+                    if let nv = readLine() {
+                        MainUtils.setLockScreenFootnote(nv)
+                    }
+                } else if n == i-2 {
+                    // UI Animation Speed
+                    print()
+                    print("Enter New Animation Speed (0.1 to 2.0): ")
+                    if let nv = readLine(), let ns = Double(nv) {
+                        if ns >= 0.1 && ns <= 2 {
+                            MainUtils.setAnimationSpeed(ns)
+                        }
+                    }
                 } else {
                     if n <= MainUtils.sbOptions.count {
                         MainUtils.applyToggle(index: n-1, value: !MainUtils.sbOptions[n-1].value, tweak: .springboardOptions)

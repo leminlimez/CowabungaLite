@@ -43,6 +43,7 @@ MainUtils.loadPreferences()
 while true {
     print("\u{001B}[2J")
     CLI_Pages.printLogo()
+    print("Version 1.0 beta 1")
     if dataSingleton.currentDevice?.name != nil {
         print("Current Device: \(dataSingleton.currentDevice?.name ?? "ERROR GETTING DEVICE NAME")")
         print("iOS \(dataSingleton.currentDevice?.version ?? "ERROR DETERMINING VERSION")")
