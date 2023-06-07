@@ -94,7 +94,13 @@ func generateBackup() {
         do {
             #if CLI
             let task = Process()
-            task.launchPath = "C:\\Program Files\\Git\\git-bash.exe"
+            let gitPath = "C:\\Program Files\\Git\\git-bash.exe"
+            task.launchPath = gitPath
+            if !FileManager.default.fileExists(atPath: gitPath) {
+                print("Git bash not found at the path \(gitPath)")
+                print("If you do not have it, install it from here: https://gitforwindows.org/")
+                return
+            }
             task.arguments = [script.path, "EnabledTweaks", "Backup"]
             task.currentDirectoryPath = documentsDirectory.path
             task.launch()
