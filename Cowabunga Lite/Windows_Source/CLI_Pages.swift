@@ -8,6 +8,9 @@
 import Foundation
 
 class CLI_Pages {
+    // Configuration
+    let back: String = "0"
+    
     struct Page: Identifiable {
         var id = UUID()
         var title: String
@@ -61,6 +64,7 @@ class CLI_Pages {
     }
     
     // MARK: Page Presets
+    // Toggles
     public static func printToggle(for opt: MainUtils.ToggleOption, _ i: Int) {
         print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name): \(opt.value)")
     }
@@ -80,7 +84,9 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("(B) Back")
+        print("(\(i)) Selected CC Preset: \(MainUtils.selectedCCPreset)")
+        print()
+        print("(\(back)) Back")
         print()
         if let choice = readLine().uppercased() {
             if choice == "E" {
@@ -91,10 +97,27 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.controlCenter) {
                     DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: false)
                 }
-            } else if choice == "B" {
+            } else if choice == back {
                 return false
             } else if let n = Int(choice) {
-                if n <= MainUtils.sbOptions.count {
+                if n == i {
+                    print()
+                    for (j, preset) in MainUtils.ccPresets.enumerated() {
+                        print("(\(j+1)) \(MainUtils.selectedCCPreset == preset.identification ? "✓ " : "") \(preset.title)")
+                    }
+                    print("(\(back)) Cancel")
+                    print()
+                    print("Select new preset: ")
+                    if let newPreset = readLine().uppercased() {
+                        if newPreset != back {
+                            if let presetID = Int(newPreset) {
+                                if presetID > 0 && presetID <= MainUtils.ccPresets.count {
+                                    MainUtils.setCCPreset(MainUtils.ccPresets[presetID-1])
+                                }
+                            }
+                        }
+                    }
+                } else if n <= MainUtils.sbOptions.count {
                     MainUtils.setModuleVisibility(key: n, !MainUtils.moduleTypes[n-1].value)
                 }
             }
@@ -116,7 +139,7 @@ class CLI_Pages {
         print("(\(i)) Lock Screen Footnote Text: \(MainUtils.sbLockScreenFootnote)")
         i += 1
         print()
-        print("(B) Back")
+        print("(\(back)) Back")
         print()
         if let choice = readLine().uppercased() {
             if choice == "E" {
@@ -127,7 +150,7 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.springboardOptions) {
                     DataSingleton.shared.setTweakEnabled(.springboardOptions, isEnabled: false)
                 }
-            } else if choice == "B" {
+            } else if choice == back {
                 return false
             } else if let n = Int(choice) {
                 if n == i-1 {
@@ -168,7 +191,7 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("(B) Back")
+        print("(\(back)) Back")
         print()
         if let choice = readLine().uppercased() {
             if choice == "E" {
@@ -179,7 +202,7 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.internalOptions) {
                     DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: false)
                 }
-            } else if choice == "B" {
+            } else if choice == back {
                 return false
             } else if let n = Int(choice) {
                 if n <= MainUtils.internalOptions.count {
@@ -201,7 +224,7 @@ class CLI_Pages {
         print("(\(i)) Organization Name: \(MainUtils.skipSetupOrganizationName)")
         i += 1
         print()
-        print("(B) Back")
+        print("(\(back)) Back")
         print()
         if let choice = readLine().uppercased() {
             if choice == "E" {
@@ -212,7 +235,7 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.skipSetup) {
                     DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: false)
                 }
-            } else if choice == "B" {
+            } else if choice == back {
                 return false
             } else if let n = Int(choice) {
                 if n == i-1 {
