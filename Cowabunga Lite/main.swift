@@ -21,6 +21,10 @@
 
 import Foundation
 
+// Configuration
+let version = "1.0"
+let build = 2
+
 print()
 CLI_Pages.printLogo()
 print("Loading...")
@@ -42,9 +46,8 @@ if devices.isEmpty {
 MainUtils.loadPreferences()
 
 while true {
-    print("\u{001B}[2J")
     CLI_Pages.printLogo()
-    print("Version 1.0 beta 1")
+    print("Version \(version) (\(build == 0 ? "Release" : "Beta \(build)"))")
     if dataSingleton.currentDevice?.name != nil {
         print("Current Device: \(dataSingleton.currentDevice?.name ?? "ERROR GETTING DEVICE NAME")")
         print("iOS \(dataSingleton.currentDevice?.version ?? "ERROR DETERMINING VERSION")")
@@ -82,7 +85,6 @@ while true {
             CLI_Pages.activatePage(CLI_Pages.Pages[n-1])
         } else if n == p-1 {
             // Apply
-            print("\u{001B}[2J")
             CLI_Pages.printLogo()
             print("Enabled Tweaks:")
             for tweak in DataSingleton.shared.enabledTweaks {
