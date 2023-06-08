@@ -22,6 +22,7 @@ class CLI_Pages {
     ]
 
     public static func printLogo() {
+        clearConsole()
         print("""
    ___                 _                          _    _ _          ___ _    ___ 
   / __|_____ __ ____ _| |__ _  _ _ _  __ _ __ _  | |  (_) |_ ___   / __| |  |_ _|
@@ -32,10 +33,13 @@ class CLI_Pages {
 """)
     }
     
+    public static func clearConsole() {
+        print("\u{001B}[2J")
+    }
+    
     public static func activatePage(_ page: Page) {
         var inPage: Bool = true
         while inPage {
-            print("\u{001B}[2J")
             printLogo()
             let tweakEnabled: Bool = DataSingleton.shared.isTweakEnabled(page.tweak)
             print("\(page.title) (\(tweakEnabled ? "Enabled" : "Disabled"))")
