@@ -15,6 +15,7 @@ class CLI_Pages {
     }
     
     public static let Pages: [Page] = [
+        .init(title: "Control Center", tweak: .controlCenter),
         .init(title: "Springboard Options", tweak: .springboardOptions),
         .init(title: "Internal Options", tweak: .internalOptions),
         .init(title: "Setup Options", tweak: .skipSetup)
@@ -40,7 +41,9 @@ class CLI_Pages {
             print("\(page.title) (\(tweakEnabled ? "Enabled" : "Disabled"))")
             print("Enter '\(tweakEnabled ? "D" : "E")' to \(tweakEnabled ? "Disable" : "Enable")")
             print()
-            if page.tweak == .springboardOptions {
+            if page.tweak == .controlCenter {
+                inPage = controlCenter()
+            } else if page.tweak == .springboardOptions {
                 inPage = springboardOptions()
             } else if page.tweak == .internalOptions {
                 inPage = internalOptions()
@@ -62,6 +65,39 @@ class CLI_Pages {
 
 
     // MARK: TOOL PAGES
+    
+    // MARK: Control Center
+    public static func controlCenter() -> Bool {
+        // Toggles
+        var i = 1
+        for opt in MainUtils.moduleTypes {
+            printToggle(for: opt, i)
+            i += 1
+        }
+        print()
+        print("(\(i)) Back")
+        print()
+        if let choice = readLine() {
+            if choice == "E" {
+                if !DataSingleton.shared.isTweakEnabled(.controlCenter) {
+                    DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: true)
+                }
+            } else if choice == "D"{
+                if DataSingleton.shared.isTweakEnabled(.controlCenter) {
+                    DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: false)
+                }
+            } else if let n = Int(choice) {
+                if n == i {
+                    return false
+                } else {
+                    if n <= MainUtils.sbOptions.count {
+                        MainUtils.setModuleVisibility(key: n, !MainUtils.moduleTypes[n-1].value)
+                    }
+                }
+            }
+        }
+        return true
+    }
     
     // MARK: Springboard Options
     public static func springboardOptions() -> Bool {

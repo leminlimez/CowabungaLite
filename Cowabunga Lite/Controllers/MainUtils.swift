@@ -9,6 +9,12 @@ import Foundation
 
 class MainUtils {
     enum FileLocation: String {
+        // Control Center
+        case mute = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
+        case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
+        case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
+        case moduleConfig = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
+        
         // Springboard Options
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
@@ -128,6 +134,35 @@ class MainUtils {
                 }
             } catch {
                 
+            }
+        }
+    }
+    
+    
+    // MARK: Control Center
+    public static var moduleTypes: [ToggleOption] = [
+        .init(key: "1", name: "Mute Module", fileLocation: .mute),
+        .init(key: "2", name: "Focus UI Module", fileLocation: .focus),
+        .init(key: "3", name: "Siri Spoken Notifications Module", fileLocation: .spoken)
+    ]
+    
+    public static func setModuleVisibility(key: Int, _ nv: Bool) {
+        for (i, module) in moduleTypes.enumerated() {
+            if Int(module.key) ?? i+1 == key {
+                do {
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(module.fileLocation.rawValue) else {
+                        Logger.shared.logMe("Error finding springboard plist \(module.fileLocation.rawValue)")
+                        return
+                    }
+                    try PlistManager.setPlistValues(url: plistURL, values: [
+                        "SBIconVisibility": nv
+                    ])
+                    moduleTypes[i].value = nv
+                    return
+                } catch {
+                    Logger.shared.logMe(error.localizedDescription)
+                    return
+                }
             }
         }
     }
