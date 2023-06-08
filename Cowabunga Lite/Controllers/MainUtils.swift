@@ -45,6 +45,15 @@ class MainUtils {
         var dividerBelow: Bool = false
     }
     
+    struct ConfigPreset: Identifiable {
+        var id = UUID()
+        var title: String
+        var identification: String
+        var fileLocation: URL?
+        var modulesToEnable: [Int] // based on module ID
+        var author: String?
+    }
+    
     public static func loadToggles(from array: [ToggleOption], workspace: URL) -> [ToggleOption] {
         var newArray: [ToggleOption] = array
         for (i, opt) in array.enumerated() {
@@ -67,6 +76,30 @@ class MainUtils {
     // Load the preferences
     public static func loadPreferences() {
         if let workspace = DataSingleton.shared.getCurrentWorkspace() {
+            // Control Center
+            for (i, module) in moduleTypes.enumerated() {
+                do {
+                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(module.fileLocation.rawValue) else { continue }
+                    moduleTypes[i].value =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
+                } catch {
+                    
+                }
+            }
+            do {
+                guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
+                if FileManager.default.fileExists(atPath: filePath.path) {
+                    let plistData = try Data(contentsOf: filePath)
+                    let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
+                    if let pIdentifier = plist["preset-identifier"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
+                        selectedCCPreset = pID
+                    } else {
+                        selectedCCPreset = "None"
+                    }
+                }
+            } catch {
+                selectedCCPreset = "None"
+            }
+            
             // Springboard Options
             sbOptions = loadToggles(from: sbOptions, workspace: workspace)
             do {
@@ -145,6 +178,13 @@ class MainUtils {
         .init(key: "2", name: "Focus UI Module", fileLocation: .focus),
         .init(key: "3", name: "Siri Spoken Notifications Module", fileLocation: .spoken)
     ]
+    public static var selectedCCPreset: String = "None"
+    #if CLI
+    public static let ccPresets: [ConfigPreset] = [
+        .init(title: "Revert to Original", identification: "RevertCC", fileLocation: Bundle.module.url(forResource: "RevertCC", withExtension: ".plist"), modulesToEnable: []),
+        .init(title: "Default", identification: "DefaultCC", fileLocation: Bundle.module.url(forResource: "DefaultCC", withExtension: ".plist"), modulesToEnable: [2])
+    ]
+    #endif
     
     public static func setModuleVisibility(key: Int, _ nv: Bool) {
         for (i, module) in moduleTypes.enumerated() {
@@ -163,6 +203,38 @@ class MainUtils {
                     Logger.shared.logMe(error.localizedDescription)
                     return
                 }
+            }
+        }
+    }
+    
+    public static func setCCPreset(_ nv: ConfigPreset) {
+        guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
+        if selectedCCPreset == nv.identification {
+            if FileManager.default.fileExists(atPath: filePath.path) {
+                try? FileManager.default.removeItem(at: filePath)
+            }
+            selectedCCPreset = "None"
+        } else {
+            do {
+                if let ccPlist = nv.fileLocation {
+                    let ccData = try Data(contentsOf: ccPlist)
+                    try ccData.write(to: filePath)
+                    // enable the modules associated with it
+                    // kinda slow but it works
+                    for module in nv.modulesToEnable {
+                        for (i, mod) in moduleTypes.enumerated() {
+                            if Int(mod.key) ?? i+1 == module {
+                                setModuleVisibility(key: module, true)
+                            }
+                        }
+                    }
+                    selectedCCPreset = nv.identification
+                } else {
+                    throw "No url for preset \(nv.identification) found!"
+                }
+            } catch {
+                selectedCCPreset = "None"
+                print(error.localizedDescription)
             }
         }
     }
