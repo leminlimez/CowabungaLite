@@ -93,8 +93,8 @@ while true {
             print()
             print("(Y) Confirm")
             print("(N) Cancel")
-            if let choice = readLine().uppercased() {
-                if choice == "Y" {
+            if let choice = readLine() {
+                if choice.uppercased() == "Y" {
                     applyTweaks()
                     let _ = readLine()
                     break
