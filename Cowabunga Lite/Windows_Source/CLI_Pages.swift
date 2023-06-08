@@ -75,9 +75,9 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("(\(i)) Back")
+        print("(B) Back")
         print()
-        if let choice = readLine() {
+        if let choice = readLine().uppercased() {
             if choice == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.controlCenter) {
                     DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: true)
@@ -86,13 +86,11 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.controlCenter) {
                     DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: false)
                 }
+            } else if choice == "B" {
+                return false
             } else if let n = Int(choice) {
-                if n == i {
-                    return false
-                } else {
-                    if n <= MainUtils.sbOptions.count {
-                        MainUtils.setModuleVisibility(key: n, !MainUtils.moduleTypes[n-1].value)
-                    }
+                if n <= MainUtils.sbOptions.count {
+                    MainUtils.setModuleVisibility(key: n, !MainUtils.moduleTypes[n-1].value)
                 }
             }
         }
@@ -113,9 +111,9 @@ class CLI_Pages {
         print("(\(i)) Lock Screen Footnote Text: \(MainUtils.sbLockScreenFootnote)")
         i += 1
         print()
-        print("(\(i)) Back")
+        print("(B) Back")
         print()
-        if let choice = readLine() {
+        if let choice = readLine().uppercased() {
             if choice == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.springboardOptions) {
                     DataSingleton.shared.setTweakEnabled(.springboardOptions, isEnabled: true)
@@ -124,10 +122,10 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.springboardOptions) {
                     DataSingleton.shared.setTweakEnabled(.springboardOptions, isEnabled: false)
                 }
+            } else if choice == "B" {
+                return false
             } else if let n = Int(choice) {
-                if n == i {
-                    return false
-                } else if n == i-1 {
+                if n == i-1 {
                     // Lock Screen Footnote
                     print()
                     print("Enter New Lock Screen Footnote Text: ")
@@ -165,9 +163,9 @@ class CLI_Pages {
             i += 1
         }
         print()
-        print("(\(i)) Back")
+        print("(B) Back")
         print()
-        if let choice = readLine() {
+        if let choice = readLine().uppercased() {
             if choice == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.internalOptions) {
                     DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: true)
@@ -176,13 +174,11 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.internalOptions) {
                     DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: false)
                 }
+            } else if choice == "B" {
+                return false
             } else if let n = Int(choice) {
-                if n == i {
-                    return false
-                } else {
-                    if n <= MainUtils.internalOptions.count {
-                        MainUtils.applyToggle(index: n-1, value: !MainUtils.internalOptions[n-1].value, tweak: .internalOptions)
-                    }
+                if n <= MainUtils.internalOptions.count {
+                    MainUtils.applyToggle(index: n-1, value: !MainUtils.internalOptions[n-1].value, tweak: .internalOptions)
                 }
             }
         }
@@ -200,9 +196,9 @@ class CLI_Pages {
         print("(\(i)) Organization Name: \(MainUtils.skipSetupOrganizationName)")
         i += 1
         print()
-        print("(\(i)) Back")
+        print("(B) Back")
         print()
-        if let choice = readLine() {
+        if let choice = readLine().uppercased() {
             if choice == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.skipSetup) {
                     DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: true)
@@ -211,10 +207,10 @@ class CLI_Pages {
                 if DataSingleton.shared.isTweakEnabled(.skipSetup) {
                     DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: false)
                 }
+            } else if choice == "B" {
+                return false
             } else if let n = Int(choice) {
-                if n == i {
-                    return false
-                } else if n == i-1 {
+                if n == i-1 {
                     print()
                     print("Enter New Organization Name: ")
                     if let nv = readLine() {
