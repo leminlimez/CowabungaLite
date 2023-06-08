@@ -86,17 +86,19 @@ class MainUtils {
                 }
             }
             do {
-                guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
-                if FileManager.default.fileExists(atPath: filePath.path) {
-                    let plistData = try Data(contentsOf: filePath)
-                    let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                    if let pIdentifier = plist["preset-identifier"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
-                        selectedCCPreset = pID
-                    } else {
-                        selectedCCPreset = "None"
+                if let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) {
+                    if FileManager.default.fileExists(atPath: filePath.path) {
+                        let plistData = try Data(contentsOf: filePath)
+                        let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
+                        if let pIdentifier = plist["preset-identifiers"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
+                            selectedCCPreset = pID
+                        } else {
+                            selectedCCPreset = "None"
+                        }
                     }
                 }
             } catch {
+                print(error.localizedDescription)
                 selectedCCPreset = "None"
             }
             
@@ -217,8 +219,7 @@ class MainUtils {
         } else {
             do {
                 if let ccPlist = nv.fileLocation {
-                    let ccData = try Data(contentsOf: ccPlist)
-                    try ccData.write(to: filePath)
+                    try FileManager.default.copyItem(at: ccPlist, to: filePath)
                     // enable the modules associated with it
                     // kinda slow but it works
                     for module in nv.modulesToEnable {

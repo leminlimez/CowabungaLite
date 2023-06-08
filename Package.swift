@@ -22,7 +22,6 @@ let package = Package(
                 "Assets.xcassets",
                 "CowabungaJailed.entitlements",
                 "CowabungaLiteApp.swift",
-                "ControlCenterPresets",
                 "CLI_Only.swift",
                 "Extensions/NSImage++.swift",
 
@@ -38,8 +37,8 @@ let package = Package(
                 .process("Windows_Scripts"),
                 .process("Scripts/CreateBackup.sh"),
 		
-		.process("ControlCenterPresets/DefaultCC.plist"),
-		.process("ControlCenterPresets/RevertCC.plist"),
+		        .process("ControlCenterPresets/DefaultCC.plist"),
+		        .process("ControlCenterPresets/RevertCC.plist"),
                 .copy("Files")
             ],
             swiftSettings: [
