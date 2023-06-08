@@ -34,7 +34,8 @@ class CLI_Pages {
     }
     
     public static func clearConsole() {
-        print("\u{001B}[2J")
+//        print("\u{001B}[2J") // doesn't work in Windows terminal
+        print(" ", terminator: Array(repeating: "\n", count: 50).joined())
     }
     
     public static func activatePage(_ page: Page) {
