@@ -76,12 +76,13 @@ while true {
     print()
     print("(\(p)) Apply")
     p += 1
-    print("(\(p)) Quit")
+    print()
+    print("(0) Quit")
     print()
     print("Enter a number to go to that page.")
     
     if let inp = readLine(), let n = Int(inp) {
-        if n <= CLI_Pages.Pages.count {
+        if n > 0 && n <= CLI_Pages.Pages.count {
             CLI_Pages.activatePage(CLI_Pages.Pages[n-1])
         } else if n == p-1 {
             // Apply
@@ -100,7 +101,7 @@ while true {
                     break
                 }
             }
-        } else if n == p {
+        } else if n == 0 {
             // Quit
             break
         }

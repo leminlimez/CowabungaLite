@@ -37,7 +37,7 @@ class CLI_Pages {
     }
     
     public static func clearConsole() {
-//        print("\u{001B}[2J") // doesn't work in Windows terminal
+        // print("\u{001B}[2J") // doesn't work in Windows terminal
         print(" ", terminator: Array(repeating: "\n", count: 50).joined())
     }
     
@@ -117,7 +117,7 @@ class CLI_Pages {
                             }
                         }
                     }
-                } else if n <= MainUtils.sbOptions.count {
+                } else if n > 0 && n <= MainUtils.sbOptions.count {
                     MainUtils.setModuleVisibility(key: n, !MainUtils.moduleTypes[n-1].value)
                 }
             }
@@ -170,7 +170,7 @@ class CLI_Pages {
                         }
                     }
                 } else {
-                    if n <= MainUtils.sbOptions.count {
+                    if n > 0 && n <= MainUtils.sbOptions.count {
                         MainUtils.applyToggle(index: n-1, value: !MainUtils.sbOptions[n-1].value, tweak: .springboardOptions)
                     }
                 }
@@ -205,7 +205,7 @@ class CLI_Pages {
             } else if choice.uppercased() == back {
                 return false
             } else if let n = Int(choice) {
-                if n <= MainUtils.internalOptions.count {
+                if n > 0 && n <= MainUtils.internalOptions.count {
                     MainUtils.applyToggle(index: n-1, value: !MainUtils.internalOptions[n-1].value, tweak: .internalOptions)
                 }
             }
