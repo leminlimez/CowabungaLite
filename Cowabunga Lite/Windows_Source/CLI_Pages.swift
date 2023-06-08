@@ -9,7 +9,7 @@ import Foundation
 
 class CLI_Pages {
     // Configuration
-    let back: String = "0"
+    static let back: String = "0"
     
     struct Page: Identifiable {
         var id = UUID()
@@ -88,16 +88,16 @@ class CLI_Pages {
         print()
         print("(\(back)) Back")
         print()
-        if let choice = readLine().uppercased() {
-            if choice == "E" {
+        if let choice = readLine() {
+            if choice.uppercased() == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.controlCenter) {
                     DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: true)
                 }
-            } else if choice == "D"{
+            } else if choice.uppercased() == "D"{
                 if DataSingleton.shared.isTweakEnabled(.controlCenter) {
                     DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: false)
                 }
-            } else if choice == back {
+            } else if choice.uppercased() == back {
                 return false
             } else if let n = Int(choice) {
                 if n == i {
@@ -108,8 +108,8 @@ class CLI_Pages {
                     print("(\(back)) Cancel")
                     print()
                     print("Select new preset: ")
-                    if let newPreset = readLine().uppercased() {
-                        if newPreset != back {
+                    if let newPreset = readLine() {
+                        if newPreset.uppercased() != back {
                             if let presetID = Int(newPreset) {
                                 if presetID > 0 && presetID <= MainUtils.ccPresets.count {
                                     MainUtils.setCCPreset(MainUtils.ccPresets[presetID-1])
@@ -141,16 +141,16 @@ class CLI_Pages {
         print()
         print("(\(back)) Back")
         print()
-        if let choice = readLine().uppercased() {
-            if choice == "E" {
+        if let choice = readLine() {
+            if choice.uppercased() == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.springboardOptions) {
                     DataSingleton.shared.setTweakEnabled(.springboardOptions, isEnabled: true)
                 }
-            } else if choice == "D"{
+            } else if choice.uppercased() == "D"{
                 if DataSingleton.shared.isTweakEnabled(.springboardOptions) {
                     DataSingleton.shared.setTweakEnabled(.springboardOptions, isEnabled: false)
                 }
-            } else if choice == back {
+            } else if choice.uppercased() == back {
                 return false
             } else if let n = Int(choice) {
                 if n == i-1 {
@@ -193,16 +193,16 @@ class CLI_Pages {
         print()
         print("(\(back)) Back")
         print()
-        if let choice = readLine().uppercased() {
-            if choice == "E" {
+        if let choice = readLine() {
+            if choice.uppercased() == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.internalOptions) {
                     DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: true)
                 }
-            } else if choice == "D"{
+            } else if choice.uppercased() == "D"{
                 if DataSingleton.shared.isTweakEnabled(.internalOptions) {
                     DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: false)
                 }
-            } else if choice == back {
+            } else if choice.uppercased() == back {
                 return false
             } else if let n = Int(choice) {
                 if n <= MainUtils.internalOptions.count {
@@ -226,16 +226,16 @@ class CLI_Pages {
         print()
         print("(\(back)) Back")
         print()
-        if let choice = readLine().uppercased() {
-            if choice == "E" {
+        if let choice = readLine() {
+            if choice.uppercased() == "E" {
                 if !DataSingleton.shared.isTweakEnabled(.skipSetup) {
                     DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: true)
                 }
-            } else if choice == "D"{
+            } else if choice.uppercased() == "D"{
                 if DataSingleton.shared.isTweakEnabled(.skipSetup) {
                     DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: false)
                 }
-            } else if choice == back {
+            } else if choice.uppercased() == back {
                 return false
             } else if let n = Int(choice) {
                 if n == i-1 {
