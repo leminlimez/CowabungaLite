@@ -185,7 +185,7 @@ struct ControlCenterView: View {
                             if FileManager.default.fileExists(atPath: filePath.path) {
                                 let plistData = try Data(contentsOf: filePath)
                                 let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                                if let pIdentifier = plist["preset-identifier"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
+                                if let pIdentifier = plist["preset-identifiers"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
                                     currentCC = pID
                                 } else {
                                     currentCC = "None"
