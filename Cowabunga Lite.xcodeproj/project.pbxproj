@@ -461,7 +461,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					6F700AB129C37DF50085964B = {
 						CreatedOnToolsVersion = 14.2;
@@ -599,6 +599,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -667,6 +668,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -704,6 +706,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -714,8 +717,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/Cowabunga",
-					Lite/Libraries,
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
@@ -742,6 +743,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2P4CP47H76;
@@ -753,8 +755,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/Cowabunga",
-					Lite/Libraries,
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
