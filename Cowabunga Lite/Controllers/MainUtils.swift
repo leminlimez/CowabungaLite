@@ -76,6 +76,9 @@ class MainUtils {
     // Load the preferences
     public static func loadPreferences() {
         if let workspace = DataSingleton.shared.getCurrentWorkspace() {
+            // Icon Theming
+            IconThemingPage.loadPreferences()
+            
             // Control Center
             for (i, module) in moduleTypes.enumerated() {
                 do {
