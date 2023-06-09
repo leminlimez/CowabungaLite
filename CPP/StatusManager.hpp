@@ -10,6 +10,10 @@ public:
     void setFileLocation(const std::string &location);
     std::string getFileLocation() const;
 
+    bool isCarrierOverridden();
+    std::string getCarrierOverride();
+    void setCarrier(std::string text);
+    void unsetCarrier();
     bool isBatteryHidden();
     void hideBattery(bool hidden);
 

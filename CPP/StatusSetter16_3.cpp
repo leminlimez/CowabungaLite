@@ -190,6 +190,31 @@ StatusBarOverrideData *getOverrides()
     return overrides;
 }
 
+bool StatusSetter16_3::isCarrierOverridden() {
+    StatusBarOverrideData *overrides = getOverrides();
+    return overrides->overrideServiceString == 1;
+}
+
+std::string StatusSetter16_3::getCarrierOverride() {
+    StatusBarOverrideData *overrides = getOverrides();
+    std::string carrier = std::string(overrides->values.serviceString);
+    return carrier;
+}
+
+void StatusSetter16_3::setCarrier(std::string text) {
+    StatusBarOverrideData *overrides = getOverrides();
+    overrides->overrideServiceString = 1;
+    strcpy(overrides->values.serviceString, text.c_str());
+    strcpy(overrides->values.serviceCrossfadeString, text.c_str());
+    applyChanges(overrides);
+}
+
+void StatusSetter16_3::unsetCarrier() {
+    StatusBarOverrideData *overrides = getOverrides();
+    overrides->overrideServiceString = 0;
+    applyChanges(overrides);
+}
+
 bool StatusSetter16_3::isBatteryHidden()
 {
     StatusBarOverrideData *overrides = getOverrides();

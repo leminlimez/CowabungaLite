@@ -29,6 +29,24 @@ StatusSetter &StatusManager::getSetter()
     return *setter;
 }
 
+bool StatusManager::isCarrierOverridden()
+{
+    return getSetter().isCarrierOverridden();
+}
+
+std::string StatusManager::getCarrierOverride()
+{
+    return getSetter().getCarrierOverride();
+}
+
+void StatusManager::setCarrier(std::string text) {
+    return getSetter().setCarrier(text);
+}
+
+void StatusManager::unsetCarrier() {
+    getSetter().unsetCarrier();
+}
+
 bool StatusManager::isBatteryHidden()
 {
     return getSetter().isBatteryHidden();
