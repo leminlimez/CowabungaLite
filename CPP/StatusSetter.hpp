@@ -1,14 +1,14 @@
 #pragma once
 
 #include <fstream>
-
+#include <cstring>
 
 class StatusSetter {
 public:
-    // virtual bool isCarrierOverridden() = 0;
-    // virtual std::string getCarrierOverride() = 0;
-    // virtual void setCarrier(const std::string& text) = 0;
-    // virtual void unsetCarrier() = 0;
+    virtual bool isCarrierOverridden() = 0;
+    virtual std::string getCarrierOverride() = 0;
+    virtual void setCarrier(const std::string text) = 0;
+    virtual void unsetCarrier() = 0;
     // virtual bool isSecondaryCarrierOverridden() = 0;
     // virtual std::string getSecondaryCarrierOverride() = 0;
     // virtual void setSecondaryCarrier(const std::string& text) = 0;

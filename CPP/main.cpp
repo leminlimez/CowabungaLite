@@ -14,11 +14,14 @@ int main()
     // Call other functions or perform operations using the StatusManager
 
     // Example usage:
-    bool isHidden = statusManager.isBatteryHidden();
-    std::cout << "Battery is hidden: " << std::boolalpha << isHidden << std::endl;
+    statusManager.setCarrier("Beans");
 
-    statusManager.hideBattery(true);
-    std::cout << "Battery hidden" << std::endl;
+    bool isHidden = statusManager.isCarrierOverridden();
+    std::cout << "Carrier is overridden: " << std::boolalpha << isHidden << std::endl;
+
+    // statusManager.hideBattery(true);
+    std::string carrier = statusManager.getCarrierOverride();
+    std::cout << "Carrier is: " << carrier << std::endl;
 
     // Return 0 to indicate successful program execution
     return 0;
