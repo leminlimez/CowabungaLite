@@ -121,6 +121,12 @@ class ThemingManager: ObservableObject {
         return overlayData
     }
     
+    public func getOverlayData(name: String) -> Data? {
+        let overlayURL = getOverlayFolder().appendingPathComponent("\(name).png")
+        guard let overlayData = try? Data(contentsOf: overlayURL) else { return nil }
+        return overlayData
+    }
+    
     public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
         let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
@@ -265,11 +271,14 @@ class ThemingManager: ObservableObject {
                 
                 if name == nil && imgPath == "Hidden" { continue; } // do not theme
                 
+                let newOverlay: String? = properties["Overlay"]
+                let newOverlayData: Data? = newOverlay == "No Overlay" ? nil : (newOverlay == nil ? overlay : getOverlayData(name: newOverlay!))
+                
                 if imgPath == nil && name != nil {
                     // theme normally but with custom name
                     do {
                         let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
-                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: name, overlay: overlay)
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: name, overlay: newOverlayData)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
@@ -278,7 +287,7 @@ class ThemingManager: ObservableObject {
                     if imgPath == "Default", let imgData = app.icon {
                         // theme with the default icon
                         do {
-                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: overlay)
+                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: newOverlayData)
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
                         }
@@ -288,7 +297,7 @@ class ThemingManager: ObservableObject {
                             // theme with the alternate icon
                             do {
                                 let imgData = try Data(contentsOf: imgURL)
-                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: overlay)
+                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: newOverlayData)
                             } catch {
                                 Logger.shared.logMe(error.localizedDescription)
                             }
@@ -333,8 +342,8 @@ class ThemingManager: ObservableObject {
         overlays.removeAll(keepingCapacity: true)
         do {
             for t in try FileManager.default.contentsOfDirectory(at: overlayFolder, includingPropertiesForKeys: nil) {
-                guard let d = try? Data(contentsOf: t) else { continue }
-                guard let i = NSImage(data: d) else { continue }
+//                guard let d = try? Data(contentsOf: t) else { continue }
+//                guard let i = NSImage(data: d) else { continue }
                 overlays.append(.init(name: t.deletingPathExtension().lastPathComponent))
             }
         } catch {
@@ -460,7 +469,7 @@ class ThemingManager: ObservableObject {
     }
     
     // Set Alt Icon Settings
-    public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?) throws {
+    public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?, overlay: String?) throws {
         guard let infoPlist = getAltIconPlist() else { throw "No alt icon preference plist found!" }
         var plist: [String: Any] = getAltIcons()
         
@@ -475,7 +484,13 @@ class ThemingManager: ObservableObject {
             // Anything else = path to icon in themes folder
             newPrefs["ImagePath"] = imagePath!
         }
-        if displayName == nil && imagePath == nil {
+        if overlay != nil {
+            // Format for overlay path property:
+            // No Overlay = no overlay
+            // Anything else = path to overlay
+            newPrefs["Overlay"] = overlay!
+        }
+        if displayName == nil && imagePath == nil && overlay == nil {
             plist[bundleId] = nil // reset/delete
         } else {
             plist[bundleId] = newPrefs
