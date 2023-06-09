@@ -144,7 +144,10 @@ func applyTweaks() {
     
     // Create the webclip icons
      if DataSingleton.shared.allEnabledTweaks().contains(.themes) {
-         #if !CLI
+         #if CLI
+         // TODO: Fix me
+         WindowsThemingManager.shared.applyTheme()
+         #else
          ThemingManager.shared.applyTheme()
          #endif
 //         #if CLI

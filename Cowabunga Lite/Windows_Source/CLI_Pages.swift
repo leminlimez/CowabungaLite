@@ -18,6 +18,7 @@ class CLI_Pages {
     }
     
     public static let Pages: [Page] = [
+        .init(title: "Icon Theming", tweak: .themes),
         .init(title: "Control Center", tweak: .controlCenter),
         .init(title: "Springboard Options", tweak: .springboardOptions),
         .init(title: "Internal Options", tweak: .internalOptions),
@@ -49,7 +50,9 @@ class CLI_Pages {
             print("\(page.title) (\(tweakEnabled ? "Enabled" : "Disabled"))")
             print("Enter '\(tweakEnabled ? "D" : "E")' to \(tweakEnabled ? "Disable" : "Enable")")
             print()
-            if page.tweak == .controlCenter {
+            if page.tweak == .themes {
+                inPage = IconThemingPage.themes()
+            } else if page.tweak == .controlCenter {
                 inPage = controlCenter()
             } else if page.tweak == .springboardOptions {
                 inPage = springboardOptions()
@@ -66,7 +69,7 @@ class CLI_Pages {
     // MARK: Page Presets
     // Toggles
     public static func printToggle(for opt: MainUtils.ToggleOption, _ i: Int) {
-        print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name): \(opt.value)")
+        print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name)")
     }
     
     
@@ -103,7 +106,7 @@ class CLI_Pages {
                 if n == i {
                     print()
                     for (j, preset) in MainUtils.ccPresets.enumerated() {
-                        print("(\(j+1)) \(MainUtils.selectedCCPreset == preset.identification ? "✓ " : "") \(preset.title)")
+                        print("(\(j+1)) \(MainUtils.selectedCCPreset == preset.identification ? "✓ " : "")\(preset.title)")
                     }
                     print("(\(back)) Cancel")
                     print()
