@@ -32,7 +32,7 @@ class WindowsThemingManager {
         var name: String
     }
     
-    public func makeInfoPlist(displayName: String = " ", bundleID: String, isAppClip: Bool = false) throws -> Data {
+    public func makeInfoPlist(displayName: String = "", bundleID: String, isAppClip: Bool = false) throws -> Data {
         let info: [String: Any] = [
             "ApplicationBundleIdentifier": bundleID,
             "ApplicationBundleVersion": 1,
@@ -120,7 +120,7 @@ class WindowsThemingManager {
         return overlayData
     }
     
-    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
+    public func makeWebClip(displayName: String = "", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
         let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
@@ -277,7 +277,7 @@ class WindowsThemingManager {
                     if imgPath == "Default", let imgData = app.icon {
                         // theme with the default icon
                         do {
-                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: overlay)
+                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? "" : name, overlay: overlay)
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
                         }
@@ -287,7 +287,7 @@ class WindowsThemingManager {
                             // theme with the alternate icon
                             do {
                                 let imgData = try Data(contentsOf: imgURL)
-                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name, overlay: overlay)
+                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? "" : name, overlay: overlay)
                             } catch {
                                 Logger.shared.logMe(error.localizedDescription)
                             }
@@ -300,7 +300,7 @@ class WindowsThemingManager {
             else if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
                     let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
-                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil, overlay: overlay)
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? "" : nil, overlay: overlay)
                 } catch {
                     Logger.shared.logMe(error.localizedDescription)
                 }
@@ -311,7 +311,7 @@ class WindowsThemingManager {
                 // get the image data
                 if let imgData = app.icon {
                     do {
-                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil, overlay: overlay)
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? "" : nil, overlay: overlay)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
