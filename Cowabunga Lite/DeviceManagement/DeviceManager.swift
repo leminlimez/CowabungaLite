@@ -79,6 +79,20 @@ func setupWorkspaceForUUID(_ UUID: String) {
         Logger.shared.logMe(error.localizedDescription)
         return
     }
+    if !FileManager.default.fileExists(atPath: UUIDDirectory.appendingPathComponent("AppliedTheme").path) {
+        var newURL = UUIDDirectory.appendingPathComponent("AppliedTheme")
+        do {
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("HomeDomain")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("Library")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("WebClips")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+        } catch {
+
+        }
+    }
 }
 
 func generateBackup() {
@@ -216,6 +230,7 @@ func applyTweaks() {
     }
     
     // Generate backup
+    Logger.shared.logMe("Generating backup...")
     generateBackup()
     
     // Restore files
