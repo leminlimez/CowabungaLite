@@ -311,10 +311,17 @@ func getDevices() -> [Device] {
 }
 
 func getHomeScreenAppsNew() -> [AppInfo] {
+    #if CLI
+    guard let exec = Bundle.module.url(forResource: "homeScreenApps", withExtension: "exe") else {
+        Logger.shared.logMe("Error locating homeScreenAppsNew")
+        return []
+    }
+    #else
     guard let exec = Bundle.main.url(forResource: "homeScreenAppsNew", withExtension: "") else {
         Logger.shared.logMe("Error locating homeScreenAppsNew")
         return []
     }
+    #endif
     guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
         Logger.shared.logMe("Error getting current UUID")
         return []
