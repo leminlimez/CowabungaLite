@@ -364,8 +364,7 @@ func getHomeScreenAppsNew() -> [AppInfo] {
         Logger.shared.logMe("Error running homeScreenAppsNew")
         return []
     }
-    print(appsPlist)
-    guard let plistData = appsPlist.data(using: .utf8) else {
+    guard let plistData = fixStringBug(appsPlist).data(using: .utf8) else {
         Logger.shared.logMe("Error converting apps text to data")
         return []
     }
