@@ -79,6 +79,20 @@ func setupWorkspaceForUUID(_ UUID: String) {
         Logger.shared.logMe(error.localizedDescription)
         return
     }
+    if !FileManager.default.fileExists(atPath: UUIDDirectory.appendingPathComponent("AppliedTheme").path) {
+        var newURL = UUIDDirectory.appendingPathComponent("AppliedTheme")
+        do {
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("HomeDomain")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("Library")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("WebClips")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+        } catch {
+
+        }
+    }
 }
 
 func generateBackup() {
@@ -216,6 +230,7 @@ func applyTweaks() {
     }
     
     // Generate backup
+    Logger.shared.logMe("Generating backup...")
     generateBackup()
     
     // Restore files
@@ -329,10 +344,17 @@ func getDevices() -> [Device] {
 }
 
 func getHomeScreenAppsNew() -> [AppInfo] {
+    #if CLI
+    guard let exec = Bundle.module.url(forResource: "homeScreenApps", withExtension: "exe") else {
+        Logger.shared.logMe("Error locating homeScreenAppsNew")
+        return []
+    }
+    #else
     guard let exec = Bundle.main.url(forResource: "homeScreenAppsNew", withExtension: "") else {
         Logger.shared.logMe("Error locating homeScreenAppsNew")
         return []
     }
+    #endif
     guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
         Logger.shared.logMe("Error getting current UUID")
         return []
