@@ -129,6 +129,7 @@
 		6F1D5E8A2A28F01400D6E377 /* IconOverlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconOverlayManager.swift; sourceTree = "<group>"; };
 		6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage++.swift"; sourceTree = "<group>"; };
 		6F1D5E9E2A2F6E9F00D6E377 /* RevertCC.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RevertCC.plist; sourceTree = "<group>"; };
+		6F29FB072A37F33300E09186 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
 		6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* Cowabunga Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cowabunga Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,6 +220,7 @@
 		25F98A5F29E50A140084A894 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F29FB072A37F33300E09186 /* libswift_Concurrency.tbd */,
 				25F98A6029E50A150084A894 /* libswiftCore.tbd */,
 			);
 			name = Frameworks;
@@ -624,7 +626,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -687,7 +689,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -722,7 +724,7 @@
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -760,7 +762,7 @@
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
