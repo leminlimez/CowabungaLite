@@ -250,6 +250,14 @@ func applyTweaks() {
     #endif
 }
 
+func fixStringBug(_ str: String) -> String {
+    if str.contains("SwiftNativeNSObject") {
+        return str.components(separatedBy: "undefined.")[1]
+    } else {
+        return str
+    }
+}
+
 func getDevices() -> [Device] {
     let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
     if !fm.fileExists(atPath: documentsDirectory.path) {
@@ -283,7 +291,9 @@ func getDevices() -> [Device] {
             let deviceVersion = try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             let ipad: Bool = (try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
             let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
-            deviceStructs.append(device)
+            if let _ = Int(device.version.split(separator: ".")[0]) {
+                deviceStructs.append(device)
+            }
             
             #else
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
@@ -298,9 +308,17 @@ func getDevices() -> [Device] {
                 Logger.shared.logMe("ideviceinfo: \(deviceVersion)")
                 continue
             }
-            let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
-            let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
-            deviceStructs.append(device)
+            let ipad: Bool = !(try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "").contains("iPhone OS"))
+            let device = Device(uuid: String(d), name: fixStringBug(deviceName), version: deviceVersion, ipad: ipad)
+            if let _ = Int(device.version.split(separator: ".")[0]) {
+                deviceStructs.append(device)
+            } else if device.version.contains("SwiftNativeNSObject") {
+                let newVersion: String = device.version.components(separatedBy: "undefined.")[1]
+                if newVersion != "" {
+                    let newDevice = Device(uuid: String(d), name: fixStringBug(deviceName), version: newVersion, ipad: ipad)
+                    deviceStructs.append(newDevice)
+                }
+            }
             #endif
         }
         return deviceStructs
