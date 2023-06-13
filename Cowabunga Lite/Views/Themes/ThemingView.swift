@@ -20,9 +20,14 @@ struct ThemingView: View {
     @State var themeAllApps: Bool = false
     
     @State var showPicker: Bool = false
-    @State var showPickerForOverlays: Bool = false
+    @State var pickerType: PickerType = .theme
     
     @Binding var viewType: Int
+    
+    enum PickerType {
+        case theme
+        case overlay
+    }
     
     struct OverlayObj: Identifiable {
         var id = UUID()
@@ -60,7 +65,10 @@ struct ThemingView: View {
                             Image(systemName: "square.and.arrow.down")
                             Text("Import .theme")
                         }
-                    ), action: { showPicker.toggle() })
+                    ), action: {
+                        pickerType = .theme
+                        showPicker = true
+                    })
                     .padding(.horizontal, 15)
                 }
                 Divider()
@@ -159,7 +167,8 @@ struct ThemingView: View {
                                     }
                                         .frame(width: 70, height: 80)
                                 ), action: {
-                                    showPickerForOverlays.toggle()
+                                    pickerType = .overlay
+                                    showPicker = true
                                 })
                             }
                         }
@@ -225,18 +234,19 @@ struct ThemingView: View {
                 overlays.append(.init(title: ov.name, image: themeManager.getOverlayImage(name: ov.name)))
             }
         }
-        .fileImporter(isPresented: $showPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false, onCompletion: { result in
-            guard let url = try? result.get().first else { return }
-            try? ThemingManager.shared.importTheme(from: url)
-        })
-        .fileImporter(isPresented: $showPickerForOverlays, allowedContentTypes: [.png], allowsMultipleSelection: true, onCompletion: { result in
-            guard let urls = try? result.get() else { return }
-            for url in urls {
-                do {
-                    let newName = try themeManager.importOverlay(from: url)
-                    overlays.append(.init(title: newName, image: themeManager.getOverlayImage(name: newName)))
-                } catch {
-                    print(error.localizedDescription)
+        .fileImporter(isPresented: $showPicker, allowedContentTypes: [pickerType == .theme ? .folder : .png], allowsMultipleSelection: pickerType == .theme ? false : true, onCompletion: { result in
+            if pickerType == .theme {
+                guard let url = try? result.get().first else { return }
+                try? ThemingManager.shared.importTheme(from: url)
+            } else {
+                guard let urls = try? result.get() else { return }
+                for url in urls {
+                    do {
+                        let newName = try themeManager.importOverlay(from: url)
+                        overlays.append(.init(title: newName, image: themeManager.getOverlayImage(name: newName)))
+                    } catch {
+                        print(error.localizedDescription)
+                    }
                 }
             }
         })
