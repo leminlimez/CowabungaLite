@@ -723,6 +723,7 @@
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;
@@ -761,6 +762,7 @@
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
 					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;

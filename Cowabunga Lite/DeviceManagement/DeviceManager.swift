@@ -267,6 +267,7 @@ func applyTweaks() {
 
 func fixStringBug(_ str: String) -> String {
     if str.contains("SwiftNativeNSObject") {
+        print("had to fix")
         return str.components(separatedBy: "undefined.")[1]
     } else {
         return str
@@ -363,6 +364,7 @@ func getHomeScreenAppsNew() -> [AppInfo] {
         Logger.shared.logMe("Error running homeScreenAppsNew")
         return []
     }
+    print(appsPlist)
     guard let plistData = appsPlist.data(using: .utf8) else {
         Logger.shared.logMe("Error converting apps text to data")
         return []
