@@ -74,6 +74,7 @@ class MainUtils {
     }
     
     // Load the preferences
+    #if CLI
     public static func loadPreferences() {
         if let workspace = DataSingleton.shared.getCurrentWorkspace() {
             // Icon Theming
@@ -134,6 +135,7 @@ class MainUtils {
             skipSetupOrganizationName = getOrganizationName()
         }
     }
+    #endif
     
     // Apply a toggle
     public static func applyToggle(index: Int, value: Bool, tweak: Tweak) {

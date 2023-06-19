@@ -15,14 +15,6 @@
 		2544926E29C7F5C900B6D82E /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2544926D29C7F5C900B6D82E /* DeviceManager.swift */; };
 		2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */ = {isa = PBXBuildFile; fileRef = 2544927029C7F79F00B6D82E /* CreateBackup.sh */; };
 		2544927329C7F79F00B6D82E /* idevicebackup2 in Resources */ = {isa = PBXBuildFile; fileRef = 2544927129C7F79F00B6D82E /* idevicebackup2 */; };
-		2544927F29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; };
-		2544928129C8087800B6D82E /* libimobiledevice-1.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2544928529C8091F00B6D82E /* libusbmuxd-2.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; };
-		2544928629C8093800B6D82E /* libusbmuxd-2.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2544928829C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; };
-		2544928929C8096000B6D82E /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2544928B29C8097900B6D82E /* libplist-2.0.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; };
-		2544928C29C8097B00B6D82E /* libplist-2.0.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2544928F29C80F5700B6D82E /* ideviceinfo in Resources */ = {isa = PBXBuildFile; fileRef = 2544928E29C80F5600B6D82E /* ideviceinfo */; };
 		2557662729D2D9BE008DF0E2 /* AppabeticalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557662629D2D9BE008DF0E2 /* AppabeticalView.swift */; };
 		2557662B29D2E9BF008DF0E2 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */; };
@@ -41,6 +33,14 @@
 		6F1D5E8B2A28F01400D6E377 /* IconOverlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D5E8A2A28F01400D6E377 /* IconOverlayManager.swift */; };
 		6F1D5E992A2A2E0000D6E377 /* NSImage++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */; };
 		6F1D5E9F2A2F6E9F00D6E377 /* RevertCC.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F1D5E9E2A2F6E9F00D6E377 /* RevertCC.plist */; };
+		6F29FAFF2A33912C00E09186 /* libimobiledevice-1.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; };
+		6F29FB002A33912C00E09186 /* libimobiledevice-1.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544927E29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6F29FB012A33912C00E09186 /* libimobiledevice-glue-1.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; };
+		6F29FB022A33912C00E09186 /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928729C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6F29FB032A3395E100E09186 /* libplist-2.0.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; };
+		6F29FB042A3395E100E09186 /* libplist-2.0.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6F29FB052A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; };
+		6F29FB062A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6F2D468E29E45BE2006B18A8 /* PatreonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
 		6F700AB629C37DF50085964B /* CowabungaLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */; };
@@ -80,10 +80,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2544928929C8096000B6D82E /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */,
-				2544928629C8093800B6D82E /* libusbmuxd-2.0.6.dylib in Embed Libraries */,
-				2544928129C8087800B6D82E /* libimobiledevice-1.0.6.dylib in Embed Libraries */,
-				2544928C29C8097B00B6D82E /* libplist-2.0.3.dylib in Embed Libraries */,
+				6F29FB062A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Embed Libraries */,
+				6F29FB002A33912C00E09186 /* libimobiledevice-1.0.6.dylib in Embed Libraries */,
+				6F29FB022A33912C00E09186 /* libimobiledevice-glue-1.0.0.dylib in Embed Libraries */,
+				6F29FB042A3395E100E09186 /* libplist-2.0.3.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,6 +129,7 @@
 		6F1D5E8A2A28F01400D6E377 /* IconOverlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconOverlayManager.swift; sourceTree = "<group>"; };
 		6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage++.swift"; sourceTree = "<group>"; };
 		6F1D5E9E2A2F6E9F00D6E377 /* RevertCC.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RevertCC.plist; sourceTree = "<group>"; };
+		6F29FB072A37F33300E09186 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
 		6F2D468D29E45BE2006B18A8 /* PatreonAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatreonAPI.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F700AB229C37DF50085964B /* Cowabunga Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cowabunga Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,11 +167,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F29FB052A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Frameworks */,
 				7207596429F4D43C0053E26F /* SDWebImageSwiftUI in Frameworks */,
-				2544928829C8095E00B6D82E /* libimobiledevice-glue-1.0.0.dylib in Frameworks */,
-				2544928529C8091F00B6D82E /* libusbmuxd-2.0.6.dylib in Frameworks */,
-				2544927F29C8063E00B6D82E /* libimobiledevice-1.0.6.dylib in Frameworks */,
-				2544928B29C8097900B6D82E /* libplist-2.0.3.dylib in Frameworks */,
+				6F29FAFF2A33912C00E09186 /* libimobiledevice-1.0.6.dylib in Frameworks */,
+				6F29FB012A33912C00E09186 /* libimobiledevice-glue-1.0.0.dylib in Frameworks */,
+				6F29FB032A3395E100E09186 /* libplist-2.0.3.dylib in Frameworks */,
 				7207596229F4D4390053E26F /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,6 +220,7 @@
 		25F98A5F29E50A140084A894 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F29FB072A37F33300E09186 /* libswift_Concurrency.tbd */,
 				25F98A6029E50A150084A894 /* libswiftCore.tbd */,
 			);
 			name = Frameworks;
@@ -461,7 +463,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					6F700AB129C37DF50085964B = {
 						CreatedOnToolsVersion = 14.2;
@@ -599,6 +601,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -623,7 +626,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -667,6 +670,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -685,7 +689,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -703,7 +707,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = 2P4CP47H76;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -714,10 +719,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/Cowabunga",
-					Lite/Libraries,
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(SDKROOT)/usr/lib/swift",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -737,7 +745,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "Cowabunga\\ Lite/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 2P4CP47H76;
@@ -749,10 +758,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)/**",
 					"$(PROJECT_DIR)/**",
-					"$(PROJECT_DIR)/Cowabunga",
-					Lite/Libraries,
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(PROJECT_DIR)/Cowabunga\\ Lite/Libraries",
+					"$(SDKROOT)/usr/lib/swift",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.1.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";

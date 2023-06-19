@@ -79,6 +79,20 @@ func setupWorkspaceForUUID(_ UUID: String) {
         Logger.shared.logMe(error.localizedDescription)
         return
     }
+    if !FileManager.default.fileExists(atPath: UUIDDirectory.appendingPathComponent("AppliedTheme").path) {
+        var newURL = UUIDDirectory.appendingPathComponent("AppliedTheme")
+        do {
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("HomeDomain")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("Library")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+            newURL = newURL.appendingPathComponent("WebClips")
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+        } catch {
+
+        }
+    }
 }
 
 func generateBackup() {
@@ -216,6 +230,7 @@ func applyTweaks() {
     }
     
     // Generate backup
+    Logger.shared.logMe("Generating backup...")
     generateBackup()
     
     // Restore files
@@ -250,6 +265,15 @@ func applyTweaks() {
     #endif
 }
 
+func fixStringBug(_ str: String) -> String {
+    if str.contains("SwiftNativeNSObject") {
+        print("had to fix")
+        return str.components(separatedBy: "undefined.")[1]
+    } else {
+        return str
+    }
+}
+
 func getDevices() -> [Device] {
     let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
     if !fm.fileExists(atPath: documentsDirectory.path) {
@@ -269,7 +293,7 @@ func getDevices() -> [Device] {
     do {
         let devices = try executeWIN(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
-            print(devices)
+            Logger.shared.logMe("idevice_id: \(devices)")
             return []
         }
         let devicesArr = devices.split(separator: "\n", omittingEmptySubsequences: true)
@@ -283,16 +307,34 @@ func getDevices() -> [Device] {
             let deviceVersion = try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             let ipad: Bool = (try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
             let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
-            deviceStructs.append(device)
+            if let _ = Int(device.version.split(separator: ".")[0]) {
+                deviceStructs.append(device)
+            }
             
             #else
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
             let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            if deviceName.contains("ERROR") {
+                Logger.shared.logMe("idevicename: \(deviceName)")
+                continue
+            }
             guard let exec3 = Bundle.main.url(forResource: "ideviceinfo", withExtension: "") else { continue }
             let deviceVersion = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            let ipad: Bool = (try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
-            let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
-            deviceStructs.append(device)
+            if deviceVersion.contains("ERROR") {
+                Logger.shared.logMe("ideviceinfo: \(deviceVersion)")
+                continue
+            }
+            let ipad: Bool = !(try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "").contains("iPhone OS"))
+            let device = Device(uuid: String(d), name: fixStringBug(deviceName), version: deviceVersion, ipad: ipad)
+            if let _ = Int(device.version.split(separator: ".")[0]) {
+                deviceStructs.append(device)
+            } else if device.version.contains("SwiftNativeNSObject") {
+                let newVersion: String = device.version.components(separatedBy: "undefined.")[1]
+                if newVersion != "" {
+                    let newDevice = Device(uuid: String(d), name: fixStringBug(deviceName), version: newVersion, ipad: ipad)
+                    deviceStructs.append(newDevice)
+                }
+            }
             #endif
         }
         return deviceStructs
@@ -303,10 +345,17 @@ func getDevices() -> [Device] {
 }
 
 func getHomeScreenAppsNew() -> [AppInfo] {
+    #if CLI
+    guard let exec = Bundle.module.url(forResource: "homeScreenApps", withExtension: "exe") else {
+        Logger.shared.logMe("Error locating homeScreenAppsNew")
+        return []
+    }
+    #else
     guard let exec = Bundle.main.url(forResource: "homeScreenAppsNew", withExtension: "") else {
         Logger.shared.logMe("Error locating homeScreenAppsNew")
         return []
     }
+    #endif
     guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
         Logger.shared.logMe("Error getting current UUID")
         return []
@@ -315,7 +364,7 @@ func getHomeScreenAppsNew() -> [AppInfo] {
         Logger.shared.logMe("Error running homeScreenAppsNew")
         return []
     }
-    guard let plistData = appsPlist.data(using: .utf8) else {
+    guard let plistData = fixStringBug(appsPlist).data(using: .utf8) else {
         Logger.shared.logMe("Error converting apps text to data")
         return []
     }
