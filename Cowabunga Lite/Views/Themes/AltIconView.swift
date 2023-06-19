@@ -15,8 +15,24 @@ struct AltIconView: View {
     @State var newIcon: String? = nil
     @State var replaceName: Bool = false
     @State var newDisplayName: String = ""
+    @State var newOverlay: String? = nil
+    
+    enum PickerType {
+        case icon
+        case overlay
+    }
+    
+    struct OverlayObj: Identifiable {
+        var id = UUID()
+        var title: String
+        var image: NSImage? = nil
+        var systemImage: String? = nil
+    }
+    
+    @State var overlays: [OverlayObj] = []
     
     @State var showPicker: Bool = false
+    @State var pickFor: PickerType = .icon
     
     var gridItemLayout = [GridItem(.adaptive(minimum: 80))]
     
@@ -51,7 +67,7 @@ struct AltIconView: View {
                 Button(action: {
                     // save
                     do {
-                        try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? (newDisplayName != "" ? newDisplayName : app.name) : nil, imagePath: newIcon)
+                        try themeManager.setAltIcon(bundleId: app.bundle, displayName: replaceName ? (newDisplayName != "" ? newDisplayName : app.name) : nil, imagePath: newIcon, overlay: newOverlay)
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -123,6 +139,68 @@ struct AltIconView: View {
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
                 
+                // MARK: Overlay Choice
+                Group {
+                    HStack {
+                        Text("Overlay")
+                            .bold()
+                            .padding(.horizontal, 10)
+                        Spacer()
+                    }
+                    LazyVGrid(columns: gridItemLayout, spacing: 10) {
+                        ForEach(overlays) { overlay in
+                            NiceButton(text: AnyView(
+                                VStack {
+                                    if overlay.systemImage != nil {
+                                        Image(systemName: overlay.systemImage!)
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    } else if overlay.image != nil {
+                                        Image(nsImage: overlay.image!)
+                                            .resizable()
+                                            .frame(width: 55, height: 55)
+                                            .cornerRadius(12)
+                                            .padding(2)
+                                    } else {
+                                        Image(systemName: "questionmark.app")
+                                            .font(.system(size: 55))
+                                            .padding(2)
+                                    }
+                                    Text(overlay.title)
+                                }
+                                    .frame(width: 70, height: 80)
+                            ), action: {
+                                if overlay.image != nil || overlay.systemImage != nil {
+                                    if newOverlay == overlay.title {
+                                        newOverlay = nil
+                                    } else {
+                                        newOverlay = overlay.title
+                                    }
+                                }
+                            })
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: newOverlay == overlay.title ? 4 : 0))
+                        }
+                        
+                        // MARK: Import Overlay Button
+                        NiceButton(text: AnyView(
+                            VStack {
+                                Image(systemName: "plus.app")
+                                    .font(.system(size: 55))
+                                    .padding(2)
+                            }
+                                .frame(width: 70, height: 70)
+                        ), action: {
+                            pickFor = .overlay
+                            showPicker.toggle()
+                        })
+                    }
+                }
+                
+                Divider()
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                
                 // MARK: Icon Choice
                 Group {
                     HStack {
@@ -179,6 +257,7 @@ struct AltIconView: View {
                             }
                                 .frame(width: 70, height: 70)
                         ), action: {
+                            pickFor = .icon
                             showPicker.toggle()
                         })
                         
@@ -233,6 +312,15 @@ struct AltIconView: View {
                     icons.append(.init(title: "Default", imgPath: "Default", systemImage: "questionmark.app"))
                 }
                 
+                themeManager.getOverlays()
+                
+                // create the overlays
+                overlays.removeAll(keepingCapacity: true)
+                overlays.append(.init(title: "No Overlay", systemImage: "xmark.app"))
+                for ov in themeManager.overlays {
+                    overlays.append(.init(title: ov.name, image: themeManager.getOverlayImage(name: ov.name)))
+                }
+                
                 // add the icons from the other theme
                 do {
                     for p in try FileManager.default.contentsOfDirectory(at: themeManager.getThemesFolder(), includingPropertiesForKeys: nil) {
@@ -262,12 +350,24 @@ struct AltIconView: View {
                 newIcon = appData["ImagePath"]
                 replaceName = appData["Name"] != nil
                 newDisplayName = appData["Name"] ?? ""
+                newOverlay = appData["Overlay"]
             }
-            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.png], allowsMultipleSelection: false, onCompletion: { result in
-                guard let url = try? result.get().first else { return }
-                guard let (imgData, p) = try? ThemingManager.shared.importAltIcon(from: url, bundleId: app.bundle) else { return }
-                let img = NSImage(data: imgData)
-                customIcons.append(.init(title: "Custom", imgPath: p, icon: img))
+            .fileImporter(isPresented: $showPicker, allowedContentTypes: [.png], allowsMultipleSelection: true, onCompletion: { result in
+                guard let urls = try? result.get() else { return }
+                for url in urls {
+                    if pickFor == .icon {
+                        guard let (imgData, p) = try? ThemingManager.shared.importAltIcon(from: url, bundleId: app.bundle) else { continue }
+                        let img = NSImage(data: imgData)
+                        customIcons.append(.init(title: "Custom", imgPath: p, icon: img))
+                    } else if pickFor == .overlay {
+                        do {
+                            let newName = try themeManager.importOverlay(from: url)
+                            overlays.append(.init(title: newName, image: themeManager.getOverlayImage(name: newName)))
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
             })
         }
     }

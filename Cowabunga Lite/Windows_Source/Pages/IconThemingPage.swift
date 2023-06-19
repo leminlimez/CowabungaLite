@@ -26,7 +26,12 @@ class IconThemingPage {
     }
 
     // MARK: Import Folder of Icons
-    public static func importFolderPrompt(_ folderPath: String) throws {
+    public static func importFolderPrompt(_ fPath: String) throws {
+        // remove quotes if it starts with them
+        var folderPath: String = fPath
+        if fPath.starts(with: "\"") {
+            folderPath = String(String(fPath.dropFirst()).dropLast())
+        }
         let folderURL = URL(fileURLWithPath: folderPath)
         if FileManager.default.fileExists(atPath: folderPath) {
             // Valid folder
