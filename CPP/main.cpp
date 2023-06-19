@@ -14,7 +14,7 @@ int main()
     // Call other functions or perform operations using the StatusManager
 
     // Example usage:
-    statusManager.setCarrier("Beans");
+    // statusManager.setCarrier("Beans");
 
     bool isHidden = statusManager.isCarrierOverridden();
     std::cout << "Carrier is overridden: " << std::boolalpha << isHidden << std::endl;
