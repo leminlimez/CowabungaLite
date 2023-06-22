@@ -1,10 +1,3 @@
-iTunes is required. Swift may be required if it does not open for you, I do not know for sure though. (Download here: https://www.swift.org/download/)
+iTunes is required.
 
-git bash is also required.
-Download here and make sure to check Git Bash and Associate .sh files to be run with Bash (the others are optional):
-https://gitforwindows.org/
-
-Needs to be installed to `C:\Program Files\Git\git-bash.exe` (should be the default location)
-
-another option is to install with winget in the terminal:
-`winget install Git.Git`
+Swift is also required in order to run the app. (Download here: https://www.swift.org/download/)
