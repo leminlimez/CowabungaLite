@@ -69,7 +69,7 @@ class CLI_Pages {
     // MARK: Page Presets
     // Toggles
     public static func printToggle(for opt: MainUtils.ToggleOption, _ i: Int) {
-        print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name)")
+        print("(\(i)) \(opt.value ? "✓" : "☐") \(opt.name): \(opt.value)")
     }
     
     
