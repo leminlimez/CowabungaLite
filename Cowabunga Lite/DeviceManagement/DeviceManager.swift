@@ -137,8 +137,8 @@ func setupWorkspaceForUUID(_ UUID: String) {
 
 func generateBackup() {
     #if CLI
-    guard let script = Bundle.module.url(forResource: "CreateBackup", withExtension: "sh") else {
-            Logger.shared.logMe("Error locating CreateBackup.sh")
+    guard let script = Bundle.module.url(forResource: "CreateBackup", withExtension: "exe") else {
+            Logger.shared.logMe("Error locating CreateBackup.exe")
             return }
     #else
     guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
@@ -147,19 +147,20 @@ func generateBackup() {
     #endif
         do {
             #if CLI
-            let task = Process()
-            let gitPath = "C:\\Program Files\\Git\\git-bash.exe"
-            task.launchPath = gitPath
-            if !FileManager.default.fileExists(atPath: gitPath) {
-                print("Git bash not found at the path \(gitPath)")
-                print("If you do not have it, install it from here: https://gitforwindows.org/")
-                return
-            }
-            task.arguments = [script.path, "EnabledTweaks", "Backup"]
-            task.currentDirectoryPath = documentsDirectory.path
-            task.launch()
-            task.waitUntilExit()
-            print("Backup created")
+            // let task = Process()
+            // let gitPath = "C:\\Program Files\\Git\\git-bash.exe"
+            // task.launchPath = gitPath
+            // if !FileManager.default.fileExists(atPath: gitPath) {
+            //     print("Git bash not found at the path \(gitPath)")
+            //     print("If you do not have it, install it from here: https://gitforwindows.org/")
+            //     return
+            // }
+            // task.arguments = [script.path, "EnabledTweaks", "Backup"]
+            // task.currentDirectoryPath = documentsDirectory.path
+            // task.launch()
+            // task.waitUntilExit()
+            // print("Backup created")
+            try execute(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
             #else
             try shell(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
             #endif
