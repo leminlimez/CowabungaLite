@@ -35,7 +35,6 @@ let package = Package(
             ],
             resources: [
                 .process("Windows_Scripts"),
-                .process("Scripts/CreateBackup.sh"),
 		
 		        .process("ControlCenterPresets/DefaultCC.plist"),
 		        .process("ControlCenterPresets/RevertCC.plist"),
