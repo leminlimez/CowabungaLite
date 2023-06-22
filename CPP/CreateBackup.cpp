@@ -1,6 +1,6 @@
 // Rory Madden 2023
 
-// compile: g++ -o CreateBackup CreateBackup.cpp -lcrypto
+// compile: g++ -o CreateBackup CreateBackup.cpp -static-libgcc -static-libstdc++ -lcrypto
 
 #include <iostream>
 #include <fstream>
