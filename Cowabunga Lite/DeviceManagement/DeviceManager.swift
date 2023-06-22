@@ -7,6 +7,42 @@
 
 import Foundation
 
+func updateWorkspace(_ url: URL) -> Bool {
+    let FilesVersion: Int = 1
+    
+    if FileManager.default.fileExists(atPath: url.appendingPathComponent("FileVersion.plist").path) {
+        do {
+            let data = try Data(contentsOf: url.appendingPathComponent("FileVersion.plist"))
+            let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+            if let ver = plist["Version"] as? Int, ver == FilesVersion {
+                return false
+            }
+        } catch {
+            Logger.shared.logMe("Error with opening FileVersion.plist: \(error.localizedDescription)")
+        }
+    }
+    
+    do {
+        for p in try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil) {
+            if p.deletingLastPathComponent().lastPathComponent == "IconThemingPreferences" || p.deletingLastPathComponent().lastPathComponent == "AltIconThemingPreferences" {
+                continue
+            } else {
+                try? FileManager.default.removeItem(at: p)
+            }
+        }
+        // create the new version plist
+        let newPlist: [String: Any] = [
+            "Version": FilesVersion
+        ]
+        let newData = try PropertyListSerialization.data(fromPropertyList: newPlist, format: .xml, options: 0)
+        try newData.write(to: url.appendingPathComponent("FileVersion.plist"))
+    } catch {
+        Logger.shared.logMe(error.localizedDescription)
+        return true
+    }
+    return true
+}
+
 func setupWorkspaceForUUID(_ UUID: String) {
     let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
     if !fm.fileExists(atPath: documentsDirectory.path) {
@@ -38,6 +74,7 @@ func setupWorkspaceForUUID(_ UUID: String) {
         }
     }
     DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
+    let needsUpdate = updateWorkspace(UUIDDirectory)
     #if CLI
     guard let docsFolderURL = Bundle.module.url(forResource: "Files", withExtension: nil) else {
         Logger.shared.logMe("Can't find Bundle URL?")
@@ -49,6 +86,9 @@ func setupWorkspaceForUUID(_ UUID: String) {
         return
     }
     #endif
+    if !needsUpdate {
+        return
+    }
     do {
         let files = try fm.contentsOfDirectory(at: docsFolderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         for file in files {
