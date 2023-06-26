@@ -1,0 +1,3 @@
+iTunes is required.
+
+Swift is also required in order to run the app. (Download here: https://www.swift.org/download/)
