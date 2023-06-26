@@ -11,8 +11,10 @@ import AppKit
 class ThemingManager: ObservableObject {
     static let shared = ThemingManager()
     @Published var currentTheme: String? = nil
+    @Published var currentOverlay: String? = nil
     @Published var processing: Bool = false
     @Published var themes: [ThemingManager.Theme] = []
+    @Published var overlays: [ThemingManager.Overlay] = []
     
     struct AppIconChange {
         var appID: String
@@ -26,7 +28,12 @@ class ThemingManager: ObservableObject {
         var iconCount: Int
     }
     
-    public func makeInfoPlist(displayName: String = " ", bundleID: String, isAppClip: Bool = false) throws -> Data {
+    struct Overlay: Codable, Identifiable, Equatable {
+        var id = UUID()
+        var name: String
+    }
+    
+    public func makeInfoPlist(displayName: String = "", bundleID: String, isAppClip: Bool = false) throws -> Data {
         let info: [String: Any] = [
             "ApplicationBundleIdentifier": bundleID,
             "ApplicationBundleVersion": 1,
@@ -65,6 +72,19 @@ class ThemingManager: ObservableObject {
         return name
     }
     
+    public func getCurrentAppliedOverlay() -> String? {
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return nil }
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            return nil
+        }
+        guard let infoData = try? Data(contentsOf: infoPlist) else {
+            return nil
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
+        guard let name = plist["OverlayTitle"] as? String else { return nil }
+        return name
+    }
+    
     public func getThemeToggleSetting(_ settingName: String) -> Bool {
         guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return false }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
@@ -78,7 +98,36 @@ class ThemingManager: ObservableObject {
         return val
     }
     
-    public func makeWebClip(displayName: String = " ", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!) throws {
+    public func getOverlayFolder() -> URL {
+        let customFolder = getThemesFolder().appendingPathComponent("Overlays")
+        if !FileManager.default.fileExists(atPath: customFolder.path) {
+            try? FileManager.default.createDirectory(at: customFolder, withIntermediateDirectories: false)
+        }
+        return customFolder
+    }
+    
+    public func getOverlayData() -> Data? {
+        guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return nil }
+        if !FileManager.default.fileExists(atPath: infoPlist.path) {
+            return nil
+        }
+        guard let infoData = try? Data(contentsOf: infoPlist) else {
+            return nil
+        }
+        guard let plist = try? PropertyListSerialization.propertyList(from: infoData, options: [], format: nil) as? [String: Any] else { return nil }
+        guard let val = plist["OverlayTitle"] as? String else { return nil }
+        let overlayURL = getOverlayFolder().appendingPathComponent("\(val).png")
+        guard let overlayData = try? Data(contentsOf: overlayURL) else { return nil }
+        return overlayData
+    }
+    
+    public func getOverlayData(name: String) -> Data? {
+        let overlayURL = getOverlayFolder().appendingPathComponent("\(name).png")
+        guard let overlayData = try? Data(contentsOf: overlayURL) else { return nil }
+        return overlayData
+    }
+    
+    public func makeWebClip(displayName: String = "", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
         let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
@@ -93,7 +142,21 @@ class ThemingManager: ObservableObject {
             try infoPlist.write(to: folderURL.appendingPathComponent("Info.plist"))
             // write the icon file
             try? FileManager.default.removeItem(at: folderURL.appendingPathComponent("icon.png")) // delete if icon already exists
-            try image.write(to: folderURL.appendingPathComponent("icon.png"))
+            var img = image
+            // add the overlay over the icon
+            if overlay != nil {
+                let icnNS = CIImage(data: image)
+                let overNS = CIImage(data: overlay!)
+                if let icnNS = icnNS, let overNS = overNS {
+                    let OL = IconOverlayManager.overlayIcon(icnNS, overNS)
+                    let OLimg = NSImage(ciImage: OL, scale: 1, orientation: .up)
+                    if let overlayData = OLimg.pngData(size: OL.extent.size) {
+                        print(OL.extent.size)
+                        img = overlayData
+                    }
+                }
+            }
+            try img.write(to: folderURL.appendingPathComponent("icon.png"))
         } catch {
             // remove from backup
             try? FileManager.default.removeItem(at: folderURL)
@@ -141,7 +204,7 @@ class ThemingManager: ObservableObject {
         processing = false
     }
     
-    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, themeAllApps: Bool? = nil, deletingTheme: Bool = false) throws {
+    public func setThemeSettings(themeName: String? = nil, hideDisplayNames: Bool? = nil, appClips: Bool? = nil, themeAllApps: Bool? = nil, overlayName: String? = nil, deletingTheme: Bool = false, deletingOverlay: Bool = false) throws {
         guard let infoPlistPath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("IconThemingPreferences.plist") else { return }
         var plist: [String: Any] = [:]
         if FileManager.default.fileExists(atPath: infoPlistPath.path) {
@@ -166,6 +229,13 @@ class ThemingManager: ObservableObject {
         if themeAllApps != nil {
             plist["ThemeAllApps"] = themeAllApps!
         }
+        if overlayName != nil {
+            plist["OverlayTitle"] = overlayName!
+            currentOverlay = overlayName
+        } else if deletingOverlay == true {
+            plist["OverlayTitle"] = nil
+            currentOverlay = nil
+        }
         let newPlist = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
         try newPlist.write(to: infoPlistPath)
     }
@@ -175,14 +245,14 @@ class ThemingManager: ObservableObject {
         Logger.shared.logMe("Applying icon themes...")
         eraseAppliedTheme()
         do {
-            try applyTheme(themeName: t, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"))
+            try applyTheme(themeName: t, hideDisplayNames: getThemeToggleSetting("HideDisplayNames"), appClips: getThemeToggleSetting("AsAppClips"), themeAllIcons: getThemeToggleSetting("ThemeAllApps"), overlay: getOverlayData())
             Logger.shared.logMe("Successfully applied icon themes!")
         } catch {
             Logger.shared.logMe("An error occurred while applying icon themes: \(error.localizedDescription)")
         }
     }
     
-    public func applyTheme(themeName: String?, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false) throws {
+    public func applyTheme(themeName: String?, hideDisplayNames: Bool = false, appClips: Bool = false, themeAllIcons: Bool = false, overlay: Data?) throws {
         let themeFolder = themeName != nil ? getThemesFolder().appendingPathComponent(themeName!) : nil
         if themeFolder != nil && !FileManager.default.fileExists(atPath: themeFolder!.path) {
             throw "No theme folder found for \(themeName!)!"
@@ -201,11 +271,14 @@ class ThemingManager: ObservableObject {
                 
                 if name == nil && imgPath == "Hidden" { continue; } // do not theme
                 
+                let newOverlay: String? = properties["Overlay"]
+                let newOverlayData: Data? = newOverlay == "No Overlay" ? nil : (newOverlay == nil ? overlay : getOverlayData(name: newOverlay!))
+                
                 if imgPath == nil && name != nil {
                     // theme normally but with custom name
                     do {
                         let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
-                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: name)
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: name, overlay: newOverlayData)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
@@ -214,7 +287,7 @@ class ThemingManager: ObservableObject {
                     if imgPath == "Default", let imgData = app.icon {
                         // theme with the default icon
                         do {
-                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name)
+                            try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? "" : name, overlay: newOverlayData)
                         } catch {
                             Logger.shared.logMe(error.localizedDescription)
                         }
@@ -224,7 +297,7 @@ class ThemingManager: ObservableObject {
                             // theme with the alternate icon
                             do {
                                 let imgData = try Data(contentsOf: imgURL)
-                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? " " : name)
+                                try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: (hideDisplayNames && name == nil) ? "" : name, overlay: newOverlayData)
                             } catch {
                                 Logger.shared.logMe(error.localizedDescription)
                             }
@@ -237,7 +310,7 @@ class ThemingManager: ObservableObject {
             else if themeFolder != nil && FileManager.default.fileExists(atPath: themeFolder!.appendingPathComponent(app.bundleId + ".png").path) {
                 do {
                     let imgData = try Data(contentsOf: themeFolder!.appendingPathComponent(app.bundleId + ".png"))
-                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil)
+                    try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? "" : nil, overlay: overlay)
                 } catch {
                     Logger.shared.logMe(error.localizedDescription)
                 }
@@ -248,12 +321,33 @@ class ThemingManager: ObservableObject {
                 // get the image data
                 if let imgData = app.icon {
                     do {
-                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? " " : nil)
+                        try makeWebClip(displayName: displayName, image: imgData, bundleID: app.bundleId, isAppClip: appClips, nameToDisplay: hideDisplayNames ? "" : nil, overlay: overlay)
                     } catch {
                         Logger.shared.logMe(error.localizedDescription)
                     }
                 }
             }
+        }
+    }
+    
+    public func getOverlayImage(name: String) -> NSImage? {
+        let overlayFolder = getOverlayFolder()
+        guard let d = try? Data(contentsOf: overlayFolder.appendingPathComponent("\(name).png")) else { return nil }
+        guard let i = NSImage(data: d) else { return nil }
+        return i
+    }
+    
+    public func getOverlays() {
+        let overlayFolder = getOverlayFolder()
+        overlays.removeAll(keepingCapacity: true)
+        do {
+            for t in try FileManager.default.contentsOfDirectory(at: overlayFolder, includingPropertiesForKeys: nil) {
+                guard let d = try? Data(contentsOf: t) else { continue }
+                guard let i = NSImage(data: d) else { continue }
+                overlays.append(.init(name: t.deletingPathExtension().lastPathComponent))
+            }
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
@@ -286,6 +380,22 @@ class ThemingManager: ObservableObject {
     
     public func isCurrentTheme(_ name: String) -> Bool {
         return currentTheme == name
+    }
+    
+    public func isCurrentOverlay(_ name: String) -> Bool {
+        return currentOverlay == name
+    }
+    
+    func importOverlay(from overlayURL: URL) throws -> String {
+        print(overlayURL.path)
+        let name = overlayURL.deletingPathExtension().lastPathComponent
+        let pngData = try Data(contentsOf: overlayURL)
+        
+        // Write the png
+        let overlayFolder = getOverlayFolder()
+        try pngData.write(to: overlayFolder.appendingPathComponent("\(name).png"))
+        overlays.append(.init(name: name))
+        return name
     }
     
     func importTheme(from importURL: URL) throws {
@@ -359,7 +469,7 @@ class ThemingManager: ObservableObject {
     }
     
     // Set Alt Icon Settings
-    public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?) throws {
+    public func setAltIcon(bundleId: String, displayName: String?, imagePath: String?, overlay: String?) throws {
         guard let infoPlist = getAltIconPlist() else { throw "No alt icon preference plist found!" }
         var plist: [String: Any] = getAltIcons()
         
@@ -374,7 +484,13 @@ class ThemingManager: ObservableObject {
             // Anything else = path to icon in themes folder
             newPrefs["ImagePath"] = imagePath!
         }
-        if displayName == nil && imagePath == nil {
+        if overlay != nil {
+            // Format for overlay path property:
+            // No Overlay = no overlay
+            // Anything else = path to overlay
+            newPrefs["Overlay"] = overlay!
+        }
+        if displayName == nil && imagePath == nil && overlay == nil {
             plist[bundleId] = nil // reset/delete
         } else {
             plist[bundleId] = newPrefs

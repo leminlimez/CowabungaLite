@@ -15,9 +15,6 @@ struct SpringboardOptionsView: View {
     @State private var footnoteText = ""
     @State private var animSpeed: Double = 1
     
-    @State private var showWiFiDebugger: Bool = false
-    @State private var airdropEveryone: Bool = false
-    
     struct SBOption: Identifiable {
         var id = UUID()
         var key: String
@@ -27,11 +24,6 @@ struct SpringboardOptionsView: View {
     }
     
     @State private var sbOptions: [SBOption] = [
-        .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", fileLocation: .springboard),
-        .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
-        .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
-        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
-        .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility)
 //        .init(key: "kWiFiShowKnownNetworks", name: "Show Known WiFi Networks", fileLocation: .wifi)
 //        .init(key: "SBDisableHomeButton", name: "Disable Home Button", imageName: "iphone.homebutton"),
 //        .init(key: "SBDontLockEver", name: "Disable Lock Button", imageName: "lock.square"),
@@ -76,9 +68,21 @@ struct SpringboardOptionsView: View {
                                         Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
-                                    try PlistManager.setPlistValues(url: plistURL, values: [
-                                        option.key.wrappedValue: option.value.wrappedValue
-                                    ])
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue ? "true" : "false"
+                                        ])
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        if option.value.wrappedValue == true {
+                                            try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
+                                        } else {
+                                            try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                                        }
+                                    } else {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue
+                                        ])
+                                    }
                                 } catch {
                                     Logger.shared.logMe(error.localizedDescription)
                                     return
@@ -90,81 +94,18 @@ struct SpringboardOptionsView: View {
                                         Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                         return
                                     }
-                                    option.value.wrappedValue =  try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "false" == "true")
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "" == "Everyone")
+                                    } else {
+                                        option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                    }
                                 } catch {
                                     Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
                                     return
                                 }
                             }
-                        }
-                        
-                        Toggle(isOn: $showWiFiDebugger) {
-                            Text("Show WiFi Debugger")
-                                .minimumScaleFactor(0.5)
-                        }.onChange(of: showWiFiDebugger, perform: { new in
-                            do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                    return
-                                }
-                                if new == true {
-                                    try PlistManager.setPlistValues(url: plistURL, values: [
-                                        "WiFiManagerLoggingEnabled": "true"
-                                    ])
-                                } else {
-                                    try PlistManager.setPlistValues(url: plistURL, values: [:])
-                                }
-                            } catch {
-                                Logger.shared.logMe(error.localizedDescription)
-                                return
-                            }
-                        })
-                        .onAppear {
-                            do {
-                                guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.wifiDebug.rawValue) else {
-                                    Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                    return
-                                }
-                                showWiFiDebugger =  (try PlistManager.getPlistValues(url: plistURL, key: "WiFiManagerLoggingEnabled") as? String ?? "false") == "true"
-                            } catch {
-                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.wifiDebug.rawValue)")
-                                return
-                            }
-                        }
-                        
-                        // MARK: Set Airdrop to Everyone
-                        Toggle(isOn: $airdropEveryone) {
-                            Text("Set Airdrop to Everyone")
-                                .minimumScaleFactor(0.5)
-                        }.onChange(of: airdropEveryone, perform: { new in
-                            do {
-                                let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
-                                guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
-                                    Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
-                                    return
-                                }
-                                
-                                if new == true {
-                                    try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: url)
-                                } else {
-                                    try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: url)
-                                }
-                            } catch {
-                                Logger.shared.logMe(error.localizedDescription)
-                                return
-                            }
-                        })
-                        .onAppear {
-                            let path = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
-                            guard let url = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
-                                Logger.shared.logMe("Error finding springboard plist com.apple.sharingd.plist")
-                                return
-                            }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: url) as? [String:Any] else {
-                                return
-                            }
-                            airdropEveryone = plist["DiscoverableMode"] as? String ?? "" == "Everyone"
                         }
                         
                         Divider()
@@ -191,11 +132,11 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding uikit plist")
                                 return
                             }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                            do {
+                                animSpeed = try PlistManager.getPlistValues(url: plistURL, key: "UIAnimationDragCoefficient") as? Double ?? 1
+                            } catch {
                                 return
                             }
-                            animSpeed = plist["UIAnimationDragCoefficient"] as? Double ?? 1
                         }
                         
                         Text("Lock Screen Footnote Text")
@@ -216,15 +157,22 @@ struct SpringboardOptionsView: View {
                                 Logger.shared.logMe("Error finding footnote plist")
                                 return
                             }
-                            // Add a getPlistValues func to PlistManager pls
-                            guard let plist = NSDictionary(contentsOf: plistURL) as? [String:Any] else {
+                            do {
+                                footnoteText = try PlistManager.getPlistValues(url: plistURL, key: "LockScreenFootnote") as? String ?? ""
+                            } catch {
                                 return
                             }
-                            footnoteText = plist["LockScreenFootnote"] as! String
                         })
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
+                .onAppear {
+                    if sbOptions.isEmpty {
+                        for opt in MainUtils.sbOptions {
+                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation))
+                        }
+                    }
+                }
         }
     }
 }

@@ -14,18 +14,11 @@ struct ControlCenterView: View {
     
     var gridItemLayout = [GridItem(.adaptive(minimum: 110))]
     
-    enum FileLocation: String {
-        case mute = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.control-center.MuteModule.plist"
-        case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
-        case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
-        case moduleConfig = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
-    }
-    
     private struct ModuleType: Identifiable {
         var id = UUID()
         var moduleID: Int
         var title: String
-        var fileLocation: FileLocation
+        var fileLocation: MainUtils.FileLocation
         var value: Bool = false
     }
     
@@ -40,9 +33,9 @@ struct ControlCenterView: View {
     }
     
     @State private var modules: [ModuleType] = [
-        .init(moduleID: 1, title: "Mute Module", fileLocation: .mute),
-        .init(moduleID: 2, title: "Focus UI Module", fileLocation: .focus),
-        .init(moduleID: 3, title: "Siri Spoken Notifications Module", fileLocation: .spoken)
+//        .init(moduleID: 1, title: "Mute Module", fileLocation: .mute),
+//        .init(moduleID: 2, title: "Focus UI Module", fileLocation: .focus),
+//        .init(moduleID: 3, title: "Siri Spoken Notifications Module", fileLocation: .spoken)
     ]
     
     @State private var presets: [ConfigPreset] = [
@@ -153,7 +146,7 @@ struct ControlCenterView: View {
                                     Text(currentCC == preset.identification.wrappedValue ? "Selected" : "Select")
                                         .frame(maxWidth: .infinity)
                                 ), action: {
-                                    guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
+                                    guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.moduleConfig.rawValue) else { return }
                                     if currentCC == preset.identification.wrappedValue {
                                         if FileManager.default.fileExists(atPath: filePath.path) {
                                             try? FileManager.default.removeItem(at: filePath)
@@ -188,11 +181,11 @@ struct ControlCenterView: View {
                         }
                     }.onAppear {
                         do {
-                            guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) else { return }
+                            guard let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.moduleConfig.rawValue) else { return }
                             if FileManager.default.fileExists(atPath: filePath.path) {
                                 let plistData = try Data(contentsOf: filePath)
                                 let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                                if let pIdentifier = plist["preset-identifier"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
+                                if let pIdentifier = plist["preset-identifiers"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
                                     currentCC = pID
                                 } else {
                                     currentCC = "None"
@@ -204,6 +197,13 @@ struct ControlCenterView: View {
                     }
                 }.disabled(!enableTweak)
                 .onAppear {
+                    // Get the module types
+                    if modules.isEmpty {
+                        for (i, module) in MainUtils.moduleTypes.enumerated() {
+                            modules.append(.init(moduleID: Int(module.key) ?? i+1, title: module.name, fileLocation: module.fileLocation))
+                        }
+                    }
+                    
                     // First, get the default and revert presets
                     presets.removeAll()
                     presets.append(.init(title: "Revert to Original", identification: "RevertCC", image: NSImage(imageLiteralResourceName: "DefaultCC"), fileLocation: Bundle.main.url(forResource: "RevertCC", withExtension: ".plist"), modulesToEnable: []))
