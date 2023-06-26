@@ -14,8 +14,10 @@ func updateWorkspace(_ url: URL) -> Bool {
         do {
             let data = try Data(contentsOf: url.appendingPathComponent("FileVersion.plist"))
             let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-            if let ver = plist["Version"] as? Int, ver == FilesVersion {
-                return false
+            if let devVer = plist["DeviceVersion"] as? String, devVer == DataSingleton.shared.getCurrentVersion() {
+                if let ver = plist["Version"] as? Int, ver == FilesVersion {
+                    return false
+                }
             }
         } catch {
             Logger.shared.logMe("Error with opening FileVersion.plist: \(error.localizedDescription)")
@@ -32,7 +34,8 @@ func updateWorkspace(_ url: URL) -> Bool {
         }
         // create the new version plist
         let newPlist: [String: Any] = [
-            "Version": FilesVersion
+            "Version": FilesVersion,
+            "DeviceVersion": DataSingleton.shared.getCurrentVersion() ?? "0"
         ]
         let newData = try PropertyListSerialization.data(fromPropertyList: newPlist, format: .xml, options: 0)
         try newData.write(to: url.appendingPathComponent("FileVersion.plist"))
