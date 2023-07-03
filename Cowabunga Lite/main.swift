@@ -22,8 +22,8 @@
 import Foundation
 
 // Configuration
-let version = "1.1.9"
-let build = 4
+let version = "1.2.1"
+let build = 0
 
 print()
 CLI_Pages.printLogo()
