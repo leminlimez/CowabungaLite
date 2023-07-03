@@ -1,6 +1,7 @@
 // Rory Madden 2023
 
 // compile: g++ -o CreateBackup CreateBackup.cpp -static-libgcc -static-libstdc++ -lcrypto
+// note: this is currently Windows specific and will have to be minorly tweaked
 
 #include <iostream>
 #include <fstream>
@@ -11,6 +12,7 @@
 #include <regex>
 #include <openssl/sha.h>
 #include <random>
+#include <Windows.h>
 
 std::string removeDomain(const std::string &domain, const std::string &input)
 {
@@ -36,19 +38,31 @@ void writeStringWithLength(std::ofstream &output_file, const std::string &str)
     output_file.write(str.data(), length);
 }
 
-void writeHash(std::ofstream &output_file, const std::string &file)
+void writeHash(std::ofstream& output_file, const std::string& file)
 {
-    std::ifstream input_file(file, std::ios::binary);
-    if (!input_file)
+    int fileLen = MultiByteToWideChar(CP_UTF8, 0, file.c_str(), -1, nullptr, 0);
+    if (fileLen == 0)
     {
-        std::cerr << "Failed to open file: " << file << std::endl;
+        std::cerr << "Failed to convert file path to a wide string." << std::endl;
         return;
     }
 
-    std::string fileContent((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+    std::wstring wideFile(fileLen, L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, file.c_str(), -1, &wideFile[0], fileLen);
+
+    std::wifstream input_file(wideFile.c_str(), std::ios::binary); // Use .c_str() to get const wchar_t*
+    if (!input_file)
+    {
+        std::wcerr << L"Failed to open file: " << wideFile << std::endl;
+        return;
+    }
+
+    std::wstring fileContent((std::istreambuf_iterator<wchar_t>(input_file)), std::istreambuf_iterator<wchar_t>());
+    std::string narrowFileContent(fileContent.begin(), fileContent.end());
+
     unsigned char hash[SHA_DIGEST_LENGTH];
-    SHA1(reinterpret_cast<const unsigned char *>(fileContent.c_str()), fileContent.size(), hash);
-    output_file.write(reinterpret_cast<const char *>(hash), sizeof(hash));
+    SHA1(reinterpret_cast<const unsigned char*>(narrowFileContent.c_str()), narrowFileContent.size(), hash);
+    output_file.write(reinterpret_cast<const char*>(hash), sizeof(hash));
 }
 
 void generateRandomHex(std::ofstream &output_file)
@@ -85,19 +99,34 @@ std::string calculateSHA1(const std::string &str)
     return ss.str();
 }
 
-void copyFile(const std::string &source, const std::string &destination)
+void copyFile(const std::string& source, const std::string& destination)
 {
-    std::ifstream sourceFile(source, std::ios::binary);
-    if (!sourceFile)
+    int sourceLen = MultiByteToWideChar(CP_UTF8, 0, source.c_str(), -1, nullptr, 0);
+    int destinationLen = MultiByteToWideChar(CP_UTF8, 0, destination.c_str(), -1, nullptr, 0);
+
+    if (sourceLen == 0 || destinationLen == 0)
     {
-        std::cerr << "Failed to open source file: " << source << std::endl;
+        std::cerr << "Failed to convert file paths to wide strings." << std::endl;
         return;
     }
 
-    std::ofstream destinationFile(destination, std::ios::binary);
+    std::wstring wideSource(sourceLen, L'\0');
+    std::wstring wideDestination(destinationLen, L'\0');
+
+    MultiByteToWideChar(CP_UTF8, 0, source.c_str(), -1, &wideSource[0], sourceLen);
+    MultiByteToWideChar(CP_UTF8, 0, destination.c_str(), -1, &wideDestination[0], destinationLen);
+
+    std::wifstream sourceFile(wideSource.c_str(), std::ios::binary); // Use .c_str() to get const wchar_t*
+    if (!sourceFile)
+    {
+        std::wcerr << L"Failed to open source file: " << wideSource << std::endl;
+        return;
+    }
+
+    std::wofstream destinationFile(wideDestination.c_str(), std::ios::binary); // Use .c_str() to get const wchar_t*
     if (!destinationFile)
     {
-        std::cerr << "Failed to create destination file: " << destination << std::endl;
+        std::wcerr << L"Failed to create destination file: " << wideDestination << std::endl;
         return;
     }
 
