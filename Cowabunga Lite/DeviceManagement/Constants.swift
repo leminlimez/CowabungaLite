@@ -31,6 +31,7 @@ enum Tweak: String {
     case springboardOptions = "SpringboardOptions"
     case skipSetup = "SkipSetup"
     case themes = "AppliedTheme"
+    case operations = "AppliedOperations"
     case dynamicIsland = "DynamicIsland"
     case controlCenter = "ControlCenter"
     case internalOptions = "InternalOptions"

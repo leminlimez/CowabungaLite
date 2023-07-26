@@ -28,6 +28,7 @@ struct RootView: View {
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
             .init(tweak: .internalOptions, title: "Internal Options", icon: "internaldrive", view: InternalOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
+            .init(tweak: .operations, title: "Custom Operations", icon: "pencil.and.outline", view: OperationsMainView()),
 //            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         
@@ -114,6 +115,8 @@ struct RootView: View {
                             }
                         }
                     }
+                }.onAppear {
+                    CustomOperationsManager.shared.getOperations()
                 }
             }
             .frame(minWidth: 300)

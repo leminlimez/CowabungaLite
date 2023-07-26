@@ -136,6 +136,14 @@ func setupWorkspaceForUUID(_ UUID: String) {
 
         }
     }
+    if !FileManager.default.fileExists(atPath: UUIDDirectory.appendingPathComponent("AppliedOperations").path) {
+        let newURL = UUIDDirectory.appendingPathComponent("AppliedOperations")
+        do {
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+        } catch {
+
+        }
+    }
 }
 
 func generateBackup() {
@@ -220,6 +228,16 @@ func applyTweaks() {
 //         ThemingManager.shared.applyTheme()
 //         #endif
      }
+    
+    // Create the custom operations
+    if DataSingleton.shared.allEnabledTweaks().contains(.operations) {
+        do {
+            try CustomOperationsManager.shared.applyOperations()
+        } catch {
+            Logger.shared.logMe("Error applying Custom Operations: " + error.localizedDescription)
+            return
+        }
+    }
     for tweak in DataSingleton.shared.allEnabledTweaks() {
         do {
             let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("\(tweak.rawValue)"), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
