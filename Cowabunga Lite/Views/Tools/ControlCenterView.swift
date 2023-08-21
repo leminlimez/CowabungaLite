@@ -12,6 +12,9 @@ struct ControlCenterView: View {
     @State private var currentCC: String = "None"
     @StateObject private var dataSingleton = DataSingleton.shared
     
+    @State private var replayKitAudioPref: Bool = true
+    @State private var replayKitVideoPref: Bool = true
+    
     var gridItemLayout = [GridItem(.adaptive(minimum: 110))]
     
     private struct ModuleType: Identifiable {
@@ -91,6 +94,69 @@ struct ControlCenterView: View {
                         }
                         Divider()
                     }
+                    
+                    // bad code below but am lazy
+                    Toggle(isOn: $replayKitAudioPref) {
+                        Text("Show Audio Replay Kit Buttons")
+                            .minimumScaleFactor(0.5)
+                    }.onChange(of: replayKitAudioPref) { new in
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                                return
+                            }
+                            try PlistManager.setPlistValues(url: plistURL, values: [
+                                "SBIconVisibility": replayKitAudioPref
+                            ])
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
+                            return
+                        }
+                    }
+                    .onAppear {
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                                Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                                return
+                            }
+                            replayKitAudioPref =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
+                        } catch {
+                            Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                            return
+                        }
+                    }
+                    
+                    Toggle(isOn: $replayKitVideoPref) {
+                        Text("Show Video Replay Kit Buttons")
+                            .minimumScaleFactor(0.5)
+                    }.onChange(of: replayKitVideoPref) { new in
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                                return
+                            }
+                            try PlistManager.setPlistValues(url: plistURL, values: [
+                                "SBIconVisibility": replayKitVideoPref
+                            ])
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
+                            return
+                        }
+                    }
+                    .onAppear {
+                        do {
+                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                                Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                                return
+                            }
+                            replayKitVideoPref =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
+                        } catch {
+                            Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                            return
+                        }
+                    }
+                    
+                    Divider()
                     
                     ForEach($modules) { module in
                         Toggle(isOn: module.value) {
