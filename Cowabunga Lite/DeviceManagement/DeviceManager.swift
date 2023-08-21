@@ -8,7 +8,7 @@
 import Foundation
 
 func updateWorkspace(_ url: URL) -> Bool {
-    let FilesVersion: Int = 1
+    let FilesVersion: Int = 2
     
     if FileManager.default.fileExists(atPath: url.appendingPathComponent("FileVersion.plist").path) {
         do {

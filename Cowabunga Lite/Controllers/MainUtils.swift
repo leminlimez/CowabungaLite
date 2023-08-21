@@ -27,6 +27,9 @@ class MainUtils {
         // Internal Options
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
         case appStore = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.AppStore.plist"
+        case backboardd = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.backboardd.plist"
+        case coreMotion = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.CoreMotion.plist"
+        case pasteboard = "InternalOptions/HomeDomain/Library/Preferences/com.apple.Pasteboard.plist"
         case notes = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.mobilenotes.plist"
         case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
         case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
@@ -303,7 +306,12 @@ class MainUtils {
         .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
         .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
         .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
-        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes)
+        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes, dividerBelow: true),
+        .init(key: "BKDigitizerVisualizeTouches", name: "Visualize Touches", fileLocation: .backboardd),
+        .init(key: "BKHideAppleLogoOnLaunch", name: "Hide Respring Logo", fileLocation: .backboardd),
+        .init(key: "EnableWakeGestureHaptic", name: "Enable Wake Gesture Haptic", fileLocation: .coreMotion, dividerBelow: true),
+        .init(key: "PlaySoundOnPaste", name: "Play Sound on Paste", fileLocation: .pasteboard),
+        .init(key: "AnnounceAllPastes", name: "Announce All Pastes", fileLocation: .pasteboard),
     ]
     
     
