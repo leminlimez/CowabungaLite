@@ -14,6 +14,8 @@ class MainUtils {
         case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
         case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
         case moduleConfig = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
+        case replayKitAudio = "ControlCenter/HomeDomain/Library/ControlCenter/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
+        case replayKitVideo = "ControlCenter/HomeDomain/Library/ControlCenter/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
         
         // Springboard Options
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
