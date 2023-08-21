@@ -19,15 +19,15 @@ class MainUtils {
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
-        case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
-        case accessibility = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.Accessibility.plist"
+        case uikit = "SpringboardOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.UIKit.plist"
+        case accessibility = "SpringboardOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.Accessibility.plist"
         case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
         case airdrop = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
         
         // Internal Options
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case appStore = "InternalOptions/HomeDomain/Library/Preferences/com.apple.AppStore.plist"
-        case notes = "InternalOptions/HomeDomain/Library/Preferences/com.apple.mobilenotes.plist"
+        case appStore = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.AppStore.plist"
+        case notes = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.mobilenotes.plist"
         case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
         case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
         
@@ -251,6 +251,7 @@ class MainUtils {
         .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", fileLocation: .springboard),
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
+        .init(key: "SBNeverBreadcrumb", name: "Disable Breadcrumb", fileLocation: .springboard),
         .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
         .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility),
         .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug),
