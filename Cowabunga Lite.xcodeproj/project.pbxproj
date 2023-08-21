@@ -64,6 +64,7 @@
 		6F886A2429C8AC0D00B73E40 /* DynamicIslandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */; };
 		6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2B29C8CFA900B73E40 /* String++.swift */; };
 		6F886A2E29C8CFB300B73E40 /* PlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2D29C8CFB300B73E40 /* PlistManager.swift */; };
+		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
 		6FFA737F29CDCCA200E4DCBC /* ThemingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */; };
 		6FFA738129CE7DC500E4DCBC /* ThemingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738029CE7DC500E4DCBC /* ThemingView.swift */; };
 		6FFA738629D0FA6A00E4DCBC /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */; };
@@ -161,6 +162,7 @@
 		6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicIslandView.swift; sourceTree = "<group>"; };
 		6F886A2B29C8CFA900B73E40 /* String++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String++.swift"; sourceTree = "<group>"; };
 		6F886A2D29C8CFB300B73E40 /* PlistManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistManager.swift; sourceTree = "<group>"; };
+		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingManager.swift; sourceTree = "<group>"; };
 		6FFA738029CE7DC500E4DCBC /* ThemingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingView.swift; sourceTree = "<group>"; };
 		6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
@@ -426,12 +428,21 @@
 		6F886A2829C8C77700B73E40 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6FE6D1022A939EF1002CFD2F /* ViewExtensions */,
 				7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */,
 				6F886A2B29C8CFA900B73E40 /* String++.swift */,
 				2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */,
 				6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6FE6D1022A939EF1002CFD2F /* ViewExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */,
+			);
+			path = ViewExtensions;
 			sourceTree = "<group>";
 		};
 		6FFA737D29CDCC9500E4DCBC /* IconTheming */ = {
@@ -578,6 +589,7 @@
 				25B8341929CAF95800176095 /* StatusSetter16.m in Sources */,
 				6FFA738E29D11C8100E4DCBC /* ThemesExploreView.swift in Sources */,
 				2539F1AF29CA701C00FAD711 /* Constants.swift in Sources */,
+				6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */,
 				6F5DFCED2A6AFA5600081DBD /* OperationObjects.swift in Sources */,
 				6F7B3F372A0E8A100080FFDA /* ControlCenterView.swift in Sources */,
 				6FFA737F29CDCCA200E4DCBC /* ThemingManager.swift in Sources */,
@@ -769,7 +781,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -813,7 +825,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.2.9;
+				MARKETING_VERSION = 1.9.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
