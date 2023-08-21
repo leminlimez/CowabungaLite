@@ -300,20 +300,20 @@ class MainUtils {
     
     // MARK: Internal Options
     public static var internalOptions: [ToggleOption] = [
-        .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "MetalForceHudEnabled", name: "Force Metal HUD Debug", fileLocation: .globalPreferences),
-        .init(key: "AccessoryDeveloperEnabled", name: "Accessory Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "iMessageDiagnosticsEnabled", name: "iMessage Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
-        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes, dividerBelow: true),
-        .init(key: "BKDigitizerVisualizeTouches", name: "Visualize Touches", fileLocation: .backboardd),
-        .init(key: "BKHideAppleLogoOnLaunch", name: "Hide Respring Logo", fileLocation: .backboardd),
-        .init(key: "EnableWakeGestureHaptic", name: "Enable Wake Gesture Haptic", fileLocation: .coreMotion, dividerBelow: true),
+        .init(key: "UIStatusBarShowBuildVersion", name: "Show Build Version in Status Bar", fileLocation: .globalPreferences),
+        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right-to-Left Layout", fileLocation: .globalPreferences, dividerBelow: true),
+        .init(key: "MetalForceHudEnabled", name: "Enable Metal HUD Debug", fileLocation: .globalPreferences),
+        .init(key: "AccessoryDeveloperEnabled", name: "Enable Accessory Debugging", fileLocation: .globalPreferences),
+        .init(key: "iMessageDiagnosticsEnabled", name: "Enable iMessage Debugging", fileLocation: .globalPreferences),
+        .init(key: "IDSDiagnosticsEnabled", name: "Enable Continuity Debugging", fileLocation: .globalPreferences),
+        .init(key: "VCDiagnosticsEnabled", name: "Enable FaceTime Debugging", fileLocation: .globalPreferences, dividerBelow: true),
+        .init(key: "debugGestureEnabled", name: "Enable App Store Debug Gesture", fileLocation: .appStore),
+        .init(key: "DebugModeEnabled", name: "Enable Notes App Debug Mode", fileLocation: .notes, dividerBelow: true),
+        .init(key: "BKDigitizerVisualizeTouches", name: "Show Touches With Debug Info", fileLocation: .backboardd),
+        .init(key: "BKHideAppleLogoOnLaunch", name: "Hide Respring Icon", fileLocation: .backboardd),
+        .init(key: "EnableWakeGestureHaptic", name: "Vibrate on Raise-to-Wake", fileLocation: .coreMotion, dividerBelow: true),
         .init(key: "PlaySoundOnPaste", name: "Play Sound on Paste", fileLocation: .pasteboard),
-        .init(key: "AnnounceAllPastes", name: "Announce All Pastes", fileLocation: .pasteboard),
+        .init(key: "AnnounceAllPastes", name: "Show Notifications for System Pastes", fileLocation: .pasteboard),
     ]
     
     
