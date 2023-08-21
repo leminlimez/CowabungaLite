@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct StatusBarView: View {
-    @State private var cellularServiceEnabled: Bool = false
-    @State private var cellularServiceValue: Bool = false
+    @State private var radioPrimarySelection = 1
+//    @State private var cellularServiceEnabled: Bool = false
+//    @State private var cellularServiceValue: Bool = false
     
     @State private var carrierText: String = ""
     @State private var carrierTextEnabled: Bool = false
@@ -17,8 +18,9 @@ struct StatusBarView: View {
     @State private var primaryServiceBadgeText: String = ""
     @State private var primaryServiceBadgeTextEnabled: Bool = false
     
-    @State private var secondCellularServiceEnabled: Bool = false
-    @State private var secondaryCellularServiceValue: Bool = false
+    @State private var radioSecondarySelection = 1
+//    @State private var secondCellularServiceEnabled: Bool = false
+//    @State private var secondaryCellularServiceValue: Bool = false
     
     @State private var secondaryCarrierText: String = ""
     @State private var secondaryCarrierTextEnabled: Bool = false
@@ -230,25 +232,56 @@ struct StatusBarView: View {
                     Group {
                         
                         Group {
-                            Text("Primary Carrier").bold()
-                            Toggle("Change Service Status", isOn: $cellularServiceEnabled).onChange(of: cellularServiceEnabled, perform: { nv in
-                                if nv {
-                                    StatusManager.sharedInstance().setCellularService(cellularServiceValue)
-                                } else {
-                                    StatusManager.sharedInstance().unsetCellularService()
-                                }
-                            }).onAppear(perform: {
-                                cellularServiceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
-                            })
-                            if cellularServiceEnabled {
-                                Toggle("Cellular Service Enabled", isOn: $cellularServiceValue).onChange(of: cellularServiceValue, perform: { nv in
-                                    if cellularServiceEnabled {
-                                        StatusManager.sharedInstance().setCellularService(nv)
-                                    }
-                                }).onAppear(perform: {
-                                    cellularServiceValue = StatusManager.sharedInstance().getCellularServiceOverride()
-                                })
+                            Text("Primary Cellular").bold()
+                            
+                            Picker(selection: $radioPrimarySelection, label: Text("")) {
+                                Text("Default").tag(1)
+                                Text("Force Show").tag(2)
+                                Text("Force Hide").tag(3)
                             }
+                            .pickerStyle(.radioGroup)
+                            .horizontalRadioGroupLayout()
+                            .onChange(of: radioPrimarySelection) { new in
+                                if new == 1 {
+                                    StatusManager.sharedInstance().unsetCellularService()
+                                } else if new == 2 {
+                                    StatusManager.sharedInstance().setCellularService(true)
+                                } else if new == 3 {
+                                    StatusManager.sharedInstance().setCellularService(false)
+                                }
+                            }
+                            .onAppear {
+                                let serviceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
+                                if serviceEnabled {
+                                    let serviceValue = StatusManager.sharedInstance().getCellularServiceOverride()
+                                    if serviceValue {
+                                        radioPrimarySelection = 2
+                                    } else {
+                                        radioPrimarySelection = 3
+                                    }
+                                } else {
+                                    radioPrimarySelection = 1
+                                }
+                            }
+                            
+//                            Toggle("Change Service Status", isOn: $cellularServiceEnabled).onChange(of: cellularServiceEnabled, perform: { nv in
+//                                if nv {
+//                                    StatusManager.sharedInstance().setCellularService(cellularServiceValue)
+//                                } else {
+//                                    StatusManager.sharedInstance().unsetCellularService()
+//                                }
+//                            }).onAppear(perform: {
+//                                cellularServiceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
+//                            })
+//                            if cellularServiceEnabled {
+//                                Toggle("Cellular Service Enabled", isOn: $cellularServiceValue).onChange(of: cellularServiceValue, perform: { nv in
+//                                    if cellularServiceEnabled {
+//                                        StatusManager.sharedInstance().setCellularService(nv)
+//                                    }
+//                                }).onAppear(perform: {
+//                                    cellularServiceValue = StatusManager.sharedInstance().getCellularServiceOverride()
+//                                })
+//                            }
                             
                             Toggle("Change Primary Carrier Text", isOn: $carrierTextEnabled).onChange(of: carrierTextEnabled, perform: { nv in
                                 if nv {
@@ -337,24 +370,55 @@ struct StatusBarView: View {
                         
                         Group {
                             Text("Secondary Carrier").bold()
-                            Toggle("Change Secondary Service Status", isOn: $secondCellularServiceEnabled).onChange(of: secondCellularServiceEnabled, perform: { nv in
-                                if nv {
-                                    StatusManager.sharedInstance().setSecondaryCellularService(secondaryCellularServiceValue)
-                                } else {
-                                    StatusManager.sharedInstance().unsetSecondaryCellularService()
-                                }
-                            }).onAppear(perform: {
-                                secondCellularServiceEnabled = StatusManager.sharedInstance().isSecondaryCellularServiceOverridden()
-                            })
-                            if secondCellularServiceEnabled {
-                                Toggle("Secondary Cellular Service Enabled", isOn: $secondaryCellularServiceValue).onChange(of: secondaryCellularServiceValue, perform: { nv in
-                                    if secondCellularServiceEnabled {
-                                        StatusManager.sharedInstance().setSecondaryCellularService(nv)
-                                    }
-                                }).onAppear(perform: {
-                                    secondaryCellularServiceValue = StatusManager.sharedInstance().getSecondaryCellularServiceOverride()
-                                })
+                            
+                            Picker(selection: $radioSecondarySelection, label: Text("")) {
+                                Text("Default").tag(1)
+                                Text("Force Show").tag(2)
+                                Text("Force Hide").tag(3)
                             }
+                            .pickerStyle(.radioGroup)
+                            .horizontalRadioGroupLayout()
+                            .onChange(of: radioSecondarySelection) { new in
+                                if new == 1 {
+                                    StatusManager.sharedInstance().unsetSecondaryCellularService()
+                                } else if new == 2 {
+                                    StatusManager.sharedInstance().setSecondaryCellularService(true)
+                                } else if new == 3 {
+                                    StatusManager.sharedInstance().setSecondaryCellularService(false)
+                                }
+                            }
+                            .onAppear {
+                                let serviceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
+                                if serviceEnabled {
+                                    let serviceValue = StatusManager.sharedInstance().getCellularServiceOverride()
+                                    if serviceValue {
+                                        radioSecondarySelection = 2
+                                    } else {
+                                        radioSecondarySelection = 3
+                                    }
+                                } else {
+                                    radioSecondarySelection = 1
+                                }
+                            }
+                            
+//                            Toggle("Change Secondary Service Status", isOn: $secondCellularServiceEnabled).onChange(of: secondCellularServiceEnabled, perform: { nv in
+//                                if nv {
+//                                    StatusManager.sharedInstance().setSecondaryCellularService(secondaryCellularServiceValue)
+//                                } else {
+//                                    StatusManager.sharedInstance().unsetSecondaryCellularService()
+//                                }
+//                            }).onAppear(perform: {
+//                                secondCellularServiceEnabled = StatusManager.sharedInstance().isSecondaryCellularServiceOverridden()
+//                            })
+//                            if secondCellularServiceEnabled {
+//                                Toggle("Secondary Cellular Service Enabled", isOn: $secondaryCellularServiceValue).onChange(of: secondaryCellularServiceValue, perform: { nv in
+//                                    if secondCellularServiceEnabled {
+//                                        StatusManager.sharedInstance().setSecondaryCellularService(nv)
+//                                    }
+//                                }).onAppear(perform: {
+//                                    secondaryCellularServiceValue = StatusManager.sharedInstance().getSecondaryCellularServiceOverride()
+//                                })
+//                            }
                             
                             Toggle("Change Secondary Carrier Text", isOn: $secondaryCarrierTextEnabled).onChange(of: secondaryCarrierTextEnabled, perform: { nv in
                                 if nv {
