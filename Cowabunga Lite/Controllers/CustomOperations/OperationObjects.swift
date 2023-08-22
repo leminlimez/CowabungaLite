@@ -89,7 +89,12 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
         }
         
         for d in try FileManager.default.contentsOfDirectory(at: domainsFolder, includingPropertiesForKeys: nil) {
-            try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
+//            try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
+            if FileManager.default.fileExists(atPath: toMoveFolder.appendingPathComponent(d.lastPathComponent).path) {
+                try FileManager.default.mergeDirectory(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
+            } else {
+                try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
+            }
         }
     }
 }
