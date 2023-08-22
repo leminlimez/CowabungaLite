@@ -45,3 +45,17 @@ struct NiceButton: View {
         .foregroundColor(.primary)
     }
 }
+
+// MARK: Beta Tag Struct
+struct BetaTag: View {
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .cornerRadius(50)
+                .foregroundColor(.blue)
+                .frame(maxWidth: 50)
+            Text("Beta")
+                .foregroundColor(.white)
+        }
+    }
+}

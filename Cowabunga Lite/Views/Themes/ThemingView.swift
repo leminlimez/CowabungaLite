@@ -120,14 +120,6 @@ struct ThemingView: View {
                             HStack {
                                 Text("Overlays")
                                     .bold()
-                                ZStack {
-                                    Rectangle()
-                                        .cornerRadius(50)
-                                        .foregroundColor(.blue)
-                                        .frame(maxWidth: 50)
-                                    Text("Beta")
-                                        .foregroundColor(.white)
-                                }
                             }
                             LazyVGrid(columns: overlayGridItemLayout, spacing: 20) {
                                 ForEach(overlays) { ov in
