@@ -58,61 +58,9 @@ struct SpringboardOptionsView: View {
                 Divider()
                 if dataSingleton.deviceAvailable {
                     Group {
-                        ForEach($sbOptions) { option in
-                            Toggle(isOn: option.value) {
-                                Text(option.name.wrappedValue)
-                                    .minimumScaleFactor(0.5)
-                            }.onChange(of: option.value.wrappedValue) { new in
-                                do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
-                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
-                                        return
-                                    }
-                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
-                                        try PlistManager.setPlistValues(url: plistURL, values: [
-                                            option.key.wrappedValue: option.value.wrappedValue ? "true" : "false"
-                                        ])
-                                    } else if option.key.wrappedValue == "DiscoverableMode" {
-                                        if option.value.wrappedValue == true {
-                                            try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
-                                        } else {
-                                            try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
-                                        }
-                                    } else {
-                                        try PlistManager.setPlistValues(url: plistURL, values: [
-                                            option.key.wrappedValue: option.value.wrappedValue
-                                        ])
-                                    }
-                                } catch {
-                                    Logger.shared.logMe(error.localizedDescription)
-                                    return
-                                }
-                            }
-                            .onAppear {
-                                do {
-                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
-                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
-                                        return
-                                    }
-                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
-                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "false" == "true")
-                                    } else if option.key.wrappedValue == "DiscoverableMode" {
-                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "" == "Everyone")
-                                    } else {
-                                        option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
-                                    }
-                                } catch {
-                                    Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
-                                    return
-                                }
-                            }
-                        }
-                        
-                        Divider()
-                        
                         Text("UI Animation Speed")
                         VStack {
-                            Slider(value: $animSpeed, in: 0.1...2, step: 0.05)
+                            Slider(value: $animSpeed, in: 0.1...2, step: 0.01)
                                 .onChange(of: animSpeed, perform: { nv in
                                     guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.uikit.rawValue) else {
                                         Logger.shared.logMe("Error finding uikit plist")
@@ -163,6 +111,58 @@ struct SpringboardOptionsView: View {
                                 return
                             }
                         })
+                        
+                        Divider()
+                        
+                        ForEach($sbOptions) { option in
+                            Toggle(isOn: option.value) {
+                                Text(option.name.wrappedValue)
+                                    .minimumScaleFactor(0.5)
+                            }.onChange(of: option.value.wrappedValue) { new in
+                                do {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
+                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
+                                        return
+                                    }
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue ? "true" : "false"
+                                        ])
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        if option.value.wrappedValue == true {
+                                            try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
+                                        } else {
+                                            try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                                        }
+                                    } else {
+                                        try PlistManager.setPlistValues(url: plistURL, values: [
+                                            option.key.wrappedValue: option.value.wrappedValue
+                                        ])
+                                    }
+                                } catch {
+                                    Logger.shared.logMe(error.localizedDescription)
+                                    return
+                                }
+                            }
+                            .onAppear {
+                                do {
+                                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(option.fileLocation.wrappedValue.rawValue) else {
+                                        Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
+                                        return
+                                    }
+                                    if option.key.wrappedValue == "WiFiManagerLoggingEnabled" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "false" == "true")
+                                    } else if option.key.wrappedValue == "DiscoverableMode" {
+                                        option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "" == "Everyone")
+                                    } else {
+                                        option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                    }
+                                } catch {
+                                    Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
+                                    return
+                                }
+                            }
+                        }
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
