@@ -64,6 +64,8 @@
 		6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2B29C8CFA900B73E40 /* String++.swift */; };
 		6F886A2E29C8CFB300B73E40 /* PlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2D29C8CFB300B73E40 /* PlistManager.swift */; };
 		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
+		6FE6D1072A951A0C002CFD2F /* restore in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1062A951A0C002CFD2F /* restore */; };
+		6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1082A951A20002CFD2F /* restore-deepclean */; };
 		6FFA737F29CDCCA200E4DCBC /* ThemingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */; };
 		6FFA738129CE7DC500E4DCBC /* ThemingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738029CE7DC500E4DCBC /* ThemingView.swift */; };
 		6FFA738629D0FA6A00E4DCBC /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */; };
@@ -161,6 +163,8 @@
 		6F886A2B29C8CFA900B73E40 /* String++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String++.swift"; sourceTree = "<group>"; };
 		6F886A2D29C8CFB300B73E40 /* PlistManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistManager.swift; sourceTree = "<group>"; };
 		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		6FE6D1062A951A0C002CFD2F /* restore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = restore; sourceTree = "<group>"; };
+		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
 		6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingManager.swift; sourceTree = "<group>"; };
 		6FFA738029CE7DC500E4DCBC /* ThemingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingView.swift; sourceTree = "<group>"; };
 		6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
@@ -356,9 +360,9 @@
 				6F700ABB29C37DF60085964B /* Preview Content */,
 				25B47F1E29C91C2D00BD9F7E /* StatusManager */,
 				2544928329C808EB00B6D82E /* Libraries */,
-				6F1D5E7F2A1CF96E00D6E377 /* ControlCenterPresets */,
-				25B47F1C29C91BA800BD9F7E /* Files */,
 				2544926F29C7F79F00B6D82E /* Scripts */,
+				6FE6D1052A9519D5002CFD2F /* FileFolders */,
+				6F1D5E7F2A1CF96E00D6E377 /* ControlCenterPresets */,
 				2539F1B429CAE33000FAD711 /* Cowabunga_Lite-Bridging-Header.h */,
 			);
 			path = "Cowabunga Lite";
@@ -429,7 +433,6 @@
 				6FE6D1022A939EF1002CFD2F /* ViewExtensions */,
 				7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */,
 				6F886A2B29C8CFA900B73E40 /* String++.swift */,
-				2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */,
 				6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */,
 			);
 			path = Extensions;
@@ -439,8 +442,19 @@
 			isa = PBXGroup;
 			children = (
 				6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */,
+				2557662A29D2E9BF008DF0E2 /* UtilityViews.swift */,
 			);
 			path = ViewExtensions;
+			sourceTree = "<group>";
+		};
+		6FE6D1052A9519D5002CFD2F /* FileFolders */ = {
+			isa = PBXGroup;
+			children = (
+				6FE6D1082A951A20002CFD2F /* restore-deepclean */,
+				6FE6D1062A951A0C002CFD2F /* restore */,
+				25B47F1C29C91BA800BD9F7E /* Files */,
+			);
+			path = FileFolders;
 			sourceTree = "<group>";
 		};
 		6FFA737D29CDCC9500E4DCBC /* IconTheming */ = {
@@ -542,11 +556,13 @@
 				7207596029F2648E0053E26F /* homeScreenAppsNew in Resources */,
 				25B47F1D29C91BA800BD9F7E /* Files in Resources */,
 				2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */,
+				6FE6D1072A951A0C002CFD2F /* restore in Resources */,
 				6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */,
 				2544928F29C80F5700B6D82E /* ideviceinfo in Resources */,
 				6F1D5E812A1CF98B00D6E377 /* DefaultCC.plist in Resources */,
 				2557663129D2F51B008DF0E2 /* appabeticalJailed in Resources */,
 				6F1D5E9F2A2F6E9F00D6E377 /* RevertCC.plist in Resources */,
+				6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
 				2557662F29D2F4E2008DF0E2 /* homeScreenApps in Resources */,
