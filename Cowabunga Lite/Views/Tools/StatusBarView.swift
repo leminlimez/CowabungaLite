@@ -126,111 +126,6 @@ struct StatusBarView: View {
                 Text("Betas, use with caution. Have a backup.")
                 Group {
                     Group {
-                        Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setCrumb(crumbText)
-                            } else {
-                                StatusManager.sharedInstance().unsetCrumb()
-                            }
-                        }).onAppear(perform: {
-                            crumbTextEnabled = StatusManager.sharedInstance().isCrumbOverridden()
-                        })
-                        TextField("Breadcrumb Text", text: $crumbText).onChange(of: crumbText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 256
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while (safeNv + " ▶").utf8CString.count > 256 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            crumbText = safeNv
-                            if crumbTextEnabled {
-                                StatusManager.sharedInstance().setCrumb(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            crumbText = StatusManager.sharedInstance().getCrumbOverride()
-                        })
-                        Toggle("Change Battery Detail Text", isOn: $batteryDetailEnabled).onChange(of: batteryDetailEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setBatteryDetail(batteryDetailText)
-                            } else {
-                                StatusManager.sharedInstance().unsetBatteryDetail()
-                            }
-                        }).onAppear(perform: {
-                            batteryDetailEnabled = StatusManager.sharedInstance().isBatteryDetailOverridden()
-                        })
-                        TextField("Battery Detail Text", text: $batteryDetailText).onChange(of: batteryDetailText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 150
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 150 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            batteryDetailText = safeNv
-                            if batteryDetailEnabled {
-                                StatusManager.sharedInstance().setBatteryDetail(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            batteryDetailText = StatusManager.sharedInstance().getBatteryDetailOverride()
-                        })
-                        if dataSingleton.currentDevice?.ipad ?? false == true {
-                            Toggle("Change Status Bar Date Text", isOn: $dateTextEnabled).onChange(of: dateTextEnabled, perform: { nv in
-                                if nv {
-                                    StatusManager.sharedInstance().setDate(dateText)
-                                } else {
-                                    StatusManager.sharedInstance().unsetDate()
-                                }
-                            }).onAppear(perform: {
-                                dateTextEnabled = StatusManager.sharedInstance().isDateOverridden()
-                            })
-                            TextField("Status Bar Date Text", text: $dateText).onChange(of: dateText, perform: { nv in
-                                // This is important.
-                                // Make sure the UTF-8 representation of the string does not exceed 64
-                                // Otherwise the struct will overflow
-                                var safeNv = nv
-                                while safeNv.utf8CString.count > 256 {
-                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
-                                }
-                                dateText = safeNv
-                                if dateTextEnabled {
-                                    StatusManager.sharedInstance().setDate(safeNv)
-                                }
-                            }).onAppear(perform: {
-                                dateText = StatusManager.sharedInstance().getDateOverride()
-                            })
-                        }
-                        Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
-                            if nv {
-                                StatusManager.sharedInstance().setTime(timeText)
-                            } else {
-                                StatusManager.sharedInstance().unsetTime()
-                            }
-                        }).onAppear(perform: {
-                            timeTextEnabled = StatusManager.sharedInstance().isTimeOverridden()
-                        })
-                        TextField("Status Bar Time Text", text: $timeText).onChange(of: timeText, perform: { nv in
-                            // This is important.
-                            // Make sure the UTF-8 representation of the string does not exceed 64
-                            // Otherwise the struct will overflow
-                            var safeNv = nv
-                            while safeNv.utf8CString.count > 64 {
-                                safeNv = String(safeNv.prefix(safeNv.count - 1))
-                            }
-                            timeText = safeNv
-                            if timeTextEnabled {
-                                StatusManager.sharedInstance().setTime(safeNv)
-                            }
-                        }).onAppear(perform: {
-                            timeText = StatusManager.sharedInstance().getTimeOverride()
-                        })
-                        Text("When set to blank on notched devices, this will display the carrier name.")
-                    }
-                    
-                    Divider()
-                    
-                    Group {
-                        
                         Group {
                             Text("Primary Cellular").bold()
                             
@@ -504,6 +399,110 @@ struct StatusBarView: View {
                             })
                         }
                         
+                    }
+                    
+                    Divider()
+                    
+                    Group {
+                        Toggle("Change Breadcrumb Text", isOn: $crumbTextEnabled).onChange(of: crumbTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setCrumb(crumbText)
+                            } else {
+                                StatusManager.sharedInstance().unsetCrumb()
+                            }
+                        }).onAppear(perform: {
+                            crumbTextEnabled = StatusManager.sharedInstance().isCrumbOverridden()
+                        })
+                        TextField("Breadcrumb Text", text: $crumbText).onChange(of: crumbText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 256
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while (safeNv + " ▶").utf8CString.count > 256 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            crumbText = safeNv
+                            if crumbTextEnabled {
+                                StatusManager.sharedInstance().setCrumb(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            crumbText = StatusManager.sharedInstance().getCrumbOverride()
+                        })
+                        Toggle("Change Battery Detail Text", isOn: $batteryDetailEnabled).onChange(of: batteryDetailEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setBatteryDetail(batteryDetailText)
+                            } else {
+                                StatusManager.sharedInstance().unsetBatteryDetail()
+                            }
+                        }).onAppear(perform: {
+                            batteryDetailEnabled = StatusManager.sharedInstance().isBatteryDetailOverridden()
+                        })
+                        TextField("Battery Detail Text", text: $batteryDetailText).onChange(of: batteryDetailText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 150
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 150 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            batteryDetailText = safeNv
+                            if batteryDetailEnabled {
+                                StatusManager.sharedInstance().setBatteryDetail(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            batteryDetailText = StatusManager.sharedInstance().getBatteryDetailOverride()
+                        })
+                        if dataSingleton.currentDevice?.ipad ?? false == true {
+                            Toggle("Change Status Bar Date Text", isOn: $dateTextEnabled).onChange(of: dateTextEnabled, perform: { nv in
+                                if nv {
+                                    StatusManager.sharedInstance().setDate(dateText)
+                                } else {
+                                    StatusManager.sharedInstance().unsetDate()
+                                }
+                            }).onAppear(perform: {
+                                dateTextEnabled = StatusManager.sharedInstance().isDateOverridden()
+                            })
+                            TextField("Status Bar Date Text", text: $dateText).onChange(of: dateText, perform: { nv in
+                                // This is important.
+                                // Make sure the UTF-8 representation of the string does not exceed 64
+                                // Otherwise the struct will overflow
+                                var safeNv = nv
+                                while safeNv.utf8CString.count > 256 {
+                                    safeNv = String(safeNv.prefix(safeNv.count - 1))
+                                }
+                                dateText = safeNv
+                                if dateTextEnabled {
+                                    StatusManager.sharedInstance().setDate(safeNv)
+                                }
+                            }).onAppear(perform: {
+                                dateText = StatusManager.sharedInstance().getDateOverride()
+                            })
+                        }
+                        Toggle("Change Status Bar Time Text", isOn: $timeTextEnabled).onChange(of: timeTextEnabled, perform: { nv in
+                            if nv {
+                                StatusManager.sharedInstance().setTime(timeText)
+                            } else {
+                                StatusManager.sharedInstance().unsetTime()
+                            }
+                        }).onAppear(perform: {
+                            timeTextEnabled = StatusManager.sharedInstance().isTimeOverridden()
+                        })
+                        TextField("Status Bar Time Text", text: $timeText).onChange(of: timeText, perform: { nv in
+                            // This is important.
+                            // Make sure the UTF-8 representation of the string does not exceed 64
+                            // Otherwise the struct will overflow
+                            var safeNv = nv
+                            while safeNv.utf8CString.count > 64 {
+                                safeNv = String(safeNv.prefix(safeNv.count - 1))
+                            }
+                            timeText = safeNv
+                            if timeTextEnabled {
+                                StatusManager.sharedInstance().setTime(safeNv)
+                            }
+                        }).onAppear(perform: {
+                            timeText = StatusManager.sharedInstance().getTimeOverride()
+                        })
+                        Text("When set to blank on notched devices, this will display the carrier name.")
                     }
                     
                     Divider()
