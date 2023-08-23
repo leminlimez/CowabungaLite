@@ -66,6 +66,7 @@
 		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
 		6FE6D1072A951A0C002CFD2F /* restore in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1062A951A0C002CFD2F /* restore */; };
 		6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1082A951A20002CFD2F /* restore-deepclean */; };
+		6FE6D10B2A96977C002CFD2F /* ProcessInfo++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D10A2A96977C002CFD2F /* ProcessInfo++.swift */; };
 		6FFA737F29CDCCA200E4DCBC /* ThemingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */; };
 		6FFA738129CE7DC500E4DCBC /* ThemingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738029CE7DC500E4DCBC /* ThemingView.swift */; };
 		6FFA738629D0FA6A00E4DCBC /* ThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */; };
@@ -165,6 +166,7 @@
 		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		6FE6D1062A951A0C002CFD2F /* restore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = restore; sourceTree = "<group>"; };
 		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
+		6FE6D10A2A96977C002CFD2F /* ProcessInfo++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo++.swift"; sourceTree = "<group>"; };
 		6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingManager.swift; sourceTree = "<group>"; };
 		6FFA738029CE7DC500E4DCBC /* ThemingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingView.swift; sourceTree = "<group>"; };
 		6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 				7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */,
 				6F886A2B29C8CFA900B73E40 /* String++.swift */,
 				6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */,
+				6FE6D10A2A96977C002CFD2F /* ProcessInfo++.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				6F7B3EEF29F198170080FFDA /* ListOfAppsView.swift in Sources */,
 				6F7B3EED29F1980D0080FFDA /* AltIconView.swift in Sources */,
 				6F5DFCF12A6B32D400081DBD /* OperationsMainView.swift in Sources */,
+				6FE6D10B2A96977C002CFD2F /* ProcessInfo++.swift in Sources */,
 				6FFA738129CE7DC500E4DCBC /* ThemingView.swift in Sources */,
 				2539F1B129CA791100FAD711 /* StatusBarView.swift in Sources */,
 				6F886A2429C8AC0D00B73E40 /* DynamicIslandView.swift in Sources */,
