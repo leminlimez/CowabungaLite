@@ -12,8 +12,8 @@ struct ControlCenterView: View {
     @State private var currentCC: String = "None"
     @StateObject private var dataSingleton = DataSingleton.shared
     
-    @State private var replayKitAudioPref: Bool = true
-    @State private var replayKitVideoPref: Bool = true
+    @State private var replayKitAudioPref = 1
+    @State private var replayKitVideoPref = 1
     
     var gridItemLayout = [GridItem(.adaptive(minimum: 110))]
     
@@ -95,64 +95,106 @@ struct ControlCenterView: View {
                         Divider()
                     }
                     
-                    // bad code below but am lazy
-                    Toggle(isOn: $replayKitAudioPref) {
-                        Text("Show Audio Replay Kit Buttons")
-                            .minimumScaleFactor(0.5)
-                    }.onChange(of: replayKitAudioPref) { new in
-                        do {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
-                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
-                                return
-                            }
-                            try PlistManager.setPlistValues(url: plistURL, values: [
-                                "SBIconVisibility": replayKitAudioPref
-                            ])
-                        } catch {
-                            Logger.shared.logMe(error.localizedDescription)
+                    // bad code below but i am lazy
+                    // MARK: Audio Replay Kit Button
+                    Text("Audio Replay Kit Button Visibility")
+                    Picker(selection: $replayKitAudioPref, label: Text("")) {
+                        Text("Default").tag(1)
+                        Text("Always Show").tag(2)
+                        Text("Always Hide").tag(3)
+                    }
+                    .pickerStyle(.radioGroup)
+                    .horizontalRadioGroupLayout()
+                    .onChange(of: replayKitAudioPref) { new in
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit audio plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
                             return
+                        }
+                        do {
+                            if new == 1 {
+                                // remove the value
+                                try PlistManager.removePlistValues(url: plistURL, keys: ["SBIconVisibility"])
+                            } else if new == 2 {
+                                // set to true
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": true])
+                            } else if new == 3 {
+                                // set to false
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": false])
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error setting replay kit audio plist: \(error.localizedDescription)")
                         }
                     }
                     .onAppear {
-                        do {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
-                                Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
-                                return
-                            }
-                            replayKitAudioPref =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
-                        } catch {
-                            Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit audio plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
                             return
+                        }
+                        // get the value
+                        do {
+                            let visibility = try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility")
+                            if visibility != nil {
+                                if visibility as? Bool ?? false {
+                                    replayKitAudioPref = 2
+                                } else {
+                                    replayKitAudioPref = 3
+                                }
+                            } else {
+                                replayKitAudioPref = 1
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error getting replay kit audio plist: \(error.localizedDescription)")
                         }
                     }
                     
-                    Toggle(isOn: $replayKitVideoPref) {
-                        Text("Show Video Replay Kit Buttons")
-                            .minimumScaleFactor(0.5)
-                    }.onChange(of: replayKitVideoPref) { new in
-                        do {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
-                                Logger.shared.logMe("Error finding springboard plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
-                                return
-                            }
-                            try PlistManager.setPlistValues(url: plistURL, values: [
-                                "SBIconVisibility": replayKitVideoPref
-                            ])
-                        } catch {
-                            Logger.shared.logMe(error.localizedDescription)
+                    // MARK: Video Replay Kit Button
+                    Text("Video Replay Kit Button Visibility")
+                    Picker(selection: $replayKitVideoPref, label: Text("")) {
+                        Text("Default").tag(1)
+                        Text("Always Show").tag(2)
+                        Text("Always Hide").tag(3)
+                    }
+                    .pickerStyle(.radioGroup)
+                    .horizontalRadioGroupLayout()
+                    .onChange(of: replayKitVideoPref) { new in
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit video plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
                             return
+                        }
+                        do {
+                            if new == 1 {
+                                // remove the value
+                                try PlistManager.removePlistValues(url: plistURL, keys: ["SBIconVisibility"])
+                            } else if new == 2 {
+                                // set to true
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": true])
+                            } else if new == 3 {
+                                // set to false
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": false])
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error setting replay kit audio plist: \(error.localizedDescription)")
                         }
                     }
                     .onAppear {
-                        do {
-                            guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
-                                Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
-                                return
-                            }
-                            replayKitVideoPref =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
-                        } catch {
-                            Logger.shared.logMe("Error finding cc plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit video plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
                             return
+                        }
+                        // get the value
+                        do {
+                            let visibility = try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility")
+                            if visibility != nil {
+                                if visibility as? Bool ?? false {
+                                    replayKitVideoPref = 2
+                                } else {
+                                    replayKitVideoPref = 3
+                                }
+                            } else {
+                                replayKitVideoPref = 1
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error getting replay kit video plist: \(error.localizedDescription)")
                         }
                     }
                     

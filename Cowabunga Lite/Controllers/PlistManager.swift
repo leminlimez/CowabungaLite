@@ -53,6 +53,33 @@ class PlistManager {
         }
     }
     
+    // Remove plist values from a dictionary (returns as dictionary)
+    public static func removePlistValues(plist: [String: Any], keys: [String]) -> [String: Any] {
+        var newPlist = plist
+        for k in keys {
+            newPlist[k] = nil
+        }
+        return newPlist
+    }
+    
+    // Set plist values from data (returns as data)
+    public static func removePlistValues(data: Data, keys: [String]) throws -> Data {
+        let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+        return try PropertyListSerialization.data(fromPropertyList: removePlistValues(plist: plist, keys: keys), format: .xml, options: 0)
+    }
+    
+    // Remove plist values from file url
+    public static func removePlistValues(url: URL, keys: [String]) throws {
+        if var plist = NSDictionary(contentsOf: url) as? [String:Any] {
+            plist = removePlistValues(plist: plist, keys: keys)
+            (plist as NSDictionary).write(to: url, atomically: true)
+        } else {
+            var plist = try Data(contentsOf: url)
+            plist = try removePlistValues(data: plist, keys: keys)
+            try plist.write(to: url)
+        }
+    }
+    
     // MARK: Getting Plist Values
     public static func getPlistValues(url: URL, key: String) throws -> Any? {
 //        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(path) else {
