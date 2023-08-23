@@ -12,6 +12,10 @@ struct ApplyView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var canApply: Bool = true
     
+    @Namespace var logID
+    
+    @State private var testNum: Int = 1
+    
     var body: some View {
         List {
             Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Successful\" at the bottom if successful.")
@@ -72,11 +76,51 @@ struct ApplyView: View {
                         }
                     }
                 }
+                
+                // Test button
+//                NiceButton(text: AnyView(
+//                    Text("Test console")
+//                )) {
+//                    var toAdd: String = ""
+//                    for i in 0...4 {
+//                        if i != 0 {
+//                            toAdd += "\n"
+//                        }
+//                        toAdd += "test \(testNum)"
+//                        testNum += 1
+//                    }
+//                    Logger.shared.logMe(toAdd)//"test \(testNum)")
+//                }
             }.disabled(!canApply)
-            TextEditor(text: .constant(logger.logText))
-                .font(Font.system(.body, design: .monospaced))
+            
+            if #available(macOS 12, *) {
+                ZStack {
+                    GeometryReader { proxy1 in
+                        ScrollViewReader { reader in
+                            ScrollView {
+                                Text(logger.logText)
+                                    .id(logID)
+                                    .font(Font.system(.body, design: .monospaced))
+                                    .frame(minWidth: 0,
+                                           maxWidth: .infinity,
+                                           minHeight: 0,
+                                           maxHeight: .infinity,
+                                           alignment: .topLeading)
+                                    .textSelection(.enabled)
+                                    .onChange(of: logger.logText) { nv in
+                                        reader.scrollTo(logID, anchor: .bottom)
+                                    }
+                            }
+                        }
+                    }
+                }
                 .frame(height: 250)
-                .lineLimit(nil)
+            } else {
+                TextEditor(text: .constant(logger.logText))
+                    .font(Font.system(.body, design: .monospaced))
+                    .frame(height: 250)
+                    .lineLimit(nil)
+            }
         }.disabled(!dataSingleton.deviceAvailable)
     }
 }

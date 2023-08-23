@@ -21,7 +21,9 @@ class Logger {
 @objc class Logger: NSObject, ObservableObject {
     @objc static let shared = Logger()
     
-    @Published var logText = ""
+    @objc static var versionBuildString: String? = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "0" == "0" ? nil : "Beta \(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "0")"
+    
+    @Published var logText = "Cowabunga Lite version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown") (\(versionBuildString ?? "Release")) on MacOS \(ProcessInfo.osVersion)\n"
 
     @objc func logMe(_ message: String) {
         print(message)
