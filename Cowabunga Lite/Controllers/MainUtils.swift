@@ -14,25 +14,25 @@ class MainUtils {
         case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
         case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
         case moduleConfig = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
-        case replayKitAudio = "ControlCenter/HomeDomain/Library/ControlCenter/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
-        case replayKitVideo = "ControlCenter/HomeDomain/Library/ControlCenter/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
+        case replayKitAudio = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
+        case replayKitVideo = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
         
         // Springboard Options
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
-        case uikit = "SpringboardOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.UIKit.plist"
-        case accessibility = "SpringboardOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.Accessibility.plist"
+        case uikit = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist"
+        case accessibility = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist"
         case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
         case airdrop = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
         
         // Internal Options
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case appStore = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.AppStore.plist"
-        case backboardd = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.backboardd.plist"
-        case coreMotion = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.CoreMotion.plist"
+        case appStore = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.AppStore.plist"
+        case backboardd = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.backboardd.plist"
+        case coreMotion = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.CoreMotion.plist"
         case pasteboard = "InternalOptions/HomeDomain/Library/Preferences/com.apple.Pasteboard.plist"
-        case notes = "InternalOptions/ManagedPreferencesDomain/Library/Preferences/com.apple.mobilenotes.plist"
+        case notes = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.mobilenotes.plist"
         case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
         case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
         
