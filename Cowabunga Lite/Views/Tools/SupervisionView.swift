@@ -14,7 +14,6 @@ struct SupervisionView: View {
     @State private var supervisionEnabled = false
     @State private var managedCompanyName = ""
     @State private var enableTweak = false
-    @State private var otaDisabled = false
     
     var body: some View {
         List {
@@ -50,18 +49,6 @@ struct SupervisionView: View {
                     }).onAppear(perform: {
                         skipSetup = MainUtils.getSkipSetupEnabled()
                     })
-                    
-                    // MARK: OTA Killer
-                    Toggle(isOn: $otaDisabled) {
-                        Text("Disable OTA Updates")
-                            .minimumScaleFactor(0.5)
-                            .onChange(of: otaDisabled, perform: { nv in
-                                MainUtils.setOTABlocked(nv)
-                            })
-                            .onAppear {
-                                otaDisabled = MainUtils.getOTABlocked()
-                            }
-                    }
                     
                     // MARK: Supervision
                     Toggle("Enable Supervision", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in

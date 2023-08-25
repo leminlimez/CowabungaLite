@@ -38,7 +38,9 @@ class MainUtils {
         
         // Setup Options
         case skipSetup = "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
-        case ota = "SkipSetup/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
+        
+        // OTA Killer
+        case ota = "OTAKiller/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
     }
     
     struct ToggleOption: Identifiable {
@@ -47,6 +49,7 @@ class MainUtils {
         var name: String
         var fileLocation: FileLocation
         var value: Bool = false
+        var invertValue: Bool = false
         var dividerBelow: Bool = false
     }
     
@@ -257,6 +260,8 @@ class MainUtils {
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
         .init(key: "SBNeverBreadcrumb", name: "Disable Breadcrumb", fileLocation: .springboard),
+        .init(key: "SBShowSupervisionTextOnLockScreen", name: "Show Supervision Text on Lock Screen", fileLocation: .springboard),
+        .init(key: "CCSPresentationGesture", name: "Disable CC Presentation Gesture", fileLocation: .springboard, invertValue: true, dividerBelow: true),
         .init(key: "StartupSoundEnabled", name: "Play Sound on Shutdown", fileLocation: .accessibility),
         .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug),
         .init(key: "DiscoverableMode", name: "Permanently Allow Receiving AirDrop from Everyone", fileLocation: .airdrop)
