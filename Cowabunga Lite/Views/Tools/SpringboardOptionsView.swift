@@ -21,6 +21,7 @@ struct SpringboardOptionsView: View {
         var name: String
         var fileLocation: MainUtils.FileLocation
         var value: Bool = false
+        var dividerBelow: Bool = false
     }
     
     @State private var sbOptions: [SBOption] = [
@@ -58,6 +59,7 @@ struct SpringboardOptionsView: View {
                 Divider()
                 if dataSingleton.deviceAvailable {
                     Group {
+                        // MARK: UI Animation Speed
                         Text("UI Animation Speed")
                         VStack {
                             Slider(value: $animSpeed, in: 0.1...2, step: 0.01)
@@ -87,6 +89,7 @@ struct SpringboardOptionsView: View {
                             }
                         }
                         
+                        // MARK: Lock Screen Footnote
                         Text("Lock Screen Footnote Text")
                         TextField("Footnote Text", text: $footnoteText).onChange(of: footnoteText, perform: { nv in
                             guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.footnote.rawValue) else {
@@ -132,7 +135,7 @@ struct SpringboardOptionsView: View {
                                         if option.value.wrappedValue == true {
                                             try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
                                         } else {
-                                            try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                                            try PropertyListSerialization.data(fromPropertyList: [:] as [String: Any], format: .xml, options: 0).write(to: plistURL)
                                         }
                                     } else {
                                         try PlistManager.setPlistValues(url: plistURL, values: [
@@ -162,6 +165,9 @@ struct SpringboardOptionsView: View {
                                     return
                                 }
                             }
+                            if option.dividerBelow.wrappedValue {
+                                Divider()
+                            }
                         }
                     }.disabled(!enableTweak)
                 }
@@ -169,7 +175,7 @@ struct SpringboardOptionsView: View {
                 .onAppear {
                     if sbOptions.isEmpty {
                         for opt in MainUtils.sbOptions {
-                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation))
+                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, dividerBelow: opt.dividerBelow))
                         }
                     }
                 }
