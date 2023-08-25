@@ -21,6 +21,7 @@ struct SpringboardOptionsView: View {
         var name: String
         var fileLocation: MainUtils.FileLocation
         var value: Bool = false
+        var invertValue: Bool = false
         var dividerBelow: Bool = false
     }
     
@@ -139,7 +140,7 @@ struct SpringboardOptionsView: View {
                                         }
                                     } else {
                                         try PlistManager.setPlistValues(url: plistURL, values: [
-                                            option.key.wrappedValue: option.value.wrappedValue
+                                            option.key.wrappedValue: !option.invertValue.wrappedValue ? option.value.wrappedValue : !option.value.wrappedValue
                                         ])
                                     }
                                 } catch {
@@ -158,7 +159,8 @@ struct SpringboardOptionsView: View {
                                     } else if option.key.wrappedValue == "DiscoverableMode" {
                                         option.value.wrappedValue = (try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? String ?? "" == "Everyone")
                                     } else {
-                                        option.value.wrappedValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool ?? false
+                                        let gottenValue = try PlistManager.getPlistValues(url: plistURL, key: option.key.wrappedValue) as? Bool
+                                        option.value.wrappedValue = !option.invertValue.wrappedValue ? gottenValue ?? false : !(gottenValue ?? true)
                                     }
                                 } catch {
                                     Logger.shared.logMe("Error finding springboard plist \(option.fileLocation.wrappedValue.rawValue)")
@@ -175,7 +177,7 @@ struct SpringboardOptionsView: View {
                 .onAppear {
                     if sbOptions.isEmpty {
                         for opt in MainUtils.sbOptions {
-                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, dividerBelow: opt.dividerBelow))
+                            sbOptions.append(.init(key: opt.key, name: opt.name, fileLocation: opt.fileLocation, invertValue: opt.invertValue, dividerBelow: opt.dividerBelow))
                         }
                     }
                 }
