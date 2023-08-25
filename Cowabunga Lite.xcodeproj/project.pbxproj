@@ -386,6 +386,7 @@
 				6FFA738429D0F7C000E4DCBC /* Themes */,
 				6F5DFCE62A6AF77000081DBD /* Custom Operations */,
 				6F886A1929C89A0100B73E40 /* Tools */,
+				6FE6D10C2A98EA41002CFD2F /* Unused */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -393,16 +394,11 @@
 		6F886A1929C89A0100B73E40 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				2557662629D2D9BE008DF0E2 /* AppabeticalView.swift */,
-				6F7B3F362A0E8A100080FFDA /* ControlCenterView.swift */,
-				6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */,
-				6F7B3F382A129D120080FFDA /* InternalOptionsView.swift */,
-				6F886A2129C8AC0300B73E40 /* LockScreenFootnoteView.swift */,
-				2539F1B229CA9BA100FAD711 /* SkipSetupView.swift */,
-				6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */,
 				2539F1B029CA791100FAD711 /* StatusBarView.swift */,
+				6F7B3F362A0E8A100080FFDA /* ControlCenterView.swift */,
+				6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */,
+				6F7B3F382A129D120080FFDA /* InternalOptionsView.swift */,
 				6FFA739329D1E7F400E4DCBC /* SupervisionView.swift */,
-				6F7B3F312A05645F0080FFDA /* TestingView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -458,6 +454,18 @@
 				25B47F1C29C91BA800BD9F7E /* Files */,
 			);
 			path = FileFolders;
+			sourceTree = "<group>";
+		};
+		6FE6D10C2A98EA41002CFD2F /* Unused */ = {
+			isa = PBXGroup;
+			children = (
+				2557662629D2D9BE008DF0E2 /* AppabeticalView.swift */,
+				6F886A2329C8AC0D00B73E40 /* DynamicIslandView.swift */,
+				6F886A2129C8AC0300B73E40 /* LockScreenFootnoteView.swift */,
+				2539F1B229CA9BA100FAD711 /* SkipSetupView.swift */,
+				6F7B3F312A05645F0080FFDA /* TestingView.swift */,
+			);
+			path = Unused;
 			sourceTree = "<group>";
 		};
 		6FFA737D29CDCC9500E4DCBC /* IconTheming */ = {
