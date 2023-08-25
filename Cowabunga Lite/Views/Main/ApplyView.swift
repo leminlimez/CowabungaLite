@@ -110,6 +110,9 @@ struct ApplyView: View {
                                     .onChange(of: logger.logText) { nv in
                                         reader.scrollTo(logID, anchor: .bottom)
                                     }
+                                    .onAppear {
+                                        reader.scrollTo(logID, anchor: .bottom)
+                                    }
                             }
                         }
                     }

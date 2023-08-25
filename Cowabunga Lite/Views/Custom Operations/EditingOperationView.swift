@@ -68,6 +68,7 @@ struct EditingOperationView: View {
                             Toggle("Enable", isOn: $enabledOperation).onChange(of: enabledOperation, perform: { nv in
                                 operationsManager.toggleOperation(name: operation.name, enabled: nv)
                             })
+                            .padding(.horizontal, 10)
                             Spacer()
                         }
                     }
@@ -129,6 +130,7 @@ struct EditingOperationView: View {
                         })
                         Spacer()
                     }
+                    .padding(.horizontal, 10)
                 }
             }
         }.onAppear {
