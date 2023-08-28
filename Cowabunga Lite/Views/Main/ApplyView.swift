@@ -31,50 +31,65 @@ struct ApplyView: View {
             }
             
             HStack {
-                // MARK: Regular Apply Button
-                NiceButton(text: AnyView(
-                    HStack {
-                        Image(systemName: "checkmark.circle")
-                        Text("Apply Tweaks")
-                    }
-                )) {
-                    if canApply {
-                        canApply = false
-                        Task {
-                            applyTweaks()
-                            canApply = true
+                HStack {
+                    // MARK: Regular Apply Button
+                    NiceButton(text: AnyView(
+                        HStack {
+                            Image(systemName: "checkmark.circle")
+                            Text("Apply Tweaks")
+                        }
+                    )) {
+                        if canApply {
+                            canApply = false
+                            Task {
+                                applyTweaks()
+                                canApply = true
+                            }
                         }
                     }
-                }
-                // MARK: Remove All Tweaks
-                NiceButton(text: AnyView(
-                    HStack {
-                        Image(systemName: "trash")
-                        Text("Remove All Tweaks")
-                    }
-                )) {
-                    if canApply {
-                        canApply = false
-                        Task {
-                            removeTweaks(deepClean: false)
-                            canApply = true
+                    // MARK: Remove All Tweaks
+                    NiceButton(text: AnyView(
+                        HStack {
+                            Image(systemName: "trash")
+                            Text("Remove All Tweaks")
+                        }
+                    )) {
+                        if canApply {
+                            canApply = false
+                            Task {
+                                removeTweaks(deepClean: false)
+                                canApply = true
+                            }
                         }
                     }
-                }
-                // MARK: Deep Clean
-                NiceButton(text: AnyView(
-                    HStack {
-                        Image(systemName: "paintbrush")
-                        Text("Deep Clean")
-                    }
-                )) {
-                    if canApply {
-                        canApply = false
-                        Task {
-                            removeTweaks(deepClean: true)
-                            canApply = true
+                    // MARK: Deep Clean
+                    NiceButton(text: AnyView(
+                        HStack {
+                            Image(systemName: "paintbrush")
+                            Text("Deep Clean")
+                        }
+                    )) {
+                        if canApply {
+                            canApply = false
+                            Task {
+                                removeTweaks(deepClean: true)
+                                canApply = true
+                            }
                         }
                     }
+                }.disabled(!canApply)
+                
+                // MARK: Copy Log
+                NiceButton(text: AnyView(
+                    HStack {
+                        Image(systemName: "clipboard")
+                        Text("Copy Logs")
+                    }
+                )) {
+                    // save to clipboard
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.declareTypes([.string], owner: nil)
+                    pasteboard.setString(logger.logText, forType: .string)
                 }
                 
                 // Test button
@@ -91,7 +106,7 @@ struct ApplyView: View {
 //                    }
 //                    Logger.shared.logMe(toAdd)//"test \(testNum)")
 //                }
-            }.disabled(!canApply)
+            }
             
             if #available(macOS 12, *) {
                 ZStack {

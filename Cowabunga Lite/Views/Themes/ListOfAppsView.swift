@@ -27,6 +27,8 @@ struct ListOfAppsView: View {
     
     @State var loaded: Bool = false
     
+    @State var searchTerm: String = ""
+    
     var body: some View {
         VStack {
             HStack {
@@ -51,50 +53,53 @@ struct ListOfAppsView: View {
                     ScrollView {
                         LazyVGrid(columns: gridItemLayout, spacing: 7) {
                             ForEach($apps) { app in
-                                NiceButton(text: AnyView(
-                                    ZStack {
-                                        VStack {
-                                            if app.themedIcon.wrappedValue != nil, let img = NSImage(data: app.themedIcon.wrappedValue!) {
-                                                Image(nsImage: img)
-                                                    .resizable()
-                                                    .frame(width: 65, height: 65)
-                                                    .cornerRadius(15)
-                                            } else {
-                                                Rectangle()
-                                                    .frame(width: 65, height: 65)
-                                                    .cornerRadius(15)
-                                            }
-                                            Text(app.name.wrappedValue)
-                                        }
-                                        
-                                        HStack {
-                                            Spacer()
+                                if searchTerm == "" || app.name.wrappedValue.lowercased().contains(searchTerm.lowercased()) {
+                                    NiceButton(text: AnyView(
+                                        ZStack {
                                             VStack {
-                                                if app.changed.wrappedValue {
-                                                    ZStack {
-                                                        Image(systemName: "gearshape.fill")
-                                                            .foregroundColor(.white)
-                                                            .font(.system(size: 25, weight: .bold))
-                                                        Image(systemName: "gearshape")
-                                                            .foregroundColor(.black)
-                                                            .font(.system(size: 25, weight: .bold))
-                                                    }
-                                                    .offset(x: 8, y: -8)
+                                                if app.themedIcon.wrappedValue != nil, let img = NSImage(data: app.themedIcon.wrappedValue!) {
+                                                    Image(nsImage: img)
+                                                        .resizable()
+                                                        .frame(width: 65, height: 65)
+                                                        .cornerRadius(15)
+                                                } else {
+                                                    Rectangle()
+                                                        .frame(width: 65, height: 65)
+                                                        .cornerRadius(15)
                                                 }
+                                                Text(app.name.wrappedValue)
+                                            }
+                                            
+                                            HStack {
                                                 Spacer()
+                                                VStack {
+                                                    if app.changed.wrappedValue {
+                                                        ZStack {
+                                                            Image(systemName: "gearshape.fill")
+                                                                .foregroundColor(.white)
+                                                                .font(.system(size: 25, weight: .bold))
+                                                            Image(systemName: "gearshape")
+                                                                .foregroundColor(.black)
+                                                                .font(.system(size: 25, weight: .bold))
+                                                        }
+                                                        .offset(x: 8, y: -8)
+                                                    }
+                                                    Spacer()
+                                                }
                                             }
                                         }
-                                    }
-                                        .frame(height: 90)
-                                ), action: {
-                                    currentApp = app.wrappedValue
-                                    viewType = 2
-                                })
-                                .padding(5)
+                                            .frame(height: 90)
+                                    ), action: {
+                                        currentApp = app.wrappedValue
+                                        viewType = 2
+                                    })
+                                    .padding(5)
+                                }
                             }
                         }
                         .padding(.horizontal, 10)
                     }
+                    .searchable(text: $searchTerm)
                 }
             } else {
                 VStack {
