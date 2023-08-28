@@ -6,6 +6,7 @@
 //
 
 import ZIPFoundation
+import SwiftUI
 
 enum ThemeFilterType: String, CaseIterable {
     case random = "Random"

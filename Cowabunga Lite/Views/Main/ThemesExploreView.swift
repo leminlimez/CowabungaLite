@@ -108,7 +108,7 @@ struct ThemesExploreView: View {
                         }
                     }
                 }
-//                .searchable(text: $searchTerm)
+                .searchable(text: $searchTerm)
 ////                .coordinateSpace(name: "pullToRefresh")
 //                .navigationTitle("Explore Themes")
 //                .toolbar {
