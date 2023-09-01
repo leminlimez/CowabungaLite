@@ -8,6 +8,113 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+struct MainExploreView: View {
+    @ObservedObject var cowabungaAPI = CowabungaAPI.shared
+    
+    // lazyvgrid
+    @Binding var gridItemLayout: [GridItem]
+    @Binding var themes: [DownloadableTheme]
+    
+    @Binding var themeTypeShown: DownloadableTheme.ThemeType
+    
+    @Binding var searchTerm: String
+    
+    var body: some View {
+        Group {
+//                    PullToRefresh(coordinateSpaceName: "pullToRefresh") {
+//                        // refresh
+//                        themes.removeAll()
+//                        //URLCache.imageCache.removeAllCachedResponses()
+//                        loadThemes()
+//                    }
+//                    .padding(.bottom, 10)
+            
+            if themes.isEmpty {
+                VStack {
+                    Spacer()
+                    HStack { // set alignment to center
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                LazyVGrid(columns: gridItemLayout) {
+                    ForEach(themes) { theme in
+                        if searchTerm == "" || theme.name.lowercased().contains(searchTerm.lowercased()) || (theme.contact.values.first ?? "Unknown author").lowercased().contains(searchTerm.lowercased()) {
+                            
+                            VStack(spacing: 0) {
+                                WebImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme))
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(maxWidth: .infinity)
+                                HStack {
+                                    VStack(spacing: 4) {
+                                        HStack {
+                                            Text(theme.name)
+                                            //                                                            .foregroundColor(Color(uiColor14: .label))
+                                                .minimumScaleFactor(0.5)
+                                            Spacer()
+                                        }
+                                        HStack {
+                                            Text(theme.contact.values.first ?? "Unknown author")
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                                .minimumScaleFactor(0.5)
+                                            Spacer()
+                                        }
+                                    }
+                                    .lineLimit(1)
+                                    Spacer()
+                                    
+                                    NiceButton(text: AnyView(
+                                        HStack {
+                                            Image(systemName: "arrow.down.circle")
+                                        }
+                                    )) {
+                                        downloadTheme(theme: theme)
+                                    }
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .frame(height: 58)
+                            }
+                            .frame(minWidth: themeTypeShown == .icon ? 250 : 150)
+//                                    .frame(height: 250)
+                            .background(Color.cowGray)
+                            .cornerRadius(10)
+                            .padding(4)
+                        }
+                    }
+//                            .padding()
+                }
+            }
+        }
+    }
+    
+    func downloadTheme(theme: DownloadableTheme) {
+//        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+//        UIApplication.shared.alert(title: NSLocalizedString("Downloading", comment: "") + " \(theme.name)...", body: NSLocalizedString("Please wait", comment: ""), animated: false, withButton: false)
+        
+        // create the folder
+        Task {
+            do {
+                try await cowabungaAPI.downloadTheme(theme: theme)
+//                Haptic.shared.notify(.success)
+//                UIApplication.shared.dismissAlert(animated: true)
+//                UIApplication.shared.alert(title: NSLocalizedString("Success!", comment: ""), body: NSLocalizedString("The theme was successfully downloaded and saved!", comment: ""))
+            } catch {
+                print("Could not download passcode theme: \(error.localizedDescription)")
+//                Haptic.shared.notify(.error)
+//                UIApplication.shared.dismissAlert(animated: true)
+//                UIApplication.shared.alert(title: NSLocalizedString("Could not download theme!", comment: ""), body: error.localizedDescription)
+            }
+        }
+    }
+}
+
 struct ThemesExploreView: View {
     
     @ObservedObject var cowabungaAPI = CowabungaAPI.shared
@@ -36,79 +143,12 @@ struct ThemesExploreView: View {
         .padding(.top, 10)
         .padding(.bottom, 5)
             List {
-                Group {
-//                    PullToRefresh(coordinateSpaceName: "pullToRefresh") {
-//                        // refresh
-//                        themes.removeAll()
-//                        //URLCache.imageCache.removeAllCachedResponses()
-//                        loadThemes()
-//                    }
-//                    .padding(.bottom, 10)
-                    
-                    if themes.isEmpty {
-                        VStack {
-                            Spacer()
-                            HStack { // set alignment to center
-                                Spacer()
-                                ProgressView()
-                                Spacer()
-                            }
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        LazyVGrid(columns: gridItemLayout) {
-                            ForEach(themes) { theme in
-                                if searchTerm == "" || theme.name.lowercased().contains(searchTerm.lowercased()) || (theme.contact.values.first ?? "Unknown author").lowercased().contains(searchTerm.lowercased()) {
-                                    
-                                    VStack(spacing: 0) {
-                                        WebImage(url: cowabungaAPI.getPreviewURLForTheme(theme: theme))
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(maxWidth: .infinity)
-                                        HStack {
-                                            VStack(spacing: 4) {
-                                                HStack {
-                                                    Text(theme.name)
-                                                    //                                                            .foregroundColor(Color(uiColor14: .label))
-                                                        .minimumScaleFactor(0.5)
-                                                    Spacer()
-                                                }
-                                                HStack {
-                                                    Text(theme.contact.values.first ?? "Unknown author")
-                                                        .foregroundColor(.secondary)
-                                                        .font(.caption)
-                                                        .minimumScaleFactor(0.5)
-                                                    Spacer()
-                                                }
-                                            }
-                                            .lineLimit(1)
-                                            Spacer()
-                                            
-                                            NiceButton(text: AnyView(
-                                                HStack {
-                                                    Image(systemName: "arrow.down.circle")
-                                                }
-                                            )) {
-                                                downloadTheme(theme: theme)
-                                            }
-                                        }
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                        .frame(height: 58)
-                                    }
-                                    .frame(minWidth: themeTypeShown == .icon ? 250 : 150)
-//                                    .frame(height: 250)
-                                    .background(Color.cowGray)
-                                    .cornerRadius(10)
-                                    .padding(4)
-                                }
-                            }
-//                            .padding()
-                        }
-                    }
+                if #available(macOS 12, *) {
+                    MainExploreView(gridItemLayout: $gridItemLayout, themes: $themes, themeTypeShown: $themeTypeShown, searchTerm: $searchTerm)
+                        .searchable(text: $searchTerm)
+                } else {
+                    MainExploreView(gridItemLayout: $gridItemLayout, themes: $themes, themeTypeShown: $themeTypeShown, searchTerm: $searchTerm)
                 }
-                .searchable(text: $searchTerm)
 ////                .coordinateSpace(name: "pullToRefresh")
 //                .navigationTitle("Explore Themes")
 //                .toolbar {
@@ -156,26 +196,6 @@ struct ThemesExploreView: View {
                 themes = cowabungaAPI.filterTheme(themes: themes, filterType: filterType)
             } catch {
 //                UIApplication.shared.alert(body: NSLocalizedString("Error occured while fetching themes", comment: "Error occured while fetching themes") + "\(error.localizedDescription)")
-            }
-        }
-    }
-    
-    func downloadTheme(theme: DownloadableTheme) {
-//        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-//        UIApplication.shared.alert(title: NSLocalizedString("Downloading", comment: "") + " \(theme.name)...", body: NSLocalizedString("Please wait", comment: ""), animated: false, withButton: false)
-        
-        // create the folder
-        Task {
-            do {
-                try await cowabungaAPI.downloadTheme(theme: theme)
-//                Haptic.shared.notify(.success)
-//                UIApplication.shared.dismissAlert(animated: true)
-//                UIApplication.shared.alert(title: NSLocalizedString("Success!", comment: ""), body: NSLocalizedString("The theme was successfully downloaded and saved!", comment: ""))
-            } catch {
-                print("Could not download passcode theme: \(error.localizedDescription)")
-//                Haptic.shared.notify(.error)
-//                UIApplication.shared.dismissAlert(animated: true)
-//                UIApplication.shared.alert(title: NSLocalizedString("Could not download theme!", comment: ""), body: error.localizedDescription)
             }
         }
     }
