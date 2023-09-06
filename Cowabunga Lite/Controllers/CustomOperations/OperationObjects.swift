@@ -88,6 +88,10 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
             try FileManager.default.createDirectory(at: toMoveFolder, withIntermediateDirectories: false)
         }
         
+        if FileManager.default.fileExists(atPath: toMoveFolder.appendingPathComponent(".DS_Store").path) {
+            try? FileManager.default.removeItem(at: toMoveFolder.appendingPathComponent(".DS_Store"))
+        }
+        
         for d in try FileManager.default.contentsOfDirectory(at: domainsFolder, includingPropertiesForKeys: nil) {
 //            try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
             if FileManager.default.fileExists(atPath: toMoveFolder.appendingPathComponent(d.lastPathComponent).path) {
