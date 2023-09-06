@@ -26,11 +26,30 @@ struct EditingOperationView: View {
                     // TODO: warn about saving
                     viewType = 0
                 }) {
-                    Text("Back")
+                    Image(systemName: "arrowshape.turn.up.backward.fill")
                 }
                 .padding(10)
                 
                 Spacer()
+                
+                // MARK: Export Button
+                // make sure the operation is saved
+                if newName == operation.name && newAuthor == operation.author && newVersion == operation.version {
+                    Button(action: {
+                        do {
+                            let url = try operation.exportOperation()
+                            // open in finder (TEST)
+                            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.deletingLastPathComponent().path)
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.top, 10)
+                    .padding(.bottom, 5)
+                }
                 
                 // MARK: Save Button
                 if newName != operation.name || newAuthor != operation.author || newVersion != operation.version {
@@ -45,7 +64,7 @@ struct EditingOperationView: View {
                             print(error.localizedDescription)
                         }
                     }) {
-                        Text("Save")
+                        Image(systemName: "checkmark")
                     }
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
