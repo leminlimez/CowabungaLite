@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZIPFoundation
 
 struct AdvancedOperationFolder: Identifiable {
     var id = UUID()
@@ -93,12 +94,36 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
         }
         
         for d in try FileManager.default.contentsOfDirectory(at: domainsFolder, includingPropertiesForKeys: nil) {
-//            try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
             if FileManager.default.fileExists(atPath: toMoveFolder.appendingPathComponent(d.lastPathComponent).path) {
                 try FileManager.default.mergeDirectory(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
             } else {
                 try FileManager.default.copyItem(at: d, to: toMoveFolder.appendingPathComponent(d.lastPathComponent))
             }
+        }
+    }
+    
+    func exportOperation() throws -> URL {
+        let operationFolder = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(name)
+        var archiveURL: URL?
+        var error: NSError?
+        let coordinator = NSFileCoordinator()
+        
+        // compress to zip
+        coordinator.coordinate(readingItemAt: operationFolder, options: [.forUploading], error: &error) { (zipURL) in
+            let tmpURL = try! fm.url(
+                for: .itemReplacementDirectory,
+                in: .userDomainMask,
+                appropriateFor: zipURL,
+                create: true
+            ).appendingPathComponent("\(name).cowperation")
+            try! fm.moveItem(at: zipURL, to: tmpURL)
+            archiveURL = tmpURL
+        }
+        
+        if let archiveURL = archiveURL {
+            return archiveURL
+        } else {
+            throw "There was an error exporting the operation \"\(name)\""
         }
     }
 }
