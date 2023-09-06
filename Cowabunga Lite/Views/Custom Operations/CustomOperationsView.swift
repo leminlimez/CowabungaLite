@@ -27,6 +27,7 @@ struct CustomOperationsView: View {
                         HStack {
                             Text("Custom Operations")
                                 .bold()
+                            BetaTag()
                             Spacer()
                         }
 //                        HStack {

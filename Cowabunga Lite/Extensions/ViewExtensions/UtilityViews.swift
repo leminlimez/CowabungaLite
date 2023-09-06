@@ -53,9 +53,10 @@ struct BetaTag: View {
             Rectangle()
                 .cornerRadius(50)
                 .foregroundColor(.blue)
-                .frame(maxWidth: 50)
+                .frame(maxWidth: 40, maxHeight: 20)
             Text("Beta")
                 .foregroundColor(.white)
+                .bold()
         }
     }
 }
