@@ -283,9 +283,9 @@ struct StatusBarView: View {
                                 }
                             }
                             .onAppear {
-                                let serviceEnabled = StatusManager.sharedInstance().isCellularServiceOverridden()
+                                let serviceEnabled = StatusManager.sharedInstance().isSecondaryCellularServiceOverridden()
                                 if serviceEnabled {
-                                    let serviceValue = StatusManager.sharedInstance().getCellularServiceOverride()
+                                    let serviceValue = StatusManager.sharedInstance().getSecondaryCellularServiceOverride()
                                     if serviceValue {
                                         radioSecondarySelection = 2
                                     } else {
