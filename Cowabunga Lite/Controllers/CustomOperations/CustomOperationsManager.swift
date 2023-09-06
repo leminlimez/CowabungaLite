@@ -36,6 +36,51 @@ class CustomOperationsManager: ObservableObject {
         }
     }
     
+    private func getNewName(_ name: String, i: Int) -> String {
+        if !FileManager.default.fileExists(atPath: getOperationsFolder().appendingPathComponent("\(name) \(i)").path) {
+            return "\(name) \(i)"
+        }
+        return getNewName(name, i: i+1)
+    }
+    
+    // MARK: Import Operation
+    public func importOperation(_ url: URL) throws {
+        let fm = FileManager.default
+        
+        if url.pathExtension == "cowperation" {
+            let unzipURL = fm.temporaryDirectory.appendingPathComponent("cowperation_unzip")
+            try? fm.removeItem(at: unzipURL)
+            try fm.unzipItem(at: url, to: unzipURL)
+            for folder in (try fm.contentsOfDirectory(at: unzipURL, includingPropertiesForKeys: nil, options: [])) {
+                // check if it is a cowabunga lite file
+                let name = folder.lastPathComponent
+                let plistURL = folder.appendingPathComponent("Info.plist")
+                if fm.fileExists(atPath: plistURL.path) {
+                    do {
+                        let plistData = try Data(contentsOf: plistURL)
+                        if let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as? [String: Any], plist["Locked"] != nil {
+                            var newPlist = plist
+                            newPlist["Locked"] = true
+                            let newData = try PropertyListSerialization.data(fromPropertyList: newPlist, format: .xml, options: 0)
+                            try newData.write(to: plistURL)
+                            
+                            // get a new name if it is already taken
+                            var finalName = name
+                            if fm.fileExists(atPath: getOperationsFolder().appendingPathComponent(name).path) {
+                                finalName = getNewName(finalName, i: 2)
+                            }
+                            
+                            // import
+                            try fm.moveItem(at: folder, to: getOperationsFolder().appendingPathComponent(finalName))
+                        }
+                    } catch {
+                        throw "Error importing operation \"\(name)\": \(error.localizedDescription)"
+                    }
+                }
+            }
+        }
+    }
+    
     // MARK: Apply Operations
     public func applyOperations() throws {
         guard let toMoveFolder = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AppliedOperations") else { throw "No Workspace Found!" }

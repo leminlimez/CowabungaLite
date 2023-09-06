@@ -34,11 +34,11 @@ struct EditingOperationView: View {
                 
                 // MARK: Export Button
                 // make sure the operation is saved
-                if newName == operation.name && newAuthor == operation.author && newVersion == operation.version {
+                if newName == operation.name && newAuthor == operation.author && newVersion == operation.version && !operation.locked {
                     Button(action: {
                         do {
                             let url = try operation.exportOperation()
-                            // open in finder (TEST)
+                            // open in finder
                             NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: url.deletingLastPathComponent().path)
                         } catch {
                             print(error.localizedDescription)
@@ -77,17 +77,19 @@ struct EditingOperationView: View {
                 Group {
                     VStack {
                         HStack {
-                            Text("Name \(newName != operation.name ? "*" : "")")
-                                .bold()
-                                .padding(.horizontal, 10)
-                            Spacer()
-                        }
-                        .padding(.top, 10)
-                        HStack {
                             Toggle("Enable", isOn: $enabledOperation).onChange(of: enabledOperation, perform: { nv in
                                 operationsManager.toggleOperation(name: operation.name, enabled: nv)
                             })
                             .padding(.horizontal, 10)
+                            Spacer()
+                        }
+                        .padding(.top, 10)
+                        .padding(.bottom, 5)
+                        
+                        HStack {
+                            Text("Name \(newName != operation.name ? "*" : "")")
+                                .bold()
+                                .padding(.horizontal, 10)
                             Spacer()
                         }
                     }
@@ -131,6 +133,30 @@ struct EditingOperationView: View {
                             TextField(operation.version, text: $newVersion)
                         }
                         .padding(.horizontal, 10)
+                    }
+                } else {
+                    Group {
+                        HStack {
+                            Text("Author:")
+                                .bold()
+                                .padding(.leading, 10)
+                                .padding(.trailing, 5)
+                            Text(operation.author)
+                                .padding(.horizontal, 5)
+                            Spacer()
+                        }
+                        .padding(.top, 10)
+                        
+                        HStack {
+                            Text("Version:")
+                                .bold()
+                                .padding(.leading, 10)
+                                .padding(.trailing, 5)
+                            Text(operation.version)
+                                .padding(.horizontal, 5)
+                            Spacer()
+                        }
+                        .padding(.top, 10)
                     }
                 }
                 

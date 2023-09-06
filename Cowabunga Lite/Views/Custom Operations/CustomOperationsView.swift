@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CustomOperationsView: View {
 //    @State private var enableTweak = false
@@ -14,6 +15,8 @@ struct CustomOperationsView: View {
     @StateObject var operationsManager = CustomOperationsManager.shared
     @Binding var viewType: Int
     @Binding var currentOperation: AdvancedObject
+    
+    @State var showPicker: Bool = false
     
     var body: some View {
         List {
@@ -44,6 +47,34 @@ struct CustomOperationsView: View {
                 
                 HStack {
                     Spacer()
+                    
+                    NiceButton(text: AnyView(
+                        Image(systemName: "square.and.arrow.down")
+                            .frame(maxWidth: 20)
+                    ), action: {
+                        showPicker = true
+                    })
+                    .padding(.horizontal, 5)
+                    .fileImporter(
+                        isPresented: $showPicker,
+                        allowedContentTypes: [
+                            UTType(filenameExtension: "cowperation") ?? .zip
+                        ],
+                        allowsMultipleSelection: true,
+                        onCompletion: { result in
+                            guard let urls = try? result.get() else { return }
+                            for url in urls {
+                                do {
+                                    try operationsManager.importOperation(url)
+                                } catch {
+                                    Logger.shared.logMe(error.localizedDescription)
+                                }
+                            }
+                            // update operations
+                            operationsManager.getOperations()
+                        }
+                    )
+                    
                     NiceButton(text: AnyView(
                         Image(systemName: "plus")
                             .frame(maxWidth: 20)
@@ -55,6 +86,7 @@ struct CustomOperationsView: View {
                             print(error.localizedDescription)
                         }
                     })
+                    .padding(.horizontal, 5)
                 }
                 
                 ForEach(operationsManager.operations) { operation in
