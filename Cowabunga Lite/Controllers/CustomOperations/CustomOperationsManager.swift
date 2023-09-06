@@ -39,16 +39,10 @@ class CustomOperationsManager: ObservableObject {
     // MARK: Apply Operations
     public func applyOperations() throws {
         guard let toMoveFolder = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AppliedOperations") else { throw "No Workspace Found!" }
-        if !FileManager.default.fileExists(atPath: toMoveFolder.path) {
-            try FileManager.default.createDirectory(at: toMoveFolder, withIntermediateDirectories: false)
+        if FileManager.default.fileExists(atPath: toMoveFolder.path) {
+            try FileManager.default.removeItem(at: toMoveFolder)
         }
-        do {
-            for f in try FileManager.default.contentsOfDirectory(at: toMoveFolder, includingPropertiesForKeys: nil) {
-                try FileManager.default.removeItem(at: f)
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
+        try FileManager.default.createDirectory(at: toMoveFolder, withIntermediateDirectories: false)
         
         for op in enabledOperations {
             try operations[op].applyOperation()
