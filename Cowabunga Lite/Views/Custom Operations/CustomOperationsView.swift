@@ -131,6 +131,7 @@ struct CustomOperationsView: View {
                     .cornerRadius(8)
                 }
             }
-        }.disabled(!dataSingleton.deviceAvailable)
+        }
+//        .disabled(!dataSingleton.deviceAvailable)
     }
 }

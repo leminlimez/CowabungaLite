@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Cowperation</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.leemin.cowperation</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.archive</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Cowabunga Operation</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBackgroundName</key>
+				<string></string>
+				<key>UTTypeIconBadgeName</key>
+				<string>DocumentIcon</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.leemin.cowperation</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>cowperation</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.archive</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Cowabunga Operation</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBackgroundName</key>
+				<string></string>
+				<key>UTTypeIconBadgeName</key>
+				<string>DocumentIcon</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.leemin.cowperation</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>cowperation</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

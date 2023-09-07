@@ -165,6 +165,7 @@
 		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
 		6FE6D10A2A96977C002CFD2F /* ProcessInfo++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo++.swift"; sourceTree = "<group>"; };
 		6FE6D10D2A98EBDB002CFD2F /* OTAKillerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTAKillerView.swift; sourceTree = "<group>"; };
+		6FE6D2782AAA39A0002CFD2F /* Cowabunga-Lite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Cowabunga-Lite-Info.plist"; sourceTree = SOURCE_ROOT; };
 		6FFA737E29CDCCA200E4DCBC /* ThemingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingManager.swift; sourceTree = "<group>"; };
 		6FFA738029CE7DC500E4DCBC /* ThemingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingView.swift; sourceTree = "<group>"; };
 		6FFA738529D0FA6A00E4DCBC /* ThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeView.swift; sourceTree = "<group>"; };
@@ -349,10 +350,11 @@
 		6F700AB429C37DF50085964B /* Cowabunga Lite */ = {
 			isa = PBXGroup;
 			children = (
+				6FE6D2782AAA39A0002CFD2F /* Cowabunga-Lite-Info.plist */,
 				6F700AB929C37DF60085964B /* Assets.xcassets */,
 				6F700ABE29C37DF60085964B /* CowabungaJailed.entitlements */,
-				6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */,
 				6FFA738729D11A3C00E4DCBC /* API */,
+				6FE6D2792AAA3A86002CFD2F /* App */,
 				6F886A2529C8BEE200B73E40 /* Controllers */,
 				6F1D5E752A1691F500D6E377 /* DeviceManagement */,
 				6F886A2829C8C77700B73E40 /* Extensions */,
@@ -463,6 +465,14 @@
 				6F7B3F312A05645F0080FFDA /* TestingView.swift */,
 			);
 			path = Unused;
+			sourceTree = "<group>";
+		};
+		6FE6D2792AAA3A86002CFD2F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				6F700AB529C37DF50085964B /* CowabungaLiteApp.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		6FFA737D29CDCC9500E4DCBC /* IconTheming */ = {
@@ -784,6 +794,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Cowabunga-Lite-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Cowabunga Lite";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -828,6 +839,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Cowabunga-Lite-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Cowabunga Lite";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (

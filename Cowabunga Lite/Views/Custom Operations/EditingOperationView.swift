@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditingOperationView: View {
+    @StateObject private var dataSingleton = DataSingleton.shared
     @StateObject var operationsManager = CustomOperationsManager.shared
     @Binding var viewType: Int
     @Binding var operation: AdvancedObject
@@ -76,15 +77,17 @@ struct EditingOperationView: View {
                 // MARK: Operation Name
                 Group {
                     VStack {
-                        HStack {
-                            Toggle("Enable", isOn: $enabledOperation).onChange(of: enabledOperation, perform: { nv in
-                                operationsManager.toggleOperation(name: operation.name, enabled: nv)
-                            })
-                            .padding(.horizontal, 10)
-                            Spacer()
+                        if dataSingleton.deviceAvailable {
+                            HStack {
+                                Toggle("Enable", isOn: $enabledOperation).onChange(of: enabledOperation, perform: { nv in
+                                    operationsManager.toggleOperation(name: operation.name, enabled: nv)
+                                })
+                                .padding(.horizontal, 10)
+                                Spacer()
+                            }
+                            .padding(.top, 10)
+                            .padding(.bottom, 5)
                         }
-                        .padding(.top, 10)
-                        .padding(.bottom, 5)
                         
                         HStack {
                             Text("Name \(newName != operation.name ? "*" : "")")
