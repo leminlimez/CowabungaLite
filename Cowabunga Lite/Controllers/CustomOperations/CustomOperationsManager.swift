@@ -26,7 +26,7 @@ class CustomOperationsManager: ObservableObject {
         let operationsFolder = getOperationsFolder()
         operations.removeAll(keepingCapacity: true)
         do {
-            for t in try FileManager.default.contentsOfDirectory(at: operationsFolder, includingPropertiesForKeys: nil) {
+            for t in try FileManager.default.contentsOfDirectory(at: operationsFolder, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) {
                 if let op = getOperationInfo(url: t) {
                     operations.append(op)
                 }
@@ -51,7 +51,7 @@ class CustomOperationsManager: ObservableObject {
             let unzipURL = fm.temporaryDirectory.appendingPathComponent("cowperation_unzip")
             try? fm.removeItem(at: unzipURL)
             try fm.unzipItem(at: url, to: unzipURL)
-            for folder in (try fm.contentsOfDirectory(at: unzipURL, includingPropertiesForKeys: nil, options: [])) {
+            for folder in (try fm.contentsOfDirectory(at: unzipURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)) {
                 // check if it is a cowabunga lite file
                 let name = folder.lastPathComponent
                 let plistURL = folder.appendingPathComponent("Info.plist")

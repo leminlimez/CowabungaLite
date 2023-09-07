@@ -23,6 +23,19 @@ struct CowabungaLiteApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .onOpenURL(perform: { url in
+                    // MARK: Opening .cowperation
+                    if url.pathExtension.lowercased() == "cowperation" {
+                        do {
+                            try CustomOperationsManager.shared.importOperation(url)
+                            
+                            // update operations
+                            CustomOperationsManager.shared.getOperations()
+                        } catch {
+                            Logger.shared.logMe(error.localizedDescription)
+                        }
+                    }
+                })
         }
     }
 }
