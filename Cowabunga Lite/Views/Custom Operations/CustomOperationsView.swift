@@ -8,8 +8,108 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+struct OperationView: View {
+    @StateObject var operationsManager = CustomOperationsManager.shared
+    
+    @State var operation: AdvancedObject
+    
+    @Binding var viewType: Int
+    @Binding var currentOperation: AdvancedObject
+    
+    var body: some View {
+        VStack {
+            HStack {
+                // MARK: Icon
+                Group {
+                    if let icn = operation.getImage() {
+                        Image(nsImage: icn)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    } else {
+                        Image("MissingCow")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                }
+                .frame(width: 50, height: 50)
+                .cornerRadius(7)
+                .padding(4)
+                
+                Spacer()
+                
+                VStack {
+                    // MARK: Title
+                    HStack {
+                        Spacer()
+                        Text(operation.name)
+                            .bold()
+                            .padding(.trailing, 1)
+                        Text("v\(operation.version)")
+                            .font(.footnote)
+                            .opacity(0.8)
+                    }
+                    .padding(.top, 4)
+                    .padding(.horizontal, 4)
+                    
+                    // MARK: Author
+                    HStack {
+                        Spacer()
+                        if operation.author != "" {
+                            Text(operation.author)
+                                .font(.footnote)
+                                .padding(.bottom, 4)
+                                .padding(.horizontal, 4)
+                        } else {
+                            Text("No Author")
+                                .font(.footnote)
+                                .padding(.bottom, 4)
+                                .padding(.horizontal, 4)
+                        }
+                    }
+                    
+                    // MARK: Enabled
+                    HStack {
+                        Spacer()
+                        if (operation.enabled) {
+                            Image(systemName: "checkmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 14, height: 14)
+                                .foregroundColor(.green)
+                        }
+                    }
+                }
+            }
+            
+            HStack {
+                // MARK: Edit Button
+                NiceButton(text: AnyView(
+                    Text("Edit")
+                        .frame(maxWidth: .infinity)
+                ), action: {
+                    currentOperation = operation
+                    viewType = 1
+                }, background: .blue)
+                
+                // MARK: Delete Button
+                NiceButton(text: AnyView(
+                    Image(systemName: "trash.fill")
+                        .frame(maxWidth: 20)
+                        .foregroundColor(.red)
+                ), action: {
+                    operationsManager.deleteOperation(name: operation.name)
+                })
+            }
+        }
+        .padding(10)
+        .background(Color.cowGray)
+        .cornerRadius(16)
+    }
+}
+
 struct CustomOperationsView: View {
-//    @State private var enableTweak = false
+    var gridItemLayout = [GridItem(.adaptive(minimum: 170))]
+    
     @StateObject private var dataSingleton = DataSingleton.shared
     
     @StateObject var operationsManager = CustomOperationsManager.shared
@@ -33,24 +133,19 @@ struct CustomOperationsView: View {
                             BetaTag()
                             Spacer()
                         }
-//                        HStack {
-//                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
-//                                DataSingleton.shared.setTweakEnabled(.operations, isEnabled: nv)
-//                            }).onAppear(perform: {
-//                                enableTweak = DataSingleton.shared.isTweakEnabled(.operations)
-//                            })
-//                            Spacer()
-//                        }
                     }
                 }
+                
                 Divider()
                 
                 HStack {
                     Spacer()
-                    
+                    // MARK: Import Operation
                     NiceButton(text: AnyView(
-                        Image(systemName: "square.and.arrow.down")
-                            .frame(maxWidth: 20)
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                            Text("Import .cowperation")
+                        }
                     ), action: {
                         showPicker = true
                     })
@@ -74,10 +169,14 @@ struct CustomOperationsView: View {
                             operationsManager.getOperations()
                         }
                     )
+                    .padding(.bottom, 5)
                     
+                    // MARK: Create New Operation
                     NiceButton(text: AnyView(
-                        Image(systemName: "plus")
-                            .frame(maxWidth: 20)
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("New Operation")
+                        }
                     ), action: {
                         do {
                             currentOperation = try operationsManager.createOperation()
@@ -86,49 +185,15 @@ struct CustomOperationsView: View {
                             print(error.localizedDescription)
                         }
                     })
-                    .padding(.horizontal, 5)
+                    .padding(.trailing, 5)
                 }
                 
-                ForEach(operationsManager.operations) { operation in
-                    HStack {
-                        Text(operation.name)
-                            .bold()
-                            .padding(.leading, 15)
-                        Text("v\(operation.version)")
-                            .font(.footnote)
-                            .opacity(0.8)
-                            .padding(.horizontal, 8)
-                        if (operation.enabled) {
-                            Image(systemName: "checkmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 10, height: 10)
+                if operationsManager.operations.count > 0 {
+                    LazyVGrid(columns: gridItemLayout, spacing: 20) {
+                        ForEach(operationsManager.operations) { operation in
+                            OperationView(operation: operation, viewType: $viewType, currentOperation: $currentOperation)
                         }
-                        Spacer()
-                        
-                        // edit button
-                        NiceButton(text: AnyView(
-                            Image(systemName: "square.and.pencil")
-                                .frame(maxWidth: 20)
-                        ), action: {
-                            currentOperation = operation
-                            viewType = 1
-                        })
-                        .padding(.vertical, 2)
-                        
-                        // delete button
-                        NiceButton(text: AnyView(
-                            Image(systemName: "trash.fill")
-                                .frame(maxWidth: 20)
-                                .foregroundColor(.red)
-                        ), action: {
-                            operationsManager.deleteOperation(name: operation.name)
-                        })
-                        .padding(.trailing, 7)
-                        .padding(.vertical, 2)
                     }
-                    .background(Color.cowGray)
-                    .cornerRadius(8)
                 }
             }
         }

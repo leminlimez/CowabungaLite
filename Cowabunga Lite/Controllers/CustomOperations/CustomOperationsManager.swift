@@ -113,14 +113,11 @@ class CustomOperationsManager: ObservableObject {
             enabledOperations.append(operationId)
             DataSingleton.shared.setTweakEnabled(.operations, isEnabled: true)
         } else {
-            print(enabledOperations)
             for (i, v) in enabledOperations.enumerated() {
-                print(i)
                 if v == operationId {
                     enabledOperations.remove(at: i)
                 }
             }
-            print(enabledOperations)
             if enabledOperations.isEmpty {
                 DataSingleton.shared.setTweakEnabled(.operations, isEnabled: false)
             }
@@ -145,7 +142,14 @@ class CustomOperationsManager: ObservableObject {
             let version: String = plist["Version"] as? String ?? "1.0"
             let locked: Bool = plist["Locked"] as? Bool ?? false
             
-            return .init(name: url.lastPathComponent, author: author, version: version, locked: locked)
+            // get the icon
+            var icon: String? = nil
+            let iconPath = url.appendingPathComponent("Icon.png")
+            if FileManager.default.fileExists(atPath: iconPath.path) {
+                icon = "Icon.png"
+            }
+            
+            return .init(name: url.lastPathComponent, author: author, version: version, icon: icon, locked: locked)
         } catch {
             Logger.shared.logMe("Custom Operations Error: \(error.localizedDescription) for operation \"\(url.lastPathComponent)\"")
         }
@@ -175,7 +179,7 @@ class CustomOperationsManager: ObservableObject {
     }
     
     // updating an operation
-    public func updateOperation(oldName: String, newName: String, newAuthor: String, newVersion: String) throws {
+    public func updateOperation(oldName: String, newName: String, newAuthor: String, newVersion: String, newIcon: String?) throws {
         var currentOperationIndex = -1
         for (i, v) in operations.enumerated() {
             if v.name == oldName {
@@ -204,6 +208,17 @@ class CustomOperationsManager: ObservableObject {
         
         let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
         try newData.write(to: infoPlist)
+        
+        // add the image
+        let imgPath = oldFolder.appendingPathComponent("Icon.png")
+        if newIcon == nil {
+            if FileManager.default.fileExists(atPath: imgPath.path) {
+                try? FileManager.default.removeItem(at: imgPath)
+            }
+        } else if let icn = newIcon, let data = try? Data(contentsOf: URL(fileURLWithPath: icn)) {
+            try? data.write(to: imgPath)
+        }
+        operations[currentOperationIndex].icon = newIcon == nil ? nil : "Icon.png"
         
         // finally, update the name
         if oldName != newName {

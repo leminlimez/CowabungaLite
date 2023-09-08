@@ -121,7 +121,7 @@ struct ThemingView: View {
                                 Text("Overlays")
                                     .bold()
                             }
-                            LazyVGrid(columns: overlayGridItemLayout, spacing: 20) {
+                            LazyVGrid(columns: overlayGridItemLayout, spacing: 25) {
                                 ForEach(overlays) { ov in
                                     NiceButton(text: AnyView(
                                         VStack {
