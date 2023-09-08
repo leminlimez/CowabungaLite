@@ -7,6 +7,7 @@
 
 import Foundation
 import ZIPFoundation
+import SwiftUI
 
 struct AdvancedOperationFolder: Identifiable {
     var id = UUID()
@@ -18,15 +19,27 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
     var name: String
     var author: String
     var version: String
+    var icon: String?
     var locked: Bool // if it has been exported, so that user cannot change certain properties like author and version
     var enabled: Bool // if the tweak is enabled
     
-    init(name: String, author: String = "", version: String = "1.0", locked: Bool = false, enabled: Bool = false) {
+    init(name: String, author: String = "", version: String = "1.0", icon: String? = nil, locked: Bool = false, enabled: Bool = false) {
         self.name = name
         self.author = author
         self.version = version
+        self.icon = icon
         self.locked = locked
         self.enabled = enabled
+    }
+    
+    func getImage() -> NSImage? {
+        if let icn = icon {
+            let iconPath = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(name).appendingPathComponent(icn)
+            if FileManager.default.fileExists(atPath: iconPath.path) {
+                return NSImage(contentsOf: iconPath)
+            }
+        }
+        return nil
     }
     
     func createFiles() throws {
