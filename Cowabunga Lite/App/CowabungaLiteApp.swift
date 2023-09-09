@@ -36,6 +36,12 @@ struct CowabungaLiteApp: App {
                         }
                     }
                 })
+                .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
+        }
+        .commands {
+            CommandGroup(replacing: CommandGroupPlacement.newItem) {
+                EmptyView()
+            }
         }
     }
 }

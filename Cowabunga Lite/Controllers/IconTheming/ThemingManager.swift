@@ -344,7 +344,7 @@ class ThemingManager: ObservableObject {
         do {
             for t in try FileManager.default.contentsOfDirectory(at: overlayFolder, includingPropertiesForKeys: nil) {
                 guard let d = try? Data(contentsOf: t) else { continue }
-                guard let i = NSImage(data: d) else { continue }
+                guard let _ = NSImage(data: d) else { continue }
                 overlays.append(.init(name: t.deletingPathExtension().lastPathComponent))
             }
         } catch {
