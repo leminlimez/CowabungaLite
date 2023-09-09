@@ -88,9 +88,6 @@ func executeWIN(_ execURL: URL, arguments: [String] = [], workingDirectory: URL?
     task.standardError = pipe
     
     let bundlePath = Bundle.main.bundlePath
-    let frameworksPath = (bundlePath as NSString).appendingPathComponent("Contents/Frameworks")
-    // let environment = ["DYLD_LIBRARY_PATH": frameworksPath]
-    // task.environment = environment
 
     task.executableURL = execURL
     task.arguments = arguments

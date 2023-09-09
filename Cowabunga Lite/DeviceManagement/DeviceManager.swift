@@ -427,7 +427,6 @@ func fixStringBug(_ str: String) -> String {
 }
 
 func getDevices() -> [Device] {
-    let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
     if !fm.fileExists(atPath: documentsDirectory.path) {
         do {
             try fm.createDirectory(atPath: documentsDirectory.path, withIntermediateDirectories: false, attributes: nil)
