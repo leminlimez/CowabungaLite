@@ -21,6 +21,8 @@ struct FileExplorerView: View {
     @State var enteringName: Bool = false
     @State var newName: String = ""
     
+    @State var showPicker: Bool = false
+    
     var body: some View {
         VStack {
             HStack {
@@ -43,8 +45,20 @@ struct FileExplorerView: View {
                 
                 Spacer()
                 
-                // MARK: New Folder Button
                 if selectedFolder == "" {
+                    // MARK: Import File
+                    if currentPath != "Domains" {
+                        Button(action: {
+                            showPicker = true
+                        }) {
+                            HStack {
+                                Image(systemName: "square.and.arrow.down")
+                                Text("Import File")
+                            }
+                        }
+                    }
+                    
+                    // MARK: New Folder Button
                     Button(action: {
                         if enteringName {
                             enteringName = false
@@ -212,6 +226,26 @@ struct FileExplorerView: View {
         .onAppear {
             updateFolders()
         }
+        .fileImporter(
+            isPresented: $showPicker,
+            allowedContentTypes: [
+                .item
+            ],
+            allowsMultipleSelection: true,
+            onCompletion: { result in
+                guard let urls = try? result.get() else { return }
+                let foldersDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)
+                for url in urls {
+                    do {
+                        try FileManager.default.copyItem(at: url, to: foldersDir.appendingPathComponent(url.lastPathComponent))
+                    } catch {
+                        Logger.shared.logMe("Error importing item \(url.path): \(error.localizedDescription)")
+                    }
+                }
+                // update folders
+                updateFolders()
+            }
+        )
     }
     
     func submitNewName() {
