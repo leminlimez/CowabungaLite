@@ -32,6 +32,8 @@ struct FileExplorerView: View {
                         // refresh with new path
                         let toRemove = "/" + (currentPath.split(separator: "/").last ?? "")
                         currentPath = currentPath.replacingOccurrences(of: toRemove, with: "")
+                        enteringName = false
+                        selectedFolder = ""
                         updateFolders()
                     }
                 }) {
@@ -56,31 +58,57 @@ struct FileExplorerView: View {
                 LazyVGrid(columns: gridItemLayout, spacing: 10) {
                     ForEach($folders) { folder in
                         VStack {
-                            // MARK: Folder Icon
-                            NiceButton(text: AnyView(
-                                VStack {
-                                    Image(systemName: "folder.fill")
-                                        .font(.system(size: 55))
-//                                        .foregroundColor(selectedFolder == folder.name.wrappedValue ? .blue : .white)
-                                        .foregroundColor(.blue)
-                                        .padding(2)
-                                }
-                                    .frame(width: 70, height: 70)
-                            ), action: {
-                                if selectedFolder == folder.name.wrappedValue {
-                                    if enteringName {
-                                        enteringName = false
-                                    } else {
-                                        // open up the folder
-                                        currentPath = currentPath + "/\(folder.name.wrappedValue)"
-                                        updateFolders()
+                            // MARK: Directory
+                            if folder.directory.wrappedValue {
+                                // MARK: Folder Icon
+                                NiceButton(text: AnyView(
+                                    VStack {
+                                        Image(systemName: "folder.fill")
+                                            .font(.system(size: 55))
+                                        //                                        .foregroundColor(selectedFolder == folder.name.wrappedValue ? .blue : .white)
+                                            .foregroundColor(.blue)
+                                            .padding(2)
                                     }
-                                } else {
-                                    selectedFolder = folder.name.wrappedValue
-                                }
-                            }, background: .cowGray.opacity(0), clickOpacity: 0)
+                                        .frame(width: 70, height: 70)
+                                ), action: {
+                                    if selectedFolder == folder.name.wrappedValue {
+                                        if enteringName {
+                                            enteringName = false
+                                        } else {
+                                            // open up the folder
+                                            currentPath = currentPath + "/\(folder.name.wrappedValue)"
+                                            updateFolders()
+                                        }
+                                    } else {
+                                        selectedFolder = folder.name.wrappedValue
+                                    }
+                                }, background: .cowGray.opacity(0), clickOpacity: 0)
+                            } else {
+                                // MARK: File Icon
+                                NiceButton(text: AnyView(
+                                    VStack {
+                                        Image(systemName: "doc.fill")
+                                            .font(.system(size: 55))
+                                        //                                        .foregroundColor(selectedFolder == folder.name.wrappedValue ? .blue : .white)
+                                            .padding(2)
+                                    }
+                                        .frame(width: 70, height: 70)
+                                ), action: {
+                                    if selectedFolder == folder.name.wrappedValue {
+                                        if enteringName {
+                                            enteringName = false
+                                        } else {
+                                            // open up the file
+                                            // deselect for now
+                                            selectedFolder = ""
+                                        }
+                                    } else {
+                                        selectedFolder = folder.name.wrappedValue
+                                    }
+                                }, background: .cowGray.opacity(0), clickOpacity: 0)
+                            }
                             // MARK: Folder Title
-                            if !enteringName {
+                            if !enteringName || selectedFolder != folder.name.wrappedValue {
                                 NiceButton(text: AnyView(
                                     Text(folder.name.wrappedValue)
                                 ), action: {
@@ -130,6 +158,8 @@ struct FileExplorerView: View {
     
     func submitNewName() {
         // rename the folder
+        // check if the name actually changed
+        if newName == selectedFolder { enteringName = false; return; }
         // first, change it in the file explorer
         let fm = FileManager.default
         let foldersDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)

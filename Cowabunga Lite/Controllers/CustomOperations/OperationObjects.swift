@@ -12,6 +12,7 @@ import SwiftUI
 struct AdvancedOperationFolder: Identifiable {
     var id = UUID()
     var name: String
+    var directory: Bool
 }
 
 struct AdvancedObject: Identifiable, Codable, Equatable {
@@ -68,7 +69,13 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
                 try FileManager.default.createDirectory(at: folderPath, withIntermediateDirectories: false)
             }
             for f in try FileManager.default.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) {
-                folders.append(.init(name: f.lastPathComponent))
+                var dir = false
+                if let v = try? f.resourceValues(forKeys: [.isDirectoryKey]) {
+                    if v.isDirectory ?? false {
+                        dir = true
+                    }
+                }
+                folders.append(.init(name: f.lastPathComponent, directory: dir))
             }
         } catch {
             print(error.localizedDescription)
