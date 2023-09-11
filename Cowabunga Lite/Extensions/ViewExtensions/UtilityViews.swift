@@ -21,6 +21,7 @@ struct NiceButton: View {
     var action: () -> ()
     var padding: CGFloat = 10
     var background: Color = .cowGray
+    var clickOpacity: CGFloat = 0.2
     @State private var isTapped = false
     
     var body: some View {
@@ -37,7 +38,7 @@ struct NiceButton: View {
         .background(self.background)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .background(isTapped ? Color(hue: 0, saturation: 0, brightness: 0.7, opacity: 0.2) : Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
+                .background(isTapped ? Color(hue: 0, saturation: 0, brightness: 0.7, opacity: clickOpacity) : Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
                 .foregroundColor(Color(hue: 0, saturation: 0, brightness: 0, opacity: 0))
         )
         .cornerRadius(8)

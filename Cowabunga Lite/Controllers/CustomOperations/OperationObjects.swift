@@ -67,7 +67,7 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
             if !FileManager.default.fileExists(atPath: folderPath.path) {
                 try FileManager.default.createDirectory(at: folderPath, withIntermediateDirectories: false)
             }
-            for f in try FileManager.default.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil) {
+            for f in try FileManager.default.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) {
                 folders.append(.init(name: f.lastPathComponent))
             }
         } catch {
