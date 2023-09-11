@@ -42,6 +42,64 @@ struct FileExplorerView: View {
                 .padding(.vertical, 10)
                 
                 Spacer()
+                
+                // MARK: New Folder Button
+                if selectedFolder == "" {
+                    Button(action: {
+                        if enteringName {
+                            enteringName = false
+                        }
+                        let folderDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)
+                        // get the name of the new folder
+                        var newFolderName = "New Folder"
+                        if FileManager.default.fileExists(atPath: folderDir.appendingPathComponent(newFolderName).path) {
+                            newFolderName = CustomOperationsManager.shared.getNewName(newFolderName, url: folderDir, i: 2)
+                        }
+                        do {
+                            try FileManager.default.createDirectory(at: folderDir.appendingPathComponent(newFolderName), withIntermediateDirectories: false)
+                            // now, add the folder to the folders array
+                            folders.insert(.init(name: newFolderName, directory: true), at: 0)
+                            // make it so the user decides the name
+                            newName = ""
+                            selectedFolder = newFolderName
+                            enteringName = true
+                        } catch {
+                            Logger.shared.logMe("Error creating a new folder: \(error.localizedDescription)")
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("New")
+                        }
+                    }
+                } else {
+                    // MARK: Delete Item Button
+                    Button(action: {
+                        if enteringName {
+                            enteringName = false
+                        }
+                        // remove the folder
+                        let folderDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath).appendingPathComponent(selectedFolder)
+                        do {
+                            if FileManager.default.fileExists(atPath: folderDir.path) {
+                                try FileManager.default.removeItem(at: folderDir)
+                                // now, remove the folder in the folders array
+                                if let folderOffset = folders.firstIndex(where: {$0.name == selectedFolder}) {
+                                    folders.remove(at: folderOffset)
+                                    selectedFolder = ""
+                                }
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error deleting folder \"\(selectedFolder)\": \(error.localizedDescription)")
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                            Text("Delete")
+                        }
+                    }
+                }
             }
             
             // MARK: Title
@@ -159,7 +217,7 @@ struct FileExplorerView: View {
     func submitNewName() {
         // rename the folder
         // check if the name actually changed
-        if newName == selectedFolder { enteringName = false; return; }
+        if newName == selectedFolder || newName == "" { enteringName = false; return; }
         // first, change it in the file explorer
         let fm = FileManager.default
         let foldersDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)
