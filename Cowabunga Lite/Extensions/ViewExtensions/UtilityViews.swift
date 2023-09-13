@@ -47,6 +47,22 @@ struct NiceButton: View {
     }
 }
 
+// MARK: Image Button Struct
+struct ImageButton: View {
+    var systemName: String
+    var text: String
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: systemName)
+                Text(text)
+            }
+        }
+    }
+}
+
 // MARK: Beta Tag Struct
 struct BetaTag: View {
     var body: some View {
