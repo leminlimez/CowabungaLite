@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FileExplorerView: View {
+    @FocusState private var nameFieldIsFocused: Bool
     @StateObject var operationsManager = CustomOperationsManager.shared
     @Binding var viewType: Int
     @Binding var operation: AdvancedObject
@@ -22,6 +23,7 @@ struct FileExplorerView: View {
     @State var newName: String = ""
     
     @State var showPicker: Bool = false
+    @State var showNewPopover: Bool = false
     
     var body: some View {
         VStack {
@@ -48,42 +50,31 @@ struct FileExplorerView: View {
                 if selectedFolder == "" {
                     // MARK: Import File
                     if currentPath != "Domains" {
-                        Button(action: {
+                        ImageButton(systemName: "square.and.arrow.down", text: "Import File", action: {
                             showPicker = true
-                        }) {
-                            HStack {
-                                Image(systemName: "square.and.arrow.down")
-                                Text("Import File")
-                            }
-                        }
+                        })
                     }
                     
                     // MARK: New Folder Button
-                    Button(action: {
-                        if enteringName {
-                            enteringName = false
+                    ImageButton(systemName: "plus", text: "New", action: {
+                        if currentPath == "Domains" {
+                            createNewFolder()
+                        } else {
+                            showNewPopover.toggle()
                         }
-                        let folderDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)
-                        // get the name of the new folder
-                        var newFolderName = "New Folder"
-                        if FileManager.default.fileExists(atPath: folderDir.appendingPathComponent(newFolderName).path) {
-                            newFolderName = CustomOperationsManager.shared.getNewName(newFolderName, url: folderDir, i: 2)
-                        }
-                        do {
-                            try FileManager.default.createDirectory(at: folderDir.appendingPathComponent(newFolderName), withIntermediateDirectories: false)
-                            // now, add the folder to the folders array
-                            folders.insert(.init(name: newFolderName, directory: true), at: 0)
-                            // make it so the user decides the name
-                            newName = ""
-                            selectedFolder = newFolderName
-                            enteringName = true
-                        } catch {
-                            Logger.shared.logMe("Error creating a new folder: \(error.localizedDescription)")
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: "plus")
-                            Text("New")
+                    })
+                    .popover(isPresented: $showNewPopover, arrowEdge: .bottom) {
+                        VStack {
+                            ImageButton(systemName: "folder.fill", text: "Folder", action: {
+                                createNewFolder()
+                            })
+                            .padding(.top, 10)
+                            .padding(.horizontal, 10)
+                            ImageButton(systemName: "doc.fill", text: "File", action: {
+                                
+                            })
+                            .padding(.bottom, 10)
+                            .padding(.horizontal, 10)
                         }
                     }
                 } else {
@@ -137,7 +128,6 @@ struct FileExplorerView: View {
                                     VStack {
                                         Image(systemName: "folder.fill")
                                             .font(.system(size: 55))
-                                        //                                        .foregroundColor(selectedFolder == folder.name.wrappedValue ? .blue : .white)
                                             .foregroundColor(.blue)
                                             .padding(2)
                                     }
@@ -187,6 +177,7 @@ struct FileExplorerView: View {
                                     if selectedFolder == folder.name.wrappedValue {
                                         newName = folder.name.wrappedValue
                                         enteringName = true
+                                        nameFieldIsFocused = true
                                     } else {
                                         selectedFolder = folder.name.wrappedValue
                                     }
@@ -197,10 +188,14 @@ struct FileExplorerView: View {
                                         submitNewName()
                                     }
                                     .lineLimit(6)
-                                } else {
+                                    .focused($nameFieldIsFocused)
+                                } else if #available(macOS 12, *) {
                                     TextField("Folder", text: $newName).onSubmit {
                                         submitNewName()
                                     }
+                                    .focused($nameFieldIsFocused)
+                                } else {
+                                    TextField("Folder", text: $newName)
                                 }
                             }
                         }
@@ -246,6 +241,30 @@ struct FileExplorerView: View {
                 updateFolders()
             }
         )
+    }
+    
+    func createNewFolder() {
+        if enteringName {
+            enteringName = false
+        }
+        let folderDir = CustomOperationsManager.shared.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent(currentPath)
+        // get the name of the new folder
+        var newFolderName = "New Folder"
+        if FileManager.default.fileExists(atPath: folderDir.appendingPathComponent(newFolderName).path) {
+            newFolderName = CustomOperationsManager.shared.getNewName(newFolderName, url: folderDir, i: 2)
+        }
+        do {
+            try FileManager.default.createDirectory(at: folderDir.appendingPathComponent(newFolderName), withIntermediateDirectories: false)
+            // now, add the folder to the folders array
+            folders.insert(.init(name: newFolderName, directory: true), at: 0)
+            // make it so the user decides the name
+            newName = ""
+            selectedFolder = newFolderName
+            enteringName = true
+            nameFieldIsFocused = true
+        } catch {
+            Logger.shared.logMe("Error creating a new folder: \(error.localizedDescription)")
+        }
     }
     
     func submitNewName() {
