@@ -13,6 +13,7 @@ struct AdvancedOperationFolder: Identifiable {
     var id = UUID()
     var name: String
     var directory: Bool
+    var ext: String? = nil
 }
 
 struct AdvancedObject: Identifiable, Codable, Equatable {
@@ -70,12 +71,15 @@ struct AdvancedObject: Identifiable, Codable, Equatable {
             }
             for f in try FileManager.default.contentsOfDirectory(at: folderPath, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) {
                 var dir = false
+                var ext: String = ""
                 if let v = try? f.resourceValues(forKeys: [.isDirectoryKey]) {
                     if v.isDirectory ?? false {
                         dir = true
+                    } else {
+                        ext = f.pathExtension
                     }
                 }
-                folders.append(.init(name: f.lastPathComponent, directory: dir))
+                folders.append(.init(name: f.lastPathComponent, directory: dir, ext: ext))
             }
         } catch {
             print(error.localizedDescription)
