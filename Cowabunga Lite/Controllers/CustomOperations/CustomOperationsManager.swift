@@ -36,11 +36,11 @@ class CustomOperationsManager: ObservableObject {
         }
     }
     
-    public func getNewName(_ name: String, url: URL, i: Int) -> String {
-        if !FileManager.default.fileExists(atPath: url.appendingPathComponent("\(name) \(i)").path) {
+    public func getNewName(_ name: String, _ ext: String = "", url: URL, i: Int) -> String {
+        if !FileManager.default.fileExists(atPath: url.appendingPathComponent("\(name) \(i)\(ext != "" ? "." : "")\(ext)").path) {
             return "\(name) \(i)"
         }
-        return getNewName(name, url: url, i: i+1)
+        return getNewName(name, ext, url: url, i: i+1)
     }
     
     // MARK: Import Operation

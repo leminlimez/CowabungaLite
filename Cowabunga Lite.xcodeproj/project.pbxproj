@@ -62,6 +62,7 @@
 		6F886A2C29C8CFA900B73E40 /* String++.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2B29C8CFA900B73E40 /* String++.swift */; };
 		6F886A2E29C8CFB300B73E40 /* PlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F886A2D29C8CFB300B73E40 /* PlistManager.swift */; };
 		6FA6ED312AAF4D7D00E935B6 /* FileExplorerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED302AAF4D7D00E935B6 /* FileExplorerMainView.swift */; };
+		6FA6ED352AB1F8C300E935B6 /* NewSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED342AB1F8C300E935B6 /* NewSelectionView.swift */; };
 		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
 		6FE6D1072A951A0C002CFD2F /* restore in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1062A951A0C002CFD2F /* restore */; };
 		6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1082A951A20002CFD2F /* restore-deepclean */; };
@@ -162,6 +163,7 @@
 		6F886A2B29C8CFA900B73E40 /* String++.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String++.swift"; sourceTree = "<group>"; };
 		6F886A2D29C8CFB300B73E40 /* PlistManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistManager.swift; sourceTree = "<group>"; };
 		6FA6ED302AAF4D7D00E935B6 /* FileExplorerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExplorerMainView.swift; sourceTree = "<group>"; };
+		6FA6ED342AB1F8C300E935B6 /* NewSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSelectionView.swift; sourceTree = "<group>"; };
 		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		6FE6D1062A951A0C002CFD2F /* restore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = restore; sourceTree = "<group>"; };
 		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 			children = (
 				6F5DFCF22A6B3E4A00081DBD /* FileExplorerView.swift */,
 				6FA6ED302AAF4D7D00E935B6 /* FileExplorerMainView.swift */,
+				6FA6ED342AB1F8C300E935B6 /* NewSelectionView.swift */,
 			);
 			path = FileExplorer;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				6F7B3F2F29FAA8870080FFDA /* IconThemingMainView.swift in Sources */,
 				25B47F2A29C91C2D00BD9F7E /* StatusSetter16_1.m in Sources */,
 				6FFA738929D11A4900E4DCBC /* CowabungaAPI.swift in Sources */,
+				6FA6ED352AB1F8C300E935B6 /* NewSelectionView.swift in Sources */,
 				6F5DFCE82A6AF7AA00081DBD /* CustomOperationsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
