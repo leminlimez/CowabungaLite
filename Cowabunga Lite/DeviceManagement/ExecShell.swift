@@ -86,8 +86,6 @@ func executeWIN(_ execURL: URL, arguments: [String] = [], workingDirectory: URL?
     let pipe = Pipe()
     task.standardOutput = pipe
     task.standardError = pipe
-    
-    let bundlePath = Bundle.main.bundlePath
 
     task.executableURL = execURL
     task.arguments = arguments

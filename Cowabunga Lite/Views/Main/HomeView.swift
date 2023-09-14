@@ -78,7 +78,7 @@ struct PersonCredit: View {
             
             // social buttons
             HStack {
-                ForEach(keys.indices) { index in
+                ForEach(keys.indices, id: \.self) { index in
                     if index != 0 {
                         Divider()
                             .frame(width: 1)
@@ -270,7 +270,7 @@ struct HomeView: View {
                             Text("Additional Thanks")
                             // Other Credits
                             HStack {
-                                ForEach(keys.indices) { index in
+                                ForEach(keys.indices, id: \.self) { index in
                                     if index != 0 {
                                         Divider()
                                             .frame(width: 1)
