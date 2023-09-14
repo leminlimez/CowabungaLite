@@ -173,7 +173,8 @@ class MainUtils {
                     if value == true {
                         try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
                     } else {
-                        try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                        let plist: [String: String] = [:] // just to stop the annoying warning
+                        try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0).write(to: plistURL)
                     }
                 } else {
                     try PlistManager.setPlistValues(url: plistURL, values: [
@@ -377,9 +378,10 @@ class MainUtils {
             }
         } else {
             do {
+                let skipSetupList: [Any] = [] // just to stop the annoying warning
                 try PlistManager.setPlistValues(url: plistURL, values: [
                     "CloudConfigurationUIComplete": false,
-                    "SkipSetup": []
+                    "SkipSetup": skipSetupList
                 ])
             } catch {
                 Logger.shared.logMe(error.localizedDescription)
@@ -436,7 +438,8 @@ class MainUtils {
                     Logger.shared.logMe("Error finding MobileAsset plist")
                     return
                 }
-                let newData = try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
+                let plist: [String: String] = [:] // just to stop the annoying warning
+                let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
                 try newData.write(to: plistURL)
             } catch {
                 Logger.shared.logMe("Error enabling ota preferences: \(error.localizedDescription)")

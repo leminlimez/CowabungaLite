@@ -454,7 +454,8 @@ class ThemingManager: ObservableObject {
         guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AltIconThemingPreferences.plist") else { return nil }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
             do {
-                try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: infoPlist)
+                let plist: [String: String] = [:] // just to stop the annoying warning
+                try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0).write(to: infoPlist)
             } catch {
                 return nil
             }
