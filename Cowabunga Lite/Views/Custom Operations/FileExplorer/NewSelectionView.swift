@@ -56,9 +56,7 @@ struct NewSelectionView: View {
                                 // MARK: File Icon
                                 NiceButton(text: AnyView(
                                     VStack {
-                                        Image(systemName: "doc.fill")
-                                            .font(.system(size: 55))
-                                            .padding(2)
+                                        FileDesignsView(ext: fileType)
                                     }
                                         .frame(width: 70, height: 70)
                                 ), action: {

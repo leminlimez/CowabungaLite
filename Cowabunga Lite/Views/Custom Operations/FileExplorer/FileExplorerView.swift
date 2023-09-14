@@ -159,9 +159,7 @@ struct FileExplorerView: View {
                                 // MARK: File Icon
                                 NiceButton(text: AnyView(
                                     VStack {
-                                        Image(systemName: "doc.fill")
-                                            .font(.system(size: 55))
-                                            .padding(2)
+                                        FileDesignsView(ext: folder.ext.wrappedValue ?? "")
                                     }
                                         .frame(width: 70, height: 70)
                                 ), action: {
@@ -297,7 +295,7 @@ struct FileExplorerView: View {
             }
             
             // now, add the file to the folders array
-            folders.insert(.init(name: newFile, directory: false), at: 0)
+            folders.insert(.init(name: newFile, directory: false, ext: ext), at: 0)
             
             // make it so the user decides the name
             newName = newFile
