@@ -24,9 +24,26 @@ struct NewSelectionView: View {
     
     var body: some View {
         VStack {
-            // MARK: Title
-            Text(newType == .domain ? "Common Domain Names" : "Common File Types")
-                .font(.title)
+            HStack {
+                // MARK: Cancel Button
+                Button(action: {
+                    showingPopover = false
+                }) {
+                    Text("Cancel")
+                }
+                .padding(.top, 3)
+                .padding(.leading, 2)
+                
+                Spacer()
+                
+                // MARK: Title
+                Text(newType == .domain ? "Common Domain Names" : "Common File Types")
+                    .font(.title)
+                    .padding(.top, 2)
+                    .padding(.trailing, 15)
+                
+                Spacer()
+            }
             
             Divider()
             
