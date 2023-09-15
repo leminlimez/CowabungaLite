@@ -41,7 +41,7 @@ struct EditingOperationView: View {
                 // MARK: Export Button
                 // make sure the operation is saved
                 if newName == operation.name && newAuthor == operation.author && newVersion == operation.version && newIcon == operation.icon && !operation.locked {
-                    Button(action: {
+                    ImageButton(systemName: "square.and.arrow.up", text: "Export .cowperation", action: {
                         do {
                             let url = try operation.exportOperation()
                             // open in finder
@@ -49,12 +49,7 @@ struct EditingOperationView: View {
                         } catch {
                             print(error.localizedDescription)
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: "square.and.arrow.up")
-                            Text("Export .cowperation")
-                        }
-                    }
+                    })
                     .padding(.horizontal, 10)
                     .padding(.top, 10)
                     .padding(.bottom, 5)
