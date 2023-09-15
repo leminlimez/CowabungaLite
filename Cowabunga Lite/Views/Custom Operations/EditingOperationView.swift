@@ -250,6 +250,7 @@ struct EditingOperationView: View {
                             currentPath = "Domains"
                             viewType = 2
                         })
+                        Spacer()
                     }
                     .padding(.horizontal, 10)
                     .padding(.top, 5)
