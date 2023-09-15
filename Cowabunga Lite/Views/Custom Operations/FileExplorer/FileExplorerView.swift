@@ -73,12 +73,12 @@ struct FileExplorerView: View {
                     })
                     .popover(isPresented: $showNewPopover, arrowEdge: .bottom) {
                         VStack {
-                            ImageButton(systemName: "folder.fill", text: "Folder", action: {
+                            ImageButton(systemName: "folder.fill", text: "Folder", hasSpacer: true, action: {
                                 createNewFolder()
                             })
                             .padding(.top, 10)
                             .padding(.horizontal, 10)
-                            ImageButton(systemName: "doc.fill", text: "File", action: {
+                            ImageButton(systemName: "doc.fill", text: "File", hasSpacer: true, action: {
                                 newTypeName = ""
                                 selectionViewType = .file
                                 showSelectionView = true
