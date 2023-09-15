@@ -49,16 +49,24 @@ struct NiceButton: View {
 
 // MARK: Image Button Struct
 struct ImageButton: View {
+    // Required Values
     var systemName: String
     var text: String
+    
+    // Optional Configuration
     var hasSpacer: Bool = false
+    var imageColor: Color = .primary
+    var textColor: Color = .primary
+    
     var action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack {
                 Image(systemName: systemName)
+                    .foregroundColor(imageColor)
                 Text(text)
+                    .foregroundColor(textColor)
                 if hasSpacer {
                     Spacer()
                 }
