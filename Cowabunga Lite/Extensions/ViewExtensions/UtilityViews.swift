@@ -51,6 +51,7 @@ struct NiceButton: View {
 struct ImageButton: View {
     var systemName: String
     var text: String
+    var hasSpacer: Bool = false
     var action: () -> Void
     
     var body: some View {
@@ -58,6 +59,9 @@ struct ImageButton: View {
             HStack {
                 Image(systemName: systemName)
                 Text(text)
+                if hasSpacer {
+                    Spacer()
+                }
             }
         }
     }
