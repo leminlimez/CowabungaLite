@@ -89,7 +89,7 @@ struct FileExplorerView: View {
                     }
                 } else {
                     // MARK: Delete Item Button
-                    Button(action: {
+                    ImageButton(systemName: "trash", text: "Delete", imageColor: .red, action: {
                         if enteringName {
                             enteringName = false
                         }
@@ -107,13 +107,7 @@ struct FileExplorerView: View {
                         } catch {
                             Logger.shared.logMe("Error deleting folder \"\(selectedFolder)\": \(error.localizedDescription)")
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: "trash")
-                                .foregroundColor(.red)
-                            Text("Delete")
-                        }
-                    }
+                    })
                 }
             }
             
