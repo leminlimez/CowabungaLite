@@ -246,7 +246,7 @@ struct FileExplorerView: View {
             }
         )
         .sheet(isPresented: $showSelectionView) {
-            NewSelectionView(newType: $selectionViewType, showingPopover: $showSelectionView, newTypeName: $newTypeName)
+            NewSelectionView(newType: $selectionViewType, newTypeName: $newTypeName)
         }
         .onChange(of: newTypeName) { n in
             if n == "" { return; }
