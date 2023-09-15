@@ -15,11 +15,11 @@ enum NewType {
 
 // ask users what type of file they want to add
 struct NewSelectionView: View {
+    @Environment(\.dismiss) var dismiss
     var gridItemLayout = [GridItem(.adaptive(minimum: 90))]
     @Binding var newType: NewType
     @State var fileTypes: [String] = []
     
-    @Binding var showingPopover: Bool
     @Binding var newTypeName: String
     
     var body: some View {
@@ -27,7 +27,7 @@ struct NewSelectionView: View {
             HStack {
                 // MARK: Cancel Button
                 Button(action: {
-                    showingPopover = false
+                    dismiss()
                 }) {
                     Text("Cancel")
                 }
@@ -67,7 +67,7 @@ struct NewSelectionView: View {
                                     } else {
                                         newTypeName = fileType
                                     }
-                                    showingPopover = false
+                                    dismiss()
                                 }, background: .cowGray.opacity(0), clickOpacity: 0)
                             } else {
                                 // MARK: File Icon
@@ -78,7 +78,7 @@ struct NewSelectionView: View {
                                         .frame(width: 70, height: 70)
                                 ), action: {
                                     newTypeName = fileType
-                                    showingPopover = false
+                                    dismiss()
                                 }, background: .cowGray.opacity(0), clickOpacity: 0)
                             }
                             // MARK: Type Name
