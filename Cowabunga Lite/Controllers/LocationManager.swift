@@ -7,9 +7,6 @@
 
 import Foundation
 
-struct DevDiskResponse: Decodable {
-    let results: [DevDisk]
-}
 struct DevDisk: Decodable {
     let tag_name: String
 }
@@ -23,22 +20,38 @@ public class LocationManager: ObservableObject {
     @Published var succeeded: Bool = false
     
     // mounting values
+    @Published var mounting: Bool = false
     @Published var mounted: Bool = false
+    @Published var mountingFailed: Bool = false
     
     // get the list of disk images
     private func getDevDisks() async throws -> [DevDisk] {
         if let gitURL = URL(string: "https://api.github.com/repos/mspvirajpatel/Xcode_Developer_Disk_Images/releases") {
             let (data, _) = try await URLSession.shared.data(from: gitURL)
-            let decoded = try JSONDecoder().decode(DevDiskResponse.self, from: data)
-            return decoded.results
+            let decoded: [DevDisk] = try JSONDecoder().decode([DevDisk].self, from: data)
+            return decoded
         } else {
             throw "Failed to get the developer disk github url!"
         }
     }
     
+    // get close version
+    private func dropVersionPatch(_ ver: String) -> String {
+        let split = ver.split(separator: ".")
+        return "\(split[0]).\(split[1])"
+    }
+    
+    // reset the values (for when device changes)
+    public func resetValues() {
+        mounted = false
+        succeeded = false
+        mountingFailed = false
+        loaded = false
+    }
+    
     // make sure the disk images are downloaded
     // if not, then download it
-    public func loadDiskImages() async throws {
+    @MainActor public func loadDiskImages() async throws {
         let fm = FileManager.default
         let diskDirectory = documentsDirectory.appendingPathComponent("DevDisks")
         
@@ -59,18 +72,26 @@ public class LocationManager: ObservableObject {
             }
             let devDisks = try await getDevDisks()
             for disk in devDisks {
-                if disk.tag_name == targetVersion {
-                    if let downloadURL = URL(string: "https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images/releases/download/\(targetVersion)/\(targetVersion).zip") {
+                if disk.tag_name == targetVersion || disk.tag_name == dropVersionPatch(targetVersion) {
+                    if let downloadURL = URL(string: "https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images/releases/download/\(disk.tag_name)/\(disk.tag_name).zip") {
                         downloading = true
                         URLSession.shared.downloadTask(with: downloadURL) { (tempFileURL, response, error) in
                             let fm = FileManager.default
                             if let tempFileURL = tempFileURL {
                                 do {
-                                    let unzipURL = diskDirectory.appendingPathComponent(targetVersion)
+                                    let unzipURL = fm.temporaryDirectory.appendingPathComponent("devdisk_unzip")
                                     if fm.fileExists(atPath: unzipURL.path) {
                                         try? fm.removeItem(at: unzipURL)
                                     }
                                     try fm.unzipItem(at: tempFileURL, to: unzipURL)
+                                    if fm.fileExists(atPath: unzipURL.appendingPathComponent(disk.tag_name).path) {
+                                        if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion).path) {
+                                            try? fm.removeItem(at: diskDirectory.appendingPathComponent(targetVersion))
+                                        }
+                                        try fm.moveItem(at: unzipURL.appendingPathComponent(disk.tag_name), to: diskDirectory.appendingPathComponent(targetVersion))
+                                    } else {
+                                        throw "Could not find the main version file!"
+                                    }
                                     self.downloading = false
                                     self.loaded = true
                                     self.succeeded = true
@@ -80,34 +101,56 @@ public class LocationManager: ObservableObject {
                                     self.loaded = true
                                     self.succeeded = false
                                 }
+                            } else {
+                                Logger.shared.logMe("Failed to download the dev image: url was nil")
+                                self.downloading = false
+                                self.loaded = true
+                                self.succeeded = false
                             }
-                        }
+                        }.resume()
+                        return;
                     }
                 }
             }
+            self.downloading = false
+            self.loaded = true
+            self.succeeded = false
         }
     }
     
     // mount the dev image
     public func mountImage() {
+        mounting = true
         if let targetVersion = DataSingleton.shared.getCurrentVersion() {
             let diskImagePath = documentsDirectory.appendingPathComponent("DevDisks").appendingPathComponent(targetVersion).appendingPathComponent("DeveloperDiskImage.dmg").path
             if FileManager.default.fileExists(atPath: diskImagePath) {
                 // get the image mounter executable
                 guard let exec = Bundle.main.url(forResource: "ideviceimagemounter", withExtension: "") else {
                     Logger.shared.logMe("Error locating ideviceimagemounter")
+                    mountingFailed = true
+                    mounting = false
                     return
                 }
                 // get the current uuid
                 guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
                     Logger.shared.logMe("Error getting current UUID")
+                    mountingFailed = true
+                    mounting = false
                     return
                 }
                 
                 // execute
                 do {
-                    try execute(exec, arguments: ["-u", currentUUID, diskImagePath])
-                    mounted = true
+                    let result = try execute2(exec, arguments: ["-u", currentUUID, diskImagePath])
+                    if result == "Error: ImageMountFailed" {
+                        Logger.shared.logMe("Failed to mount the developer image!")
+                        mountingFailed = true
+                        mounting = false
+                    } else {
+                        mounted = true
+                        mounting = false
+                    }
+                    return
                 } catch {
                     Logger.shared.logMe("Error mounting image: \(error.localizedDescription)")
                 }
@@ -117,5 +160,7 @@ public class LocationManager: ObservableObject {
         } else {
             Logger.shared.logMe("Device version returned nil")
         }
+        mountingFailed = true
+        mounting = false
     }
 }
