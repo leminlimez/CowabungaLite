@@ -50,9 +50,63 @@ public class LocationManager: ObservableObject {
         loaded = false
     }
     
+    // MARK: Managing the Location
+    
+    // set the location given latitude and longitude
+    // returns whether or not it was successful
+    public func setLocation(lat: String, lon: String) -> Bool {
+        // get the locsim utils executable
+        guard let exec = Bundle.main.url(forResource: "locsimUtils", withExtension: "") else {
+            Logger.shared.logMe("Error locating locsimUtils")
+            return false
+        }
+        // get the current uuid
+        guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+            Logger.shared.logMe("Error getting current UUID")
+            return false
+        }
+        // execute
+        do {
+            let result = try execute2(exec, arguments: ["-u", currentUUID, "-l", lat, "-s", lon])
+            if result.contains("ERROR") || result.contains("Usage") {
+                return false
+            }
+        } catch {
+            Logger.shared.logMe("Error executing locsimUtils: \(error.localizedDescription)")
+        }
+        return true
+    }
+    
+    // reset the location
+    // returns whether or not it was successful
+    public func resetLocation() -> Bool {
+        // get the locsim utils executable
+        guard let exec = Bundle.main.url(forResource: "locsimUtils", withExtension: "") else {
+            Logger.shared.logMe("Error locating locsimUtils")
+            return false
+        }
+        // get the current uuid
+        guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+            Logger.shared.logMe("Error getting current UUID")
+            return false
+        }
+        // execute
+        do {
+            let result = try execute2(exec, arguments: ["-u", currentUUID, "-r"])
+            if result.contains("ERROR") || result.contains("Usage") {
+                return false
+            }
+        } catch {
+            Logger.shared.logMe("Error executing locsimUtils: \(error.localizedDescription)")
+        }
+        return true
+    }
+    
+    // MARK: Image Downloading/Mounting
+    
     // check if the device actually needs mounting
     public func deviceNeedsMounting() -> Bool {
-        // get the image mounter executable
+        // get the locsim utils executable
         guard let exec = Bundle.main.url(forResource: "locsimUtils", withExtension: "") else {
             Logger.shared.logMe("Error locating locsimUtils")
             return true
@@ -64,8 +118,7 @@ public class LocationManager: ObservableObject {
         }
         // execute
         do {
-            let result = try execute2(exec, arguments: ["-u", currentUUID, "-m", "idk what I was doing so this requires a random useless argument"])
-            print(result)
+            let result = try execute2(exec, arguments: ["-u", currentUUID, "-m"])
             if !result.contains("Make sure a developer disk image is mounted!") {
                 return false
             }

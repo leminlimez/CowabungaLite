@@ -31,11 +31,16 @@ int main(int argc, char *argv[])
     
     int c = 0;
     const struct option longopts[] = {
-        {"udid", required_argument, NULL, 'u'}};
+        {"udid", required_argument, NULL, 'u'},
+        {"getMountStatus", no_argument, NULL, 'm'},
+        {"reset", no_argument, NULL, 'r'},
+        {"lat", required_argument, NULL, 'l'},
+        {"lon", required_argument, NULL, 's'}
+    };
     
     /* parse cmdline args */
     // args: u = uuid, m = getMountStatus, L = lat, s = lon
-    while ((c = getopt_long(argc, argv, "u:m:r:l:s", longopts, NULL)) != -1)
+    while ((c = getopt_long(argc, argv, "u:m:r:l:s:", longopts, NULL)) != -1)
     {
         switch (c) {
             case 'u':
@@ -85,10 +90,15 @@ int main(int argc, char *argv[])
         return 3;
     }
     
-    if (!getMountStatus && (lat == NULL || lon == NULL)) {
+    printf("%s", lat);
+    printf("%s", lon);
+    
+    if (!getMountStatus && !resetLocation && (lat == NULL || lon == NULL)) {
         fprintf(stderr, "Usage: %s -u <udid> -l <latitude> -s <longitude>\n", argv[0]);
         return 3;
     }
+    
+    printf("sfbhfsdbk");
     
     // Get device
     if (idevice_new_with_options(&device, udid, IDEVICE_LOOKUP_USBMUX) != IDEVICE_E_SUCCESS) {
@@ -127,6 +137,8 @@ int main(int argc, char *argv[])
     service_error_t serr = service_client_new(device, svc, &service);
 
     lockdownd_service_descriptor_free(svc);
+    
+    printf("Got to here");
 
     if (serr != SERVICE_E_SUCCESS) {
         lockdownd_client_free(lockdown);
@@ -144,12 +156,15 @@ int main(int argc, char *argv[])
         return 0;
     } else {
         l = OSSwapHostToBigInt32(mode);
+        printf("%d", l);
         service_send(service, (const char*)&l, 4, &s);
         int len = 4 + strlen(lat) + 4 + strlen(lon);
         char *buf = static_cast<char*>(malloc(len));
         uint32_t latlen;
         latlen = strlen(lat);
         l = OSSwapHostToBigInt32(latlen);
+        printf("%d", l);
+        printf("%d", latlen);
         memcpy(buf, &l, 4);
         memcpy(buf+4, lat, latlen);
         uint32_t longlen = strlen(lon);
