@@ -10,49 +10,72 @@ import SwiftUI
 
 struct LocSimView: View {
     @StateObject var locationManager = LocationManager.shared
+    @StateObject private var dataSingleton = DataSingleton.shared
     
     var body: some View {
-        VStack {
-            if !locationManager.loaded {
-                // show loading screen
-                Spacer()
-                if locationManager.downloading {
-                    Text("Downloading Developer Disk Image...")
-                } else {
-                    Text("Preparing Setup...")
-                }
-                Spacer()
-            } else if !locationManager.mounted {
-                Spacer()
-                if locationManager.succeeded {
-                    if locationManager.mountingFailed {
-                        // show the user that the mount failed
-                        Text("Failed to mount Developer Disk Image!")
-                            .padding(5)
-                        Text("See log on the apply page for details.")
-                    } else if locationManager.mounting {
-                        // show that it is currently mounting
-                        Text("Mounting Developer Disk Image...")
-                    } else {
-                        // show button to mount
-                        Text("Ready to mount...")
-                            .padding(5)
-                        Button("Mount") {
-                            locationManager.mountImage()
+        List {
+            Group {
+                HStack {
+                    Image(systemName: "mappin.and.ellipse")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 35, height: 35)
+                    VStack {
+                        HStack {
+                            Text("Location Simulation")
+                                .bold()
+                            Spacer()
                         }
                     }
+                }
+                Divider()
+            }
+            
+            if dataSingleton.deviceAvailable {
+                Spacer()
+                if !locationManager.loaded {
+                    // show loading screen
+                    if locationManager.downloading {
+                        CenteredText(text: "Downloading Developer Disk Image...")
+                    } else {
+                        CenteredText(text: "Preparing Setup...")
+                    }
+                } else if !locationManager.mounted {
+                    if locationManager.succeeded {
+                        if locationManager.mountingFailed {
+                            // show the user that the mount failed
+                            CenteredText(text: "Failed to mount Developer Disk Image!")
+                                .padding(5)
+                            CenteredText(text: "See log on the apply page for details.")
+                        } else if locationManager.mounting {
+                            // show that it is currently mounting
+                            CenteredText(text: "Mounting Developer Disk Image...")
+                        } else {
+                            // show button to mount
+                            CenteredText(text: "Ready to mount...")
+                                .padding(5)
+                            HStack {
+                                Spacer()
+                                Button("Mount") {
+                                    locationManager.mountImage()
+                                }
+                                Spacer()
+                            }
+                        }
+                    } else {
+                        CenteredText(text: "Failed to get Developer Disk Image!")
+                            .padding(5)
+                        CenteredText(text: "See log on the apply page for details.")
+                            .font(.footnote)
+                    }
                 } else {
-                    Text("Failed to get Developer Disk Image!")
-                        .padding(5)
-                    Text("See log on the apply page for details.")
-                        .font(.footnote)
+                    // main view
+                    LocSetterView()
                 }
                 Spacer()
-            } else {
-                // main view
-                Text("h")
             }
         }
+        .padding(5)
         .onAppear {
             // if the image is not downloaded, download the image
             if !locationManager.loaded && !locationManager.downloading {

@@ -75,6 +75,19 @@ struct ImageButton: View {
     }
 }
 
+// MARK: Centered Text Struct (for Lists)
+struct CenteredText: View {
+    var text: String
+    
+    var body: some View {
+        HStack {
+            Spacer()
+            Text(text)
+            Spacer()
+        }
+    }
+}
+
 // MARK: Beta Tag Struct
 struct BetaTag: View {
     var body: some View {
