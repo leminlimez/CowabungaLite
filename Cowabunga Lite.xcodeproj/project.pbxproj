@@ -65,6 +65,7 @@
 		6FA6ED352AB1F8C300E935B6 /* NewSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED342AB1F8C300E935B6 /* NewSelectionView.swift */; };
 		6FA6ED372AB34D4400E935B6 /* FileDesignsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED362AB34D4400E935B6 /* FileDesignsView.swift */; };
 		6FA6ED392AB4EE8D00E935B6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED382AB4EE8D00E935B6 /* LocationManager.swift */; };
+		6FA6ED442AB54F0B00E935B6 /* ideviceimagemounter in Resources */ = {isa = PBXBuildFile; fileRef = 6FA6ED432AB54F0B00E935B6 /* ideviceimagemounter */; };
 		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
 		6FE6D1072A951A0C002CFD2F /* restore in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1062A951A0C002CFD2F /* restore */; };
 		6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1082A951A20002CFD2F /* restore-deepclean */; };
@@ -168,6 +169,7 @@
 		6FA6ED342AB1F8C300E935B6 /* NewSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSelectionView.swift; sourceTree = "<group>"; };
 		6FA6ED362AB34D4400E935B6 /* FileDesignsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDesignsView.swift; sourceTree = "<group>"; };
 		6FA6ED382AB4EE8D00E935B6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6FA6ED432AB54F0B00E935B6 /* ideviceimagemounter */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ideviceimagemounter; sourceTree = "<group>"; };
 		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		6FE6D1062A951A0C002CFD2F /* restore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = restore; sourceTree = "<group>"; };
 		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 		2544926F29C7F79F00B6D82E /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				6FA6ED432AB54F0B00E935B6 /* ideviceimagemounter */,
 				7207595F29F2648E0053E26F /* homeScreenAppsNew */,
 				2557663029D2F51B008DF0E2 /* appabeticalJailed */,
 				2557662E29D2F4E2008DF0E2 /* homeScreenApps */,
@@ -600,6 +603,7 @@
 				6F1D5E812A1CF98B00D6E377 /* DefaultCC.plist in Resources */,
 				2557663129D2F51B008DF0E2 /* appabeticalJailed in Resources */,
 				6F1D5E9F2A2F6E9F00D6E377 /* RevertCC.plist in Resources */,
+				6FA6ED442AB54F0B00E935B6 /* ideviceimagemounter in Resources */,
 				6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */,
 				6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */,
 				250ADBB929C825590023F343 /* idevicename in Resources */,
