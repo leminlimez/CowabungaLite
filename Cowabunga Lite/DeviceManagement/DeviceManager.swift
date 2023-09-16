@@ -137,6 +137,8 @@ func setupWorkspaceForUUID(_ UUID: String) {
 
         }
     }
+    // reset the location manager
+    LocationManager.shared.resetValues()
 }
 
 func generateBackup() {
