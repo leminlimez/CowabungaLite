@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     const struct option longopts[] = {
         {"udid", required_argument, NULL, 'u'},
         {"getMountStatus", no_argument, NULL, 'm'},
-        {"reset", no_argument, NULL, 'r'},
+        {"reset", required_argument, NULL, 'r'},
         {"lat", required_argument, NULL, 'l'},
         {"lon", required_argument, NULL, 's'}
     };

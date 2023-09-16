@@ -92,7 +92,7 @@ public class LocationManager: ObservableObject {
         }
         // execute
         do {
-            let result = try execute2(exec, arguments: ["-u", currentUUID, "-r"])
+            let result = try execute2(exec, arguments: ["-u", currentUUID, "-r", "bbhhjjkk"])
             if result.contains("ERROR") || result.contains("Usage") {
                 return false
             }
