@@ -66,6 +66,7 @@
 		6FA6ED372AB34D4400E935B6 /* FileDesignsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED362AB34D4400E935B6 /* FileDesignsView.swift */; };
 		6FA6ED392AB4EE8D00E935B6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED382AB4EE8D00E935B6 /* LocationManager.swift */; };
 		6FA6ED442AB54F0B00E935B6 /* ideviceimagemounter in Resources */ = {isa = PBXBuildFile; fileRef = 6FA6ED432AB54F0B00E935B6 /* ideviceimagemounter */; };
+		6FA6ED472AB54F5500E935B6 /* LocSimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA6ED462AB54F5500E935B6 /* LocSimView.swift */; };
 		6FE6D1012A939E2D002CFD2F /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */; };
 		6FE6D1072A951A0C002CFD2F /* restore in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1062A951A0C002CFD2F /* restore */; };
 		6FE6D1092A951A20002CFD2F /* restore-deepclean in Resources */ = {isa = PBXBuildFile; fileRef = 6FE6D1082A951A20002CFD2F /* restore-deepclean */; };
@@ -170,6 +171,7 @@
 		6FA6ED362AB34D4400E935B6 /* FileDesignsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDesignsView.swift; sourceTree = "<group>"; };
 		6FA6ED382AB4EE8D00E935B6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		6FA6ED432AB54F0B00E935B6 /* ideviceimagemounter */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ideviceimagemounter; sourceTree = "<group>"; };
+		6FA6ED462AB54F5500E935B6 /* LocSimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocSimView.swift; sourceTree = "<group>"; };
 		6FE6D1002A939E2D002CFD2F /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		6FE6D1062A951A0C002CFD2F /* restore */ = {isa = PBXFileReference; lastKnownFileType = folder; path = restore; sourceTree = "<group>"; };
 		6FE6D1082A951A20002CFD2F /* restore-deepclean */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "restore-deepclean"; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				6FFA738429D0F7C000E4DCBC /* Themes */,
 				6F5DFCE62A6AF77000081DBD /* Custom Operations */,
 				6F886A1929C89A0100B73E40 /* Tools */,
+				6FA6ED452AB54F5500E935B6 /* Special Tools */,
 				6FE6D10C2A98EA41002CFD2F /* Unused */,
 			);
 			path = Views;
@@ -459,6 +462,14 @@
 				6FA6ED362AB34D4400E935B6 /* FileDesignsView.swift */,
 			);
 			path = FileExplorer;
+			sourceTree = "<group>";
+		};
+		6FA6ED452AB54F5500E935B6 /* Special Tools */ = {
+			isa = PBXGroup;
+			children = (
+				6FA6ED462AB54F5500E935B6 /* LocSimView.swift */,
+			);
+			path = "Special Tools";
 			sourceTree = "<group>";
 		};
 		6FE6D1022A939EF1002CFD2F /* ViewExtensions */ = {
@@ -661,6 +672,7 @@
 				25B47F2D29C91C2D00BD9F7E /* StatusManager.m in Sources */,
 				6F1D5E872A23DE7B00D6E377 /* CCManager.swift in Sources */,
 				2557662B29D2E9BF008DF0E2 /* UtilityViews.swift in Sources */,
+				6FA6ED472AB54F5500E935B6 /* LocSimView.swift in Sources */,
 				6FE6D10E2A98EBDB002CFD2F /* OTAKillerView.swift in Sources */,
 				2539F1B329CA9BA100FAD711 /* SkipSetupView.swift in Sources */,
 				7207595A29F262EC0053E26F /* DataSingleton.swift in Sources */,
