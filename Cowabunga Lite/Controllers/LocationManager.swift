@@ -13,6 +13,7 @@ struct DevDisk: Decodable {
 
 public class LocationManager: ObservableObject {
     static let shared = LocationManager()
+    static let DT_SIMULATELOCATION_SERVICE = "com.apple.dt.simulatelocation"
     
     // disk getter values
     @Published var downloading: Bool = false
@@ -47,6 +48,31 @@ public class LocationManager: ObservableObject {
         succeeded = false
         mountingFailed = false
         loaded = false
+    }
+    
+    // check if the device actually needs mounting
+    public func deviceNeedsMounting() -> Bool {
+        // get the image mounter executable
+        guard let exec = Bundle.main.url(forResource: "locsimUtils", withExtension: "") else {
+            Logger.shared.logMe("Error locating locsimUtils")
+            return true
+        }
+        // get the current uuid
+        guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+            Logger.shared.logMe("Error getting current UUID")
+            return true
+        }
+        // execute
+        do {
+            let result = try execute2(exec, arguments: ["-u", currentUUID, "-m", "idk what I was doing so this requires a random useless argument"])
+            print(result)
+            if !result.contains("Make sure a developer disk image is mounted!") {
+                return false
+            }
+        } catch {
+            Logger.shared.logMe("Error executing locsimUtils: \(error.localizedDescription)")
+        }
+        return true
     }
     
     // make sure the disk images are downloaded
