@@ -56,15 +56,21 @@ struct LocSimView: View {
         .onAppear {
             // if the image is not downloaded, download the image
             if !locationManager.loaded && !locationManager.downloading {
-                Task {
-                    do {
-                        try await locationManager.loadDiskImages()
-                    } catch {
-                        Logger.shared.logMe("Error loading Developer Disk Image: \(error.localizedDescription)")
-                        locationManager.succeeded = false
-                        locationManager.downloading = false
-                        locationManager.loaded = true
+                if locationManager.deviceNeedsMounting() {
+                    Task {
+                        do {
+                            try await locationManager.loadDiskImages()
+                        } catch {
+                            Logger.shared.logMe("Error loading Developer Disk Image: \(error.localizedDescription)")
+                            locationManager.succeeded = false
+                            locationManager.downloading = false
+                            locationManager.loaded = true
+                        }
                     }
+                } else {
+                    locationManager.succeeded = true
+                    locationManager.mounted = true
+                    locationManager.loaded = true
                 }
             }
         }
