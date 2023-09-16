@@ -81,70 +81,6 @@ class MainUtils {
         return newArray
     }
     
-    // Load the preferences
-    #if CLI
-    public static func loadPreferences() {
-        if let workspace = DataSingleton.shared.getCurrentWorkspace() {
-            // Icon Theming
-            IconThemingPage.loadPreferences()
-            
-            // Control Center
-            for (i, module) in moduleTypes.enumerated() {
-                do {
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(module.fileLocation.rawValue) else { continue }
-                    moduleTypes[i].value =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
-                } catch {
-                    
-                }
-            }
-            do {
-                if let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) {
-                    if FileManager.default.fileExists(atPath: filePath.path) {
-                        let plistData = try Data(contentsOf: filePath)
-                        let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                        if let pIdentifier = plist["preset-identifiers"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
-                            selectedCCPreset = pID
-                        } else {
-                            selectedCCPreset = "None"
-                        }
-                    }
-                }
-            } catch {
-                print(error.localizedDescription)
-                selectedCCPreset = "None"
-            }
-            
-            // Springboard Options
-            sbOptions = loadToggles(from: sbOptions, workspace: workspace)
-            do {
-                sbAnimationSpeed = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.uikit.rawValue), key: "UIAnimationDragCoefficient") as? Double ?? 1
-            } catch {
-
-            }
-            do {
-                sbLockScreenFootnote = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.footnote.rawValue), key: "LockScreenFootnote") as? String ?? ""
-            } catch {
-
-            }
-            
-            // Internal Options
-            internalOptions = loadToggles(from: internalOptions, workspace: workspace)
-
-            // Setup Options
-            for (i, opt) in skipSetupOptions.enumerated() {
-                if opt.key == "Skip" {
-                    skipSetupOptions[i].value = getSkipSetupEnabled()
-                } else if opt.key == "OTA" {
-                    skipSetupOptions[i].value = getOTABlocked()
-                } else if opt.key == "Supervision" {
-                    skipSetupOptions[i].value = getSupervisionEnabled()
-                }
-            }
-            skipSetupOrganizationName = getOrganizationName()
-        }
-    }
-    #endif
-    
     // Apply a toggle
     public static func applyToggle(index: Int, value: Bool, tweak: Tweak) {
         var key: String = ""
@@ -195,12 +131,6 @@ class MainUtils {
         .init(key: "3", name: "Siri Spoken Notifications Module", fileLocation: .spoken)
     ]
     public static var selectedCCPreset: String = "None"
-    #if CLI
-    public static let ccPresets: [ConfigPreset] = [
-        .init(title: "Revert to Original", identification: "RevertCC", fileLocation: Bundle.module.url(forResource: "RevertCC", withExtension: ".plist"), modulesToEnable: []),
-        .init(title: "Default", identification: "DefaultCC", fileLocation: Bundle.module.url(forResource: "DefaultCC", withExtension: ".plist"), modulesToEnable: [2])
-    ]
-    #endif
     
     public static func setModuleVisibility(key: Int, _ nv: Bool) {
         for (i, module) in moduleTypes.enumerated() {
