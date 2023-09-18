@@ -88,6 +88,12 @@ struct FileExplorerView: View {
                         }
                     }
                 } else {
+                    // MARK: View in Finder Button
+                    ImageButton(systemName: "folder", text: "View in Finder", imageColor: .blue, action: {
+                        let files: [URL] = [operationsManager.getOperationsFolder().appendingPathComponent("\(operation.name)/\(currentPath)/\(selectedFolder)")]
+                        NSWorkspace.shared.activateFileViewerSelecting(files)
+                    })
+                    
                     // MARK: Delete Item Button
                     ImageButton(systemName: "trash", text: "Delete", imageColor: .red, action: {
                         if enteringName {
