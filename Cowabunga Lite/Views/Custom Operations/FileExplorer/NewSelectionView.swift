@@ -14,6 +14,7 @@ enum NewType {
 }
 
 // ask users what type of file they want to add
+@available(macOS 12.0, *)
 struct NewSelectionView: View {
     @Environment(\.dismiss) var dismiss
     var gridItemLayout = [GridItem(.adaptive(minimum: 90))]

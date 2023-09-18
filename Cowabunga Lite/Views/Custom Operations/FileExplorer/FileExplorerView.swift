@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(macOS 12.0, *)
 struct FileExplorerView: View {
     @FocusState private var nameFieldIsFocused: Bool
     @StateObject var operationsManager = CustomOperationsManager.shared
@@ -196,17 +197,17 @@ struct FileExplorerView: View {
                                     }
                                     .lineLimit(6)
                                     .focused($nameFieldIsFocused)
-                                } else if #available(macOS 12, *) {
+                                } else {//} if #available(macOS 12, *) {
                                     TextField("Folder", text: $newName).onSubmit {
                                         submitNewName()
                                     }
                                     .focused($nameFieldIsFocused)
-                                } else {
-                                    TextField("Folder", text: $newName, onCommit: {
-                                        submitNewName()
-                                    })
-                                    .focused($nameFieldIsFocused)
-                                }
+                                }// else {
+//                                    TextField("Folder", text: $newName, onCommit: {
+//                                        submitNewName()
+//                                    })
+//                                    .focused($nameFieldIsFocused)
+//                                }
                             }
                         }
                         .background(Color.cowGray.opacity(0))
