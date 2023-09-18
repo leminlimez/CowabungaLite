@@ -98,8 +98,6 @@ int main(int argc, char *argv[])
         return 3;
     }
     
-    printf("sfbhfsdbk");
-    
     // Get device
     if (idevice_new_with_options(&device, udid, IDEVICE_LOOKUP_USBMUX) != IDEVICE_E_SUCCESS) {
         if (udid) {
@@ -137,8 +135,6 @@ int main(int argc, char *argv[])
     service_error_t serr = service_client_new(device, svc, &service);
 
     lockdownd_service_descriptor_free(svc);
-    
-    printf("Got to here");
 
     if (serr != SERVICE_E_SUCCESS) {
         lockdownd_client_free(lockdown);
@@ -164,7 +160,7 @@ int main(int argc, char *argv[])
         latlen = strlen(lat);
         l = OSSwapHostToBigInt32(latlen);
         printf("%d", l);
-        printf("%d", latlen);
+        printf("%d\n", latlen);
         memcpy(buf, &l, 4);
         memcpy(buf+4, lat, latlen);
         uint32_t longlen = strlen(lon);
