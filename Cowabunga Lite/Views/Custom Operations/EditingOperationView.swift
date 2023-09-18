@@ -235,38 +235,41 @@ struct EditingOperationView: View {
                 }
                 
                 // MARK: Editing Domains
-                Group {
-                    HStack {
-                        NiceButton(text: AnyView(
-                            Text("Open Domains and Files")
-                                .bold()
-                                .padding(.horizontal, 10)
-                        ), action: {
-                            currentPath = "Domains"
-                            viewType = 2
-                        })
-                        Spacer()
+                if #available(macOS 12, *) {
+                    Group {
+                        HStack {
+                            NiceButton(text: AnyView(
+                                Text("Open Domains and Files")
+                                    .bold()
+                                    .padding(.horizontal, 10)
+                            ), action: {
+                                currentPath = "Domains"
+                                viewType = 2
+                            })
+                            Spacer()
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 5)
                     }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 5)
+                } else {
+                    Group {
+                        HStack {
+                            NiceButton(text: AnyView(
+                                Text("Open Domains and Files")
+                                    .bold()
+                                    .padding(.horizontal, 10)
+                            ), action: {
+                                currentPath = "Domains"
+                                let _ = operation.getSubFolders(folderPath: "Domains")
+                                NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: operationsManager.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent("Domains").path)
+                                //                            viewType = 2
+                            })
+                            Spacer()
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 5)
+                    }
                 }
-//                Group {
-//                    HStack {
-//                        NiceButton(text: AnyView(
-//                            Text("Open Domains and Files (TEMPORARY)")
-//                                .bold()
-//                                .padding(.horizontal, 10)
-//                        ), action: {
-//                            currentPath = "Domains"
-//                            let _ = operation.getSubFolders(folderPath: "Domains")
-//                            NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: operationsManager.getOperationsFolder().appendingPathComponent(operation.name).appendingPathComponent("Domains").path)
-////                            viewType = 2
-//                        })
-//                        Spacer()
-//                    }
-//                    .padding(.horizontal, 10)
-//                    .padding(.top, 5)
-//                }
             }
         }.onAppear {
             newName = operation.name

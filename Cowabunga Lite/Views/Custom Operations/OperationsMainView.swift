@@ -19,7 +19,9 @@ struct OperationsMainView: View {
             } else if viewType == 1 {
                 EditingOperationView(viewType: $viewType, operation: $currentOperation, currentPath: $currentPath)
             } else if viewType == 2 {
-                FileExplorerMainView(viewType: $viewType, operation: $currentOperation, currentPath: $currentPath)
+                if #available(macOS 12, *) {
+                    FileExplorerMainView(viewType: $viewType, operation: $currentOperation, currentPath: $currentPath)
+                }
             }
         }.onAppear {
             viewType = 0

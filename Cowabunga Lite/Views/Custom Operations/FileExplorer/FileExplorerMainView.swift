@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@available(macOS 12.0, *)
 struct FileExplorerMainView: View {
     @State var viewType2: Int = 0
     @Binding var viewType: Int
