@@ -209,6 +209,7 @@ struct FileExplorerView: View {
 //                                    .focused($nameFieldIsFocused)
 //                                }
                             }
+                            Spacer()
                         }
                         .background(Color.cowGray.opacity(0))
                         .overlay(RoundedRectangle(cornerRadius: 0)

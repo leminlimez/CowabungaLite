@@ -18,7 +18,7 @@ struct FileDesignsView: View {
     var body: some View {
         VStack {
             ZStack {
-                if ext != "txt" {
+                if ext != "txt" && ext != "png" && ext != "jpg" && ext != "jpeg" {
                     Image(systemName: "doc.fill")
                         .font(.system(size: 55))
                         .padding(2)
@@ -33,6 +33,10 @@ struct FileDesignsView: View {
                         .colorInvert()
                 case "txt":
                     Image(systemName: "doc.text.fill")
+                        .font(.system(size: 55))
+                        .padding(2)
+                case "png", "jpg", "jpeg":
+                    Image(systemName: "photo")
                         .font(.system(size: 55))
                         .padding(2)
                 default:
