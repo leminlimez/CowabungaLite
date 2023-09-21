@@ -11,6 +11,12 @@ import SwiftUI
 struct FileDesignsView: View {
     // Formatting Config
 //    @State var folderSize: CGFloat = 55
+    let ignoreExt: [String] = [
+        "txt",
+        "png",
+        "jpg",
+        "jpeg"
+    ]
     
     // File Type
     @State var ext: String // file extension (what to overlay)
@@ -18,7 +24,7 @@ struct FileDesignsView: View {
     var body: some View {
         VStack {
             ZStack {
-                if ext != "txt" && ext != "png" && ext != "jpg" && ext != "jpeg" {
+                if !ignoreExt.contains(ext) {
                     Image(systemName: "doc.fill")
                         .font(.system(size: 55))
                         .padding(2)
