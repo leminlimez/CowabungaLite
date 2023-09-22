@@ -41,6 +41,7 @@
 		6F29FB042A3395E100E09186 /* libplist-2.0.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928A29C8097900B6D82E /* libplist-2.0.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6F29FB052A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; };
 		6F29FB062A3395E100E09186 /* libusbmuxd-2.0.6.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 2544928429C8091F00B6D82E /* libusbmuxd-2.0.6.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		6F38C54B2ABE218200BC8650 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F38C54A2ABE218200BC8650 /* Version.swift */; };
 		6F5C0C0D29CB97EB0005FB0B /* SpringboardOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */; };
 		6F5DFCE82A6AF7AA00081DBD /* CustomOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5DFCE72A6AF7AA00081DBD /* CustomOperationsView.swift */; };
 		6F5DFCEB2A6AF9D900081DBD /* CustomOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5DFCEA2A6AF9D900081DBD /* CustomOperationsManager.swift */; };
@@ -148,6 +149,7 @@
 		6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage++.swift"; sourceTree = "<group>"; };
 		6F1D5E9E2A2F6E9F00D6E377 /* RevertCC.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = RevertCC.plist; sourceTree = "<group>"; };
 		6F29FB072A37F33300E09186 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
+		6F38C54A2ABE218200BC8650 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		6F5C0C0C29CB97EB0005FB0B /* SpringboardOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringboardOptionsView.swift; sourceTree = "<group>"; };
 		6F5DFCE72A6AF7AA00081DBD /* CustomOperationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperationsView.swift; sourceTree = "<group>"; };
 		6F5DFCEA2A6AF9D900081DBD /* CustomOperationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperationsManager.swift; sourceTree = "<group>"; usesTabs = 0; };
@@ -459,6 +461,7 @@
 				6F886A2B29C8CFA900B73E40 /* String++.swift */,
 				6F1D5E982A2A2E0000D6E377 /* NSImage++.swift */,
 				6FE6D10A2A96977C002CFD2F /* ProcessInfo++.swift */,
+				6F38C54A2ABE218200BC8650 /* Version.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 				6FA6ED472AB54F5500E935B6 /* LocSimView.swift in Sources */,
 				6FE6D10E2A98EBDB002CFD2F /* OTAKillerView.swift in Sources */,
 				2539F1B329CA9BA100FAD711 /* SkipSetupView.swift in Sources */,
+				6F38C54B2ABE218200BC8650 /* Version.swift in Sources */,
 				7207595A29F262EC0053E26F /* DataSingleton.swift in Sources */,
 				25B8341C29CB04CA00176095 /* StatusSetter16_3.m in Sources */,
 				6FFA739429D1E7F400E4DCBC /* SupervisionView.swift in Sources */,
