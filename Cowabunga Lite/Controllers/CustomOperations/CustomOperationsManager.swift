@@ -141,6 +141,7 @@ class CustomOperationsManager: ObservableObject {
             let author: String = plist["Author"] as? String ?? ""
             let version: String = plist["Version"] as? String ?? "1.0"
             let locked: Bool = plist["Locked"] as? Bool ?? false
+            let hasPrefs: Bool = plist["UsesPreferences"] as? Bool ?? false
             
             // get the icon
             var icon: String? = nil
@@ -149,7 +150,7 @@ class CustomOperationsManager: ObservableObject {
                 icon = "Icon.png"
             }
             
-            return .init(name: url.lastPathComponent, author: author, version: version, icon: icon, locked: locked)
+            return .init(name: url.lastPathComponent, author: author, version: version, icon: icon, locked: locked, hasPrefs: hasPrefs)
         } catch {
             Logger.shared.logMe("Custom Operations Error: \(error.localizedDescription) for operation \"\(url.lastPathComponent)\"")
         }
@@ -179,7 +180,7 @@ class CustomOperationsManager: ObservableObject {
     }
     
     // updating an operation
-    public func updateOperation(oldName: String, newName: String, newAuthor: String, newVersion: String, newIcon: String?) throws {
+    public func updateOperation(oldName: String, newName: String, newAuthor: String, newVersion: String, hasPrefs: Bool, newIcon: String?) throws {
         var currentOperationIndex = -1
         for (i, v) in operations.enumerated() {
             if v.name == oldName {
@@ -204,6 +205,10 @@ class CustomOperationsManager: ObservableObject {
         if newVersion != operations[currentOperationIndex].version {
             plist["Version"] = newVersion
             operations[currentOperationIndex].version = newVersion
+        }
+        if hasPrefs != operations[currentOperationIndex].hasPrefs {
+            plist["UsesPreferences"] = hasPrefs
+            operations[currentOperationIndex].hasPrefs = hasPrefs
         }
         
         let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
