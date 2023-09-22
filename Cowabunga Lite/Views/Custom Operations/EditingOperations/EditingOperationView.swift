@@ -20,6 +20,7 @@ struct EditingOperationView: View {
     @State var newAuthor: String = ""
     @State var newVersion: String = ""
     @State var newIcon: String? = nil
+    @State var hasPrefs: Bool = false
     @State var enabledOperation: Bool = false
     
     @State var iconImage: NSImage? = nil
@@ -61,7 +62,7 @@ struct EditingOperationView: View {
                         // save
                         do {
                             if newName != "" && newVersion != "" {
-                                try operationsManager.updateOperation(oldName: operation.name, newName: newName, newAuthor: newAuthor, newVersion: newVersion, newIcon: newIcon)
+                                try operationsManager.updateOperation(oldName: operation.name, newName: newName, newAuthor: newAuthor, newVersion: newVersion, hasPrefs: hasPrefs, newIcon: newIcon)
                                 operation = try operationsManager.getOperation(name: newName)
                                 newIcon = operation.icon
                             }
@@ -270,6 +271,16 @@ struct EditingOperationView: View {
                         .padding(.top, 5)
                     }
                 }
+                
+                // MARK: Operation Uses Preferences
+//                Group {
+//                    HStack {
+//                        Toggle("Operation Has Custom Preferences", isOn: $hasPrefs)
+//                        Spacer()
+//                    }
+//                    .padding(.horizontal, 10)
+//                    .padding(.top, 5)
+//                }
             }
         }.onAppear {
             newName = operation.name
@@ -277,6 +288,7 @@ struct EditingOperationView: View {
             newVersion = operation.version
             newIcon = operation.icon
             iconImage = operation.getImage()
+            hasPrefs = operation.hasPrefs
             enabledOperation = operation.enabled
         }
     }
