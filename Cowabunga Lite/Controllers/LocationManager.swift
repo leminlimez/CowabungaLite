@@ -36,12 +36,6 @@ public class LocationManager: ObservableObject {
         }
     }
     
-    // get close version
-    private func dropVersionPatch(_ ver: String) -> String {
-        let split = ver.split(separator: ".")
-        return "\(split[0]).\(split[1])"
-    }
-    
     // reset the values (for when device changes)
     public func resetValues() {
         mounted = false
@@ -138,57 +132,85 @@ public class LocationManager: ObservableObject {
             try fm.createDirectory(at: diskDirectory, withIntermediateDirectories: false)
         }
         
-        if let targetVersion = DataSingleton.shared.getCurrentVersion() {
+        if let targetVersionString = DataSingleton.shared.getCurrentVersion() {
+            let targetVersion = Version(ver: targetVersionString)
             // check if it exists first
-            // if not, redownload
-            if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion).path) {
+            // if not, download the one closest to the current version
+            if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion.description).path) {
                 // make sure it has the image
-                if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion).appendingPathComponent("DeveloperDiskImage.dmg").path) {
+                if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion.description).appendingPathComponent("DeveloperDiskImage.dmg").path) {
                     loaded = true
                     succeeded = true
                     return
                 }
             }
             let devDisks = try await getDevDisks()
+            // find the closest version
+            var closestMatch: Version? = nil
+            var foundMatch: Bool = false // found the exact version
+            var foundClosest: Bool = false // found the version with the same minor version
+            
             for disk in devDisks {
-                if disk.tag_name == targetVersion || disk.tag_name == dropVersionPatch(targetVersion) {
-                    if let downloadURL = URL(string: "https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images/releases/download/\(disk.tag_name)/\(disk.tag_name).zip") {
-                        downloading = true
-                        URLSession.shared.downloadTask(with: downloadURL) { (tempFileURL, response, error) in
-                            let fm = FileManager.default
-                            if let tempFileURL = tempFileURL {
-                                do {
-                                    let unzipURL = fm.temporaryDirectory.appendingPathComponent("devdisk_unzip")
-                                    if fm.fileExists(atPath: unzipURL.path) {
-                                        try? fm.removeItem(at: unzipURL)
-                                    }
-                                    try fm.unzipItem(at: tempFileURL, to: unzipURL)
-                                    if fm.fileExists(atPath: unzipURL.appendingPathComponent(disk.tag_name).path) {
-                                        if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion).path) {
-                                            try? fm.removeItem(at: diskDirectory.appendingPathComponent(targetVersion))
-                                        }
-                                        try fm.moveItem(at: unzipURL.appendingPathComponent(disk.tag_name), to: diskDirectory.appendingPathComponent(targetVersion))
-                                    } else {
-                                        throw "Could not find the main version file!"
-                                    }
-                                    self.downloading = false
-                                    self.loaded = true
-                                    self.succeeded = true
-                                } catch {
-                                    Logger.shared.logMe("Failed to download the dev image: \(error.localizedDescription)")
-                                    self.downloading = false
-                                    self.loaded = true
-                                    self.succeeded = false
+                let tagVer = Version(ver: disk.tag_name)
+                // if the major version isn't the same then continue
+                if tagVer.major != targetVersion.major {
+                    continue
+                }
+                if tagVer.equals(targetVersion) {
+                    closestMatch = tagVer
+                    foundMatch = true
+                    break
+                } else if !foundMatch && tagVer.minor == targetVersion.minor {
+                    closestMatch = tagVer
+                    foundClosest = true
+                } else if !foundMatch && !foundClosest && tagVer.compareTo(targetVersion) < 0 {
+                    if let closestVer = closestMatch {
+                        if tagVer.compareTo(closestVer) <= 0 {
+                            continue
+                        }
+                    }
+                    closestMatch = tagVer
+                }
+            }
+            
+            // if the closest version was found, download it
+            if let closestVer = closestMatch {
+                if let downloadURL = URL(string: "https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images/releases/download/\(closestVer.description)/\(closestVer.description).zip") {
+                    downloading = true
+                    URLSession.shared.downloadTask(with: downloadURL) { (tempFileURL, response, error) in
+                        let fm = FileManager.default
+                        if let tempFileURL = tempFileURL {
+                            do {
+                                let unzipURL = fm.temporaryDirectory.appendingPathComponent("devdisk_unzip")
+                                if fm.fileExists(atPath: unzipURL.path) {
+                                    try? fm.removeItem(at: unzipURL)
                                 }
-                            } else {
-                                Logger.shared.logMe("Failed to download the dev image: url was nil")
+                                try fm.unzipItem(at: tempFileURL, to: unzipURL)
+                                if fm.fileExists(atPath: unzipURL.appendingPathComponent(closestVer.description).path) {
+                                    if fm.fileExists(atPath: diskDirectory.appendingPathComponent(targetVersion.description).path) {
+                                        try? fm.removeItem(at: diskDirectory.appendingPathComponent(targetVersion.description))
+                                    }
+                                    try fm.moveItem(at: unzipURL.appendingPathComponent(closestVer.description), to: diskDirectory.appendingPathComponent(targetVersion.description))
+                                } else {
+                                    throw "Could not find the main version file!"
+                                }
+                                self.downloading = false
+                                self.loaded = true
+                                self.succeeded = true
+                            } catch {
+                                Logger.shared.logMe("Failed to download the dev image: \(error.localizedDescription)")
                                 self.downloading = false
                                 self.loaded = true
                                 self.succeeded = false
                             }
-                        }.resume()
-                        return;
-                    }
+                        } else {
+                            Logger.shared.logMe("Failed to download the dev image: url was nil")
+                            self.downloading = false
+                            self.loaded = true
+                            self.succeeded = false
+                        }
+                    }.resume()
+                    return;
                 }
             }
             self.downloading = false
