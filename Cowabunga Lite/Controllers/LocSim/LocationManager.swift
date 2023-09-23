@@ -11,9 +11,10 @@ struct DevDisk: Decodable {
     let tag_name: String
 }
 
+// Main Location Manager
+// For iOS 15-16
 public class LocationManager: ObservableObject {
     static let shared = LocationManager()
-    static let DT_SIMULATELOCATION_SERVICE = "com.apple.dt.simulatelocation"
     
     // disk getter values
     @Published var downloading: Bool = false
