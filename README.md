@@ -143,3 +143,5 @@ Cowabunga Lite applies tweaks by creating a partial restore of only the files be
 - [TrollTools](https://github.com/sourcelocation/TrollTools) for icon theming UI and keys for some springboard options.
 - [SourceLocation](https://github.com/sourcelocation) for explore page code.
 - [Cowabunga](https://github.com/leminlimez/Cowabunga) for part of the code and UI.
+- [iOS 15-16 disk images](https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images)
+- [iFakeLocation](https://github.com/master131/iFakeLocation) for iOS 17 disk images/logic
