@@ -5,6 +5,36 @@
 #include <string>
 #include <vector>
 
+std::string decodeBase64(const std::string &encoded) {
+    std::string result;
+    result.reserve(encoded.size());
+
+    // Define the Base64 character set
+    const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    int val = 0;
+    int val_bits = -8;
+
+    for (char c : encoded) {
+        if (c == '=') {
+            break; // Padding character; ignore it
+        }
+
+        auto it = std::find(base64_chars.begin(), base64_chars.end(), c);
+        if (it != base64_chars.end()) {
+            val = (val << 6) | std::distance(base64_chars.begin(), it);
+            val_bits += 6;
+
+            if (val_bits >= 0) {
+                result.push_back(char((val >> val_bits) & 0xFF));
+                val_bits -= 8;
+            }
+        }
+    }
+
+    return result;
+}
+
 void scoutArray(plist_t array, plist_t apps, bool writePos, sbservices_client_t sbservice_t)
 {
     int num_items = plist_array_get_size(array);
@@ -58,12 +88,19 @@ void scoutArray(plist_t array, plist_t apps, bool writePos, sbservices_client_t 
 
                     sscanf(identifier, "%[^,],%[^\n]", bundle, name);
 
+                    auto n = std::string(name);
+                    if (n.substr(0, 3) == "b64") {
+                        auto rest = n.substr(3);
+                        auto decodedData = decodeBase64(rest);
+                        n = decodedData;
+                    }
+
                     plist_t currentApp = plist_dict_get_item(apps, bundle);
                     if (currentApp == nullptr)
                     {
                         currentApp = plist_new_dict();
                         plist_dict_set_item(apps, bundle, currentApp);
-                        plist_dict_set_item(currentApp, "name", plist_new_string(name));
+                        plist_dict_set_item(currentApp, "name", plist_new_string(n));
                     }
                     plist_dict_set_item(currentApp, "themed_icon_position", plist_new_int(writePos ? j : -1));
 
