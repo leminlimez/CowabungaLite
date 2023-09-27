@@ -128,8 +128,8 @@ class ThemingManager: ObservableObject {
     }
     
     public func makeWebClip(displayName: String = "", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
-        let validChars = Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890.,_") // filter so that there is no error 205 downloading multiple file domains
-        let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip".filter{validChars.contains($0)}
+        // convert to base64 to avoid error 205
+        let folderName: String = "Cowabunga_" + bundleID + ",b64" + (displayName.base64Encoded() ?? displayName) + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
         }
