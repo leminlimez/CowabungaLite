@@ -100,7 +100,7 @@ void scoutArray(plist_t array, plist_t apps, bool writePos, sbservices_client_t 
                     {
                         currentApp = plist_new_dict();
                         plist_dict_set_item(apps, bundle, currentApp);
-                        plist_dict_set_item(currentApp, "name", plist_new_string(n));
+                        plist_dict_set_item(currentApp, "name", plist_new_string(n.c_str()));
                     }
                     plist_dict_set_item(currentApp, "themed_icon_position", plist_new_int(writePos ? j : -1));
 
