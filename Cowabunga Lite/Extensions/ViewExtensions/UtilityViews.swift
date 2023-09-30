@@ -102,3 +102,22 @@ struct BetaTag: View {
         }
     }
 }
+
+// MARK: Fix Lists
+struct FixLists: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 13, *) {
+            content
+                .listRowSeparator(.hidden)
+                .listSectionSeparator(.hidden)
+        } else {
+            content
+        }
+    }
+}
+
+extension View {
+    func hideSeparator() -> some View {
+        modifier(FixLists())
+    }
+}
