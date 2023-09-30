@@ -140,6 +140,7 @@ struct ApplyView: View {
                     .lineLimit(nil)
             }
         }.disabled(!dataSingleton.deviceAvailable)
+            .hideSeparator()
     }
 }
 

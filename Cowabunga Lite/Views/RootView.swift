@@ -120,6 +120,7 @@ struct RootView: View {
                             Divider()
                         }
                     }
+                    .hideSeparator()
                 }.onAppear {
                     CustomOperationsManager.shared.getOperations()
                 }
