@@ -42,6 +42,7 @@ struct OTAKillerView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
             
             if dataSingleton.deviceAvailable {
                 Group {

@@ -19,8 +19,11 @@ struct ApplyView: View {
     var body: some View {
         List {
             Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Successful\" at the bottom if successful.")
+                .hideSeparator()
             Text("If you get error 205 relating to downloading files, try setting your device's language to English temporarily.")
+                .hideSeparator()
             Text("Enabled tweaks: \(dataSingleton.enabledTweaks.isEmpty ? "None" : "")")
+                .hideSeparator()
             ForEach(Array(dataSingleton.enabledTweaks), id: \.self) { tweak in
                 HStack(spacing: 5) {
                     Text("•")
@@ -28,6 +31,7 @@ struct ApplyView: View {
                     Text(tweak.rawValue)
                         .foregroundColor(.primary)
                 }
+                .hideSeparator()
             }
             
             HStack {
@@ -107,6 +111,7 @@ struct ApplyView: View {
 //                    Logger.shared.logMe(toAdd)//"test \(testNum)")
 //                }
             }
+            .hideSeparator()
             
             if #available(macOS 12, *) {
                 ZStack {
