@@ -70,6 +70,7 @@ struct ControlCenterView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
             
             if dataSingleton.deviceAvailable {
                 Group {

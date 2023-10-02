@@ -41,6 +41,8 @@ struct SupervisionView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
+            
             if dataSingleton.deviceAvailable {
                 Group {
                     // MARK: Skipping Setup

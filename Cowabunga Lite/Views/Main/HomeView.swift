@@ -208,8 +208,10 @@ struct HomeView: View {
                             }
                         }
                     }
+                    .hideSeparator()
                     
                     Divider()
+                        .hideSeparator()
                     
                     Group {
                         HStack {
@@ -250,6 +252,7 @@ struct HomeView: View {
                             Spacer()
                         }
                     }
+                    .hideSeparator()
                     
                     Group {
                         // Important Credits and Links
@@ -264,6 +267,7 @@ struct HomeView: View {
                             "donations" : "https://ko-fi.com/avangelista"
                         ], circle: true)
                     }
+                    .hideSeparator()
                     
                     Group {
                         HStack {
@@ -301,6 +305,7 @@ struct HomeView: View {
                             .padding(5)
                         }
                     }
+                    .hideSeparator()
                     //                Group {
                     //                    HStack {
                     //                        LinkCell(imageName: "LeminLimez", url: "https://github.com/leminlimez", title: "LeminLimez", contribution: "Main Dev")

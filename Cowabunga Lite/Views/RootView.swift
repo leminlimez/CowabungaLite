@@ -94,6 +94,7 @@ struct RootView: View {
                         Image(systemName: "arrow.clockwise")
                     }
                 }
+                .hideSeparator()
                 
                 ForEach($options) { cat in
                     Divider()

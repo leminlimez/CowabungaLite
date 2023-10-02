@@ -122,6 +122,8 @@ struct StatusBarView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
+            
             if dataSingleton.deviceAvailable && dataSingleton.deviceTested == true {
                 Text("Betas, use with caution. Have a backup.")
                 Group {
