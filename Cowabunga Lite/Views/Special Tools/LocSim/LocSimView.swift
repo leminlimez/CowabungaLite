@@ -30,49 +30,53 @@ struct LocSimView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
             
             if dataSingleton.deviceAvailable {
-                Spacer()
-                if !locationManager.loaded {
-                    // show loading screen
-                    if locationManager.downloading {
-                        CenteredText(text: "Downloading Developer Disk Image...")
-                    } else {
-                        CenteredText(text: "Preparing Setup...")
-                    }
-                } else if !locationManager.mounted {
-                    if locationManager.succeeded {
-                        if locationManager.mountingFailed {
-                            // show the user that the mount failed
-                            CenteredText(text: "Failed to mount Developer Disk Image!")
+                Group {
+                    Spacer()
+                    if !locationManager.loaded {
+                        // show loading screen
+                        if locationManager.downloading {
+                            CenteredText(text: "Downloading Developer Disk Image...")
+                        } else {
+                            CenteredText(text: "Preparing Setup...")
+                        }
+                    } else if !locationManager.mounted {
+                        if locationManager.succeeded {
+                            if locationManager.mountingFailed {
+                                // show the user that the mount failed
+                                CenteredText(text: "Failed to mount Developer Disk Image!")
+                                    .padding(5)
+                                CenteredText(text: "See log on the apply page for details.")
+                            } else if locationManager.mounting {
+                                // show that it is currently mounting
+                                CenteredText(text: "Mounting Developer Disk Image...")
+                            } else {
+                                // show button to mount
+                                CenteredText(text: "Ready to mount...")
+                                    .padding(5)
+                                HStack {
+                                    Spacer()
+                                    Button("Mount") {
+                                        locationManager.mountImage()
+                                    }
+                                    Spacer()
+                                }
+                            }
+                        } else {
+                            CenteredText(text: "Failed to get Developer Disk Image!")
                                 .padding(5)
                             CenteredText(text: "See log on the apply page for details.")
-                        } else if locationManager.mounting {
-                            // show that it is currently mounting
-                            CenteredText(text: "Mounting Developer Disk Image...")
-                        } else {
-                            // show button to mount
-                            CenteredText(text: "Ready to mount...")
-                                .padding(5)
-                            HStack {
-                                Spacer()
-                                Button("Mount") {
-                                    locationManager.mountImage()
-                                }
-                                Spacer()
-                            }
+                                .font(.footnote)
                         }
                     } else {
-                        CenteredText(text: "Failed to get Developer Disk Image!")
-                            .padding(5)
-                        CenteredText(text: "See log on the apply page for details.")
-                            .font(.footnote)
+                        // main view
+                        LocSetterView()
                     }
-                } else {
-                    // main view
-                    LocSetterView()
+                    Spacer()
                 }
-                Spacer()
+                .hideSeparator()
             }
         }
         .padding(5)

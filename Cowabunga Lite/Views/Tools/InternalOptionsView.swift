@@ -92,6 +92,7 @@ struct InternalOptionsView: View {
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
+                .hideSeparator()
                 .onAppear {
                     if sbOptions.isEmpty {
                         for opt in MainUtils.internalOptions {

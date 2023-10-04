@@ -73,6 +73,8 @@ struct ThemingView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
+            
             if dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
@@ -209,6 +211,7 @@ struct ThemingView: View {
 //                        ), action: {})
 //                    }
                 }.disabled(!enableTweak)
+                    .hideSeparator()
             }
         }
         .disabled(!dataSingleton.deviceAvailable)
