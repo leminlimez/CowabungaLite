@@ -60,7 +60,7 @@
             }
         } else if ([versionSplit[0] isEqual:@"17"]) {
             NSInteger subversion = [versionSplit[1] integerValue];
-            if (subversion == 0) {
+            if (subversion <= 1) {
                 _setter = [StatusSetter16_3 new];
             }
         }
