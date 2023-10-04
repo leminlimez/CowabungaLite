@@ -135,8 +135,10 @@ struct CustomOperationsView: View {
                         }
                     }
                 }
+                .hideSeparator()
                 
                 Divider()
+                    .hideSeparator()
                 
                 HStack {
                     Spacer()
@@ -187,6 +189,7 @@ struct CustomOperationsView: View {
                     })
                     .padding(.trailing, 5)
                 }
+                .hideSeparator()
                 
                 if operationsManager.operations.count > 0 {
                     LazyVGrid(columns: gridItemLayout, spacing: 20) {

@@ -343,6 +343,7 @@ struct ControlCenterView: View {
                         print("Error loading cc presets")
                     }
                 }
+                .hideSeparator()
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }

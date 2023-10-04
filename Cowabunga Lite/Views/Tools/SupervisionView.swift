@@ -64,6 +64,7 @@ struct SupervisionView: View {
                         managedCompanyName = MainUtils.getOrganizationName()
                     })
                 }.disabled(!enableTweak)
+                    .hideSeparator()
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
