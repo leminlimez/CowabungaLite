@@ -93,6 +93,13 @@ struct ControlCenterView: View {
                             Text("You must go into Settings and organize them manually.")
                             Spacer()
                         }
+                        .padding(.bottom, 5)
+                        HStack {
+                            Text("iOS 17 Users: ")
+                                .bold()
+                            Text("Due to changes in the OS, this feature may not work as intended.")
+                            Spacer()
+                        }
                         Divider()
                     }
                     
