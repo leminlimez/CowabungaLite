@@ -23,7 +23,7 @@ struct RootView: View {
         
         // Tools View
         .init(title: "Tools", options: [
-            .init(tweak: .operations, title: "Custom Operations", icon: "pencil.and.outline", view: OperationsMainView()),
+//            .init(tweak: .operations, title: "Custom Operations", icon: "pencil.and.outline", view: OperationsMainView()),
             .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: IconThemingMainView()),
             .init(tweak: .controlCenter, title: "Control Center", icon: "switch.2", view: ControlCenterView()),
             .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView(), dividerBelow: true),
