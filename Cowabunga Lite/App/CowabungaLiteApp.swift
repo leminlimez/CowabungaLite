@@ -18,9 +18,6 @@ struct CowabungaLiteApp: App {
             }
         }
         let _ = CCManager.getPresetsFolder()
-        Task {
-            await DeviceSupportAPI.shared.getLastTestedVersion()
-        }
     }
     
     var body: some Scene {
