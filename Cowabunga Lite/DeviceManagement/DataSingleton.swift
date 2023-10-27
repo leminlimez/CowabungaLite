@@ -15,8 +15,6 @@ import Foundation
     @Published var deviceAvailable = false
     @Published var deviceTested = false
     
-    private var lastTestedVersion: String = "17.1.9"
-    
     func setTweakEnabled(_ tweak: Tweak, isEnabled: Bool) {
         if isEnabled {
             enabledTweaks.insert(tweak)
@@ -33,13 +31,20 @@ import Foundation
         return enabledTweaks
     }
     
+    func isDeviceTested(_ device: Device) -> Bool {
+        if let lastTestedVersion = DeviceSupportAPI.shared.lastTestedVersion {
+            return lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame
+        }
+        return false
+    }
+    
     func setCurrentDevice(_ device: Device) {
         currentDevice = device
         print("set to \(device)")
         if Int(device.version.split(separator: ".")[0])! < 15 {
             deviceAvailable = false
         } else {
-            if lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame {
+            if isDeviceTested(device) {
                 deviceTested = true
             }
             setupWorkspaceForUUID(device.uuid)
