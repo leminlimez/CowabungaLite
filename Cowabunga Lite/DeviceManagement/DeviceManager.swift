@@ -8,7 +8,7 @@
 import Foundation
 
 func updateWorkspace(_ url: URL) -> Bool {
-    let FilesVersion: Int = 1
+    let FilesVersion: Int = 2
     
     if FileManager.default.fileExists(atPath: url.appendingPathComponent("FileVersion.plist").path) {
         do {
@@ -78,17 +78,10 @@ func setupWorkspaceForUUID(_ UUID: String) {
     }
     DataSingleton.shared.setCurrentWorkspace(UUIDDirectory)
     let needsUpdate = updateWorkspace(UUIDDirectory)
-    #if CLI
-    guard let docsFolderURL = Bundle.module.url(forResource: "Files", withExtension: nil) else {
-        Logger.shared.logMe("Can't find Bundle URL?")
-        return
-    }
-    #else
     guard let docsFolderURL = Bundle.main.url(forResource: "Files", withExtension: nil) else {
         Logger.shared.logMe("Can't find Bundle URL?")
         return
     }
-    #endif
     if !needsUpdate {
         return
     }
@@ -136,42 +129,30 @@ func setupWorkspaceForUUID(_ UUID: String) {
 
         }
     }
+    if !FileManager.default.fileExists(atPath: UUIDDirectory.appendingPathComponent("AppliedOperations").path) {
+        let newURL = UUIDDirectory.appendingPathComponent("AppliedOperations")
+        do {
+            try FileManager.default.createDirectory(at: newURL, withIntermediateDirectories: false)
+        } catch {
+
+        }
+    }
+    // reset the location manager
+    LocationManager.shared.resetValues()
 }
 
 func generateBackup() {
-    #if CLI
-    guard let script = Bundle.module.url(forResource: "CreateBackup", withExtension: "exe") else {
-            Logger.shared.logMe("Error locating CreateBackup.exe")
-            return }
-    #else
     guard let script = Bundle.main.url(forResource: "CreateBackup", withExtension: "sh") else {
             Logger.shared.logMe("Error locating CreateBackup.sh")
             return }
-    #endif
         do {
-            #if CLI
-            // let task = Process()
-            // let gitPath = "C:\\Program Files\\Git\\git-bash.exe"
-            // task.launchPath = gitPath
-            // if !FileManager.default.fileExists(atPath: gitPath) {
-            //     print("Git bash not found at the path \(gitPath)")
-            //     print("If you do not have it, install it from here: https://gitforwindows.org/")
-            //     return
-            // }
-            // task.arguments = [script.path, "EnabledTweaks", "Backup"]
-            // task.currentDirectoryPath = documentsDirectory.path
-            // task.launch()
-            // task.waitUntilExit()
-            // print("Backup created")
-            try execute(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
-            #else
             try shell(script, arguments: ["EnabledTweaks", "Backup"], workingDirectory: documentsDirectory)
-            #endif
         } catch {
             Logger.shared.logMe("Error running CreateBackup.sh")
         }
 }
 
+// MARK: Apply Tweaks
 func applyTweaks() {
     // Erase backup folder
     let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
@@ -202,24 +183,18 @@ func applyTweaks() {
     
     // Create the webclip icons
      if DataSingleton.shared.allEnabledTweaks().contains(.themes) {
-         #if CLI
-         // TODO: Fix me
-         WindowsThemingManager.shared.applyTheme()
-         #else
          ThemingManager.shared.applyTheme()
-         #endif
-//         #if CLI
-//         let task = Process()
-//         task.launchPath = "C:\\Program Files\\Git\\git-bash.exe"
-//         task.arguments = [script.path, "EnabledTweaks", "Backup"]
-//         task.currentDirectoryPath = documentsDirectory.path
-//         task.launch()
-//         task.waitUntilExit()
-//         print("Backup created")
-//         #else
-//         ThemingManager.shared.applyTheme()
-//         #endif
      }
+    
+    // Create the custom operations
+    if DataSingleton.shared.allEnabledTweaks().contains(.operations) {
+        do {
+            try CustomOperationsManager.shared.applyOperations()
+        } catch {
+            Logger.shared.logMe("Error applying Custom Operations: " + error.localizedDescription)
+            return
+        }
+    }
     for tweak in DataSingleton.shared.allEnabledTweaks() {
         do {
             let files = try fm.contentsOfDirectory(at: workspaceURL.appendingPathComponent("\(tweak.rawValue)"), includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
@@ -278,21 +253,6 @@ func applyTweaks() {
     generateBackup()
     
     // Restore files
-    #if CLI
-    guard let exec = Bundle.module.url(forResource: "WINidevicebackup2", withExtension: "exe") else {
-        Logger.shared.logMe("Error locating idevicebackup2")
-        return
-    }
-    guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
-        Logger.shared.logMe("Error getting current UUID")
-        return
-    }
-    do {
-        try execute(exec, arguments:["-u", currentUUID, "-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
-    } catch {
-        Logger.shared.logMe("Error restoring to device")
-    }
-    #else
     guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
         Logger.shared.logMe("Error locating idevicebackup2")
         return
@@ -306,7 +266,95 @@ func applyTweaks() {
     } catch {
         Logger.shared.logMe("Error restoring to device")
     }
-    #endif
+}
+
+// MARK: Remove Tweaks
+func removeTweaks(deepClean: Bool) {
+    Logger.shared.logMe("Copying restore files...")
+    
+    // Set the source directory path (assuming it's located in the binary directory)
+    guard let sourceDir = Bundle.main.url(forResource: "restore\(deepClean ? "-deepclean" : "")", withExtension: nil) else {
+        Logger.shared.logMe("Error finding resource \"restore\(deepClean ? "-deepclean" : "")\"")
+        return
+    }
+    
+    // Erase backup folder
+    let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
+    if fm.fileExists(atPath: enabledTweaksDirectory.path) {
+        do {
+            let fileURLs = try fm.contentsOfDirectory(at: enabledTweaksDirectory, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+        } catch {
+            Logger.shared.logMe("Error removing contents of EnabledTweaks directory")
+            return
+        }
+    } else {
+        do {
+            try fm.createDirectory(at: enabledTweaksDirectory, withIntermediateDirectories: false)
+        } catch {
+            Logger.shared.logMe("Error creating EnabledTweaks directory")
+            return
+        }
+    }
+    
+    // Add files to the enabled tweaks directory
+    do {
+        let files = try fm.contentsOfDirectory(at: sourceDir, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        for file in files {
+            let newURL = enabledTweaksDirectory.appendingPathComponent(file.lastPathComponent)
+            if !FileManager.default.fileExists(atPath: newURL.path) {
+                try FileManager.default.copyItem(at: file, to: newURL)
+            } else {
+                Logger.shared.logMe("WARNING: File exists at path \"\(newURL.path)\", skipping")
+                continue
+            }
+        }
+    } catch {
+        Logger.shared.logMe("Error adding files to EnabledTweaks directory: \(error.localizedDescription)")
+        return
+    }
+    
+    let backupDirectory = documentsDirectory.appendingPathComponent("Backup")
+    if fm.fileExists(atPath: backupDirectory.path) {
+        do {
+            let fileURLs = try fm.contentsOfDirectory(at: backupDirectory, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+        } catch {
+            Logger.shared.logMe("Error removing contents of Backup directory")
+            return
+        }
+    } else {
+        do {
+            try fm.createDirectory(at: backupDirectory, withIntermediateDirectories: false)
+        } catch {
+            Logger.shared.logMe("Error creating Backup directory")
+            return
+        }
+    }
+    
+    // Generate backup
+    Logger.shared.logMe("Generating backup...")
+    generateBackup()
+    
+    // Restore files
+    Logger.shared.logMe("Restoring backup to device...")
+    guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
+        Logger.shared.logMe("Error locating idevicebackup2")
+        return
+    }
+    guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+        Logger.shared.logMe("Error getting current UUID")
+        return
+    }
+    do {
+        try execute(exec, arguments:["-u", currentUUID, "-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
+    } catch {
+        Logger.shared.logMe("Error restoring to device")
+    }
 }
 
 func fixStringBug(_ str: String) -> String {
@@ -319,7 +367,6 @@ func fixStringBug(_ str: String) -> String {
 }
 
 func getDevices() -> [Device] {
-    let workspaceDirectory = documentsDirectory.appendingPathComponent("Workspace")
     if !fm.fileExists(atPath: documentsDirectory.path) {
         do {
             try fm.createDirectory(atPath: documentsDirectory.path, withIntermediateDirectories: false, attributes: nil)
@@ -329,11 +376,7 @@ func getDevices() -> [Device] {
             return []
         }
     }
-    #if CLI
-    guard let exec = Bundle.module.url(forResource: "WINidevice_id", withExtension: "exe") else { return [] }
-    #else
     guard let exec = Bundle.main.url(forResource: "idevice_id", withExtension: "") else { return [] }
-    #endif
     do {
         let devices = try executeWIN(exec, arguments:["-l"], workingDirectory: documentsDirectory) // array of UUIDs
         if devices.contains("ERROR") {
@@ -344,18 +387,6 @@ func getDevices() -> [Device] {
         
         var deviceStructs: [Device] = []
         for d in devicesArr {
-            #if CLI
-            guard let exec2 = Bundle.module.url(forResource: "WINidevicename", withExtension: "exe") else { continue }
-            let deviceName = try executeWIN(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            guard let exec3 = Bundle.module.url(forResource: "WINideviceinfo", withExtension: "exe") else { continue }
-            let deviceVersion = try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductVersion"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
-            let ipad: Bool = (try executeWIN(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "") != "iPhone OS")
-            let device = Device(uuid: String(d), name: deviceName, version: deviceVersion, ipad: ipad)
-            if let _ = Int(device.version.split(separator: ".")[0]) {
-                deviceStructs.append(device)
-            }
-            
-            #else
             guard let exec2 = Bundle.main.url(forResource: "idevicename", withExtension: "") else { continue }
             let deviceName = try execute2(exec2, arguments:["-u", String(d)], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
             if deviceName.contains("ERROR") {
@@ -368,6 +399,8 @@ func getDevices() -> [Device] {
                 Logger.shared.logMe("ideviceinfo: \(deviceVersion)")
                 continue
             }
+            let deviceType = try execute2(exec3, arguments:["-u", String(d), "-k", "ProductType"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "")
+            Logger.shared.logMe("> Connected to \(deviceType) on iOS \(deviceVersion).")
             let ipad: Bool = !(try execute2(exec3, arguments:["-u", String(d), "-k", "ProductName"], workingDirectory: documentsDirectory).replacingOccurrences(of: "\n", with: "").contains("iPhone OS"))
             let device = Device(uuid: String(d), name: fixStringBug(deviceName), version: deviceVersion, ipad: ipad)
             if let _ = Int(device.version.split(separator: ".")[0]) {
@@ -379,7 +412,6 @@ func getDevices() -> [Device] {
                     deviceStructs.append(newDevice)
                 }
             }
-            #endif
         }
         return deviceStructs
     } catch {

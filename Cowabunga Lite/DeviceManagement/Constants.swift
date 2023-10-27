@@ -26,14 +26,14 @@ struct Device {
 }
 
 enum Tweak: String {
-    case footnote = "Footnote"
-    case statusBar = "StatusBar"
-    case springboardOptions = "SpringboardOptions"
-    case skipSetup = "SkipSetup"
+    case operations = "AppliedOperations"
     case themes = "AppliedTheme"
-    case dynamicIsland = "DynamicIsland"
+    case statusBar = "StatusBar"
     case controlCenter = "ControlCenter"
+    case springboardOptions = "SpringboardOptions"
     case internalOptions = "InternalOptions"
+    case skipSetup = "SkipSetup"
+    case otaKiller = "OTAKiller"
     case testing = "Testing"
     case none = "None"
 }

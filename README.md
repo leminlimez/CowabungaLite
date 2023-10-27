@@ -2,10 +2,14 @@
 # Cowabunga Lite
 A jailed customization toolbox for iOS 15+ on all devices.
 
+Official Website Here: https://cowabun.ga/
+
+**iOS 17.2+ Users:** Please be careful after using. If you see a screen showing "iPhone Partially Set Up", **click the button that says "Continue with Partial Setup"**, otherwise your phone's data will be erased!
+
 Please back up your devices before using this software! We are not responsible for damage to your device. **If you see the data transferring screen, you __MUST__ select Do Not Transfer Apps and Data**
 
 Join the [Discord](https://discord.gg/Cowabunga) for additional support and sneak peaks.
-Support us on [Patreon](https://patreon.com/Cowabunga_iOS) to be featured in the home screen and to get access to exclusive private beta builds!
+Feel free to support my work on [Ko-Fi](https://ko-fi.com/leminlimez).
 
 ## Requirements
 - A Mac running MacOS 11.0 (Big Sur) or higher (Can be a virtual machine/hackintosh)
@@ -17,6 +21,8 @@ Support us on [Patreon](https://patreon.com/Cowabunga_iOS) to be featured in the
 Simply download the .zip that is for your MacOS version and run the app. Plug in your phone and start tweaking!
 
 ## Features
+- Location Changer (iOS 16-)
+
 - WebClip Icon Theming
     - No Banner or Redirects!
     - Importing folders of app icons
@@ -143,3 +149,4 @@ Cowabunga Lite applies tweaks by creating a partial restore of only the files be
 - [TrollTools](https://github.com/sourcelocation/TrollTools) for icon theming UI and keys for some springboard options.
 - [SourceLocation](https://github.com/sourcelocation) for explore page code.
 - [Cowabunga](https://github.com/leminlimez/Cowabunga) for part of the code and UI.
+- [iOS 15-16 disk images](https://github.com/mspvirajpatel/Xcode_Developer_Disk_Images)

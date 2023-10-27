@@ -16,8 +16,69 @@ struct AppOption: Identifiable {
     var changed: Bool = false
 }
 
-struct ListOfAppsView: View {
+struct AppsListScrollView: View {
     var gridItemLayout = [GridItem(.adaptive(minimum: 80))]
+    
+    @Binding var apps: [AppOption]
+    @Binding var viewType: Int
+    @Binding var currentApp: AppOption
+    
+    @Binding var searchTerm: String
+    
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: gridItemLayout, spacing: 7) {
+                ForEach($apps) { app in
+                    if searchTerm == "" || app.name.wrappedValue.lowercased().contains(searchTerm.lowercased()) {
+                        NiceButton(text: AnyView(
+                            ZStack {
+                                VStack {
+                                    if app.themedIcon.wrappedValue != nil, let img = NSImage(data: app.themedIcon.wrappedValue!) {
+                                        Image(nsImage: img)
+                                            .resizable()
+                                            .frame(width: 65, height: 65)
+                                            .cornerRadius(15)
+                                    } else {
+                                        Rectangle()
+                                            .frame(width: 65, height: 65)
+                                            .cornerRadius(15)
+                                    }
+                                    Text(app.name.wrappedValue)
+                                }
+                                
+                                HStack {
+                                    Spacer()
+                                    VStack {
+                                        if app.changed.wrappedValue {
+                                            ZStack {
+                                                Image(systemName: "gearshape.fill")
+                                                    .foregroundColor(.white)
+                                                    .font(.system(size: 25, weight: .bold))
+                                                Image(systemName: "gearshape")
+                                                    .foregroundColor(.black)
+                                                    .font(.system(size: 25, weight: .bold))
+                                            }
+                                            .offset(x: 8, y: -8)
+                                        }
+                                        Spacer()
+                                    }
+                                }
+                            }
+                                .frame(height: 90)
+                        ), action: {
+                            currentApp = app.wrappedValue
+                            viewType = 2
+                        })
+                        .padding(5)
+                    }
+                }
+            }
+            .padding(.horizontal, 10)
+        }
+    }
+}
+
+struct ListOfAppsView: View {
     @StateObject var themeManager = ThemingManager.shared
     
     @State var apps: [AppOption] = []
@@ -26,6 +87,8 @@ struct ListOfAppsView: View {
     @Binding var currentApp: AppOption
     
     @State var loaded: Bool = false
+    
+    @State var searchTerm: String = ""
     
     var body: some View {
         VStack {
@@ -48,52 +111,11 @@ struct ListOfAppsView: View {
                         Spacer()
                     }
                 } else {
-                    ScrollView {
-                        LazyVGrid(columns: gridItemLayout, spacing: 7) {
-                            ForEach($apps) { app in
-                                NiceButton(text: AnyView(
-                                    ZStack {
-                                        VStack {
-                                            if app.themedIcon.wrappedValue != nil, let img = NSImage(data: app.themedIcon.wrappedValue!) {
-                                                Image(nsImage: img)
-                                                    .resizable()
-                                                    .frame(width: 65, height: 65)
-                                                    .cornerRadius(15)
-                                            } else {
-                                                Rectangle()
-                                                    .frame(width: 65, height: 65)
-                                                    .cornerRadius(15)
-                                            }
-                                            Text(app.name.wrappedValue)
-                                        }
-                                        
-                                        HStack {
-                                            Spacer()
-                                            VStack {
-                                                if app.changed.wrappedValue {
-                                                    ZStack {
-                                                        Image(systemName: "gearshape.fill")
-                                                            .foregroundColor(.white)
-                                                            .font(.system(size: 25, weight: .bold))
-                                                        Image(systemName: "gearshape")
-                                                            .foregroundColor(.black)
-                                                            .font(.system(size: 25, weight: .bold))
-                                                    }
-                                                    .offset(x: 8, y: -8)
-                                                }
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                        .frame(height: 90)
-                                ), action: {
-                                    currentApp = app.wrappedValue
-                                    viewType = 2
-                                })
-                                .padding(5)
-                            }
-                        }
-                        .padding(.horizontal, 10)
+                    if #available(macOS 12, *) {
+                        AppsListScrollView(apps: $apps, viewType: $viewType, currentApp: $currentApp, searchTerm: $searchTerm)
+                            .searchable(text: $searchTerm)
+                    } else {
+                        AppsListScrollView(apps: $apps, viewType: $viewType, currentApp: $currentApp, searchTerm: $searchTerm)
                     }
                 }
             } else {

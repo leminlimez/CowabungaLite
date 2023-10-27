@@ -1,0 +1,106 @@
+#pragma once
+
+#include <fstream>
+#include <cstring>
+
+class StatusSetter {
+public:
+    virtual bool isCarrierOverridden() = 0;
+    virtual std::string getCarrierOverride() = 0;
+    virtual void setCarrier(const std::string text) = 0;
+    virtual void unsetCarrier() = 0;
+    // virtual bool isSecondaryCarrierOverridden() = 0;
+    // virtual std::string getSecondaryCarrierOverride() = 0;
+    // virtual void setSecondaryCarrier(const std::string& text) = 0;
+    // virtual void unsetSecondaryCarrier() = 0;
+    // virtual bool isPrimaryServiceBadgeOverridden() = 0;
+    // virtual std::string getPrimaryServiceBadgeOverride() = 0;
+    // virtual void setPrimaryServiceBadge(const std::string& text) = 0;
+    // virtual void unsetPrimaryServiceBadge() = 0;
+    // virtual bool isSecondaryServiceBadgeOverridden() = 0;
+    // virtual std::string getSecondaryServiceBadgeOverride() = 0;
+    // virtual void setSecondaryServiceBadge(const std::string& text) = 0;
+    // virtual void unsetSecondaryServiceBadge() = 0;
+    // virtual bool isDateOverridden() = 0;
+    // virtual std::string getDateOverride() = 0;
+    // virtual void setDate(const std::string& text) = 0;
+    // virtual void unsetDate() = 0;
+    // virtual bool isTimeOverridden() = 0;
+    // virtual std::string getTimeOverride() = 0;
+    // virtual void setTime(const std::string& text) = 0;
+    // virtual void unsetTime() = 0;
+    // virtual bool isBatteryDetailOverridden() = 0;
+    // virtual std::string getBatteryDetailOverride() = 0;
+    // virtual void setBatteryDetail(const std::string& text) = 0;
+    // virtual void unsetBatteryDetail() = 0;
+    // virtual bool isCrumbOverridden() = 0;
+    // virtual std::string getCrumbOverride() = 0;
+    // virtual void setCrumb(const std::string& text) = 0;
+    // virtual void unsetCrumb() = 0;
+    // virtual bool isCellularServiceOverridden() = 0;
+    // virtual bool getCellularServiceOverride() = 0;
+    // virtual void setCellularService(bool val) = 0;
+    // virtual void unsetCellularService() = 0;
+    // virtual bool isSecondaryCellularServiceOverridden() = 0;
+    // virtual bool getSecondaryCellularServiceOverride() = 0;
+    // virtual void setSecondaryCellularService(bool val) = 0;
+    // virtual void unsetSecondaryCellularService() = 0;
+    // virtual bool isDataNetworkTypeOverridden() = 0;
+    // virtual int getDataNetworkTypeOverride() = 0;
+    // virtual void setDataNetworkType(int identifier) = 0;
+    // virtual void unsetDataNetworkType() = 0;
+    // virtual bool isSecondaryDataNetworkTypeOverridden() = 0;
+    // virtual int getSecondaryDataNetworkTypeOverride() = 0;
+    // virtual void setSecondaryDataNetworkType(int identifier) = 0;
+    // virtual void unsetSecondaryDataNetworkType() = 0;
+    // virtual bool isBatteryCapacityOverridden() = 0;
+    // virtual int getBatteryCapacityOverride() = 0;
+    // virtual void setBatteryCapacity(int capacity) = 0;
+    // virtual void unsetBatteryCapacity() = 0;
+    // virtual bool isWiFiSignalStrengthBarsOverridden() = 0;
+    // virtual int getWiFiSignalStrengthBarsOverride() = 0;
+    // virtual void setWiFiSignalStrengthBars(int strength) = 0;
+    // virtual void unsetWiFiSignalStrengthBars() = 0;
+    // virtual bool isGsmSignalStrengthBarsOverridden() = 0;
+    // virtual int getGsmSignalStrengthBarsOverride() = 0;
+    // virtual void setGsmSignalStrengthBars(int strength) = 0;
+    // virtual void unsetGsmSignalStrengthBars() = 0;
+    // virtual bool isSecondaryGsmSignalStrengthBarsOverridden() = 0;
+    // virtual int getSecondaryGsmSignalStrengthBarsOverride() = 0;
+    // virtual void setSecondaryGsmSignalStrengthBars(int strength) = 0;
+    // virtual void unsetSecondaryGsmSignalStrengthBars() = 0;
+    // virtual bool isDisplayingRawWiFiSignal() = 0;
+    // virtual void displayRawWifiSignal(bool displaying) = 0;
+    // virtual bool isDisplayingRawGSMSignal() = 0;
+    // virtual void displayRawGSMSignal(bool displaying) = 0;
+    // virtual bool isDNDHidden() = 0;
+    // virtual void hideDND(bool hidden) = 0;
+    // virtual bool isAirplaneHidden() = 0;
+    // virtual void hideAirplane(bool hidden) = 0;
+    // virtual bool isCellHidden() = 0;
+    // virtual void hideCell(bool hidden) = 0;
+    // virtual bool isWiFiHidden() = 0;
+    // virtual void hideWiFi(bool hidden) = 0;
+    virtual bool isBatteryHidden() = 0;
+    virtual void hideBattery(bool hidden) = 0;
+    // virtual bool isBluetoothHidden() = 0;
+    // virtual void hideBluetooth(bool hidden) = 0;
+    // virtual bool isAlarmHidden() = 0;
+    // virtual void hideAlarm(bool hidden) = 0;
+    // virtual bool isLocationHidden() = 0;
+    // virtual void hideLocation(bool hidden) = 0;
+    // virtual bool isRotationHidden() = 0;
+    // virtual void hideRotation(bool hidden) = 0;
+    // virtual bool isAirPlayHidden() = 0;
+    // virtual void hideAirPlay(bool hidden) = 0;
+    // virtual bool isCarPlayHidden() = 0;
+    // virtual void hideCarPlay(bool hidden) = 0;
+    // virtual bool isVPNHidden() = 0;
+    // virtual void hideVPN(bool hidden) = 0;
+    // virtual bool isMicrophoneUseHidden() = 0;
+    // virtual void hideMicrophoneUse(bool hidden) = 0;
+    // virtual bool isCameraUseHidden() = 0;
+    // virtual void hideCameraUse(bool hidden) = 0;
+
+    virtual ~StatusSetter() {}
+};

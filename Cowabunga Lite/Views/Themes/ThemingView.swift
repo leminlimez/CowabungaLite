@@ -51,7 +51,7 @@ struct ThemingView: View {
                             Spacer()
                         }
                         HStack {
-                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
+                            Toggle("Modify", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
                                 DataSingleton.shared.setTweakEnabled(.themes, isEnabled: nv)
                             }).onAppear(perform: {
                                 enableTweak = DataSingleton.shared.isTweakEnabled(.themes)
@@ -73,6 +73,8 @@ struct ThemingView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
+            
             if dataSingleton.deviceAvailable {
                 Group {
                     if (themeManager.themes.count == 0) {
@@ -120,16 +122,8 @@ struct ThemingView: View {
                             HStack {
                                 Text("Overlays")
                                     .bold()
-                                ZStack {
-                                    Rectangle()
-                                        .cornerRadius(50)
-                                        .foregroundColor(.blue)
-                                        .frame(maxWidth: 50)
-                                    Text("Beta")
-                                        .foregroundColor(.white)
-                                }
                             }
-                            LazyVGrid(columns: overlayGridItemLayout, spacing: 20) {
+                            LazyVGrid(columns: overlayGridItemLayout, spacing: 25) {
                                 ForEach(overlays) { ov in
                                     NiceButton(text: AnyView(
                                         VStack {
@@ -217,6 +211,7 @@ struct ThemingView: View {
 //                        ), action: {})
 //                    }
                 }.disabled(!enableTweak)
+                    .hideSeparator()
             }
         }
         .disabled(!dataSingleton.deviceAvailable)

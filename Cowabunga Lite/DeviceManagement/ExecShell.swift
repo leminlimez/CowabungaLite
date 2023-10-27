@@ -36,10 +36,9 @@ func execute(_ execURL: URL, arguments: [String] = [], workingDirectory: URL? = 
     
     let bundlePath = Bundle.main.bundlePath
     let frameworksPath = (bundlePath as NSString).appendingPathComponent("Contents/Frameworks")
-    #if !CLI
+    
     let environment = ["DYLD_LIBRARY_PATH": frameworksPath]
     task.environment = environment
-    #endif
 
     task.executableURL = execURL
     task.arguments = arguments
@@ -62,10 +61,9 @@ func execute2(_ execURL: URL, arguments: [String] = [], workingDirectory: URL? =
     
     let bundlePath = Bundle.main.bundlePath
     let frameworksPath = (bundlePath as NSString).appendingPathComponent("Contents/Frameworks")
-    #if !CLI
+    
     let environment = ["DYLD_LIBRARY_PATH": frameworksPath]
     task.environment = environment
-    #endif
 
     task.executableURL = execURL
     task.arguments = arguments
@@ -86,11 +84,6 @@ func executeWIN(_ execURL: URL, arguments: [String] = [], workingDirectory: URL?
     let pipe = Pipe()
     task.standardOutput = pipe
     task.standardError = pipe
-    
-    let bundlePath = Bundle.main.bundlePath
-    let frameworksPath = (bundlePath as NSString).appendingPathComponent("Contents/Frameworks")
-    // let environment = ["DYLD_LIBRARY_PATH": frameworksPath]
-    // task.environment = environment
 
     task.executableURL = execURL
     task.arguments = arguments

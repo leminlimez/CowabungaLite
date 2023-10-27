@@ -14,26 +14,33 @@ class MainUtils {
         case focus = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.FocusUIModule.plist"
         case spoken = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.siri.SpokenNotificationsModule.plist"
         case moduleConfig = "ControlCenter/HomeDomain/Library/ControlCenter/ModuleConfiguration.plist"
+        case replayKitAudio = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.AudioConferenceControlCenterModule.plist"
+        case replayKitVideo = "ControlCenter/ManagedPreferencesDomain/mobile/com.apple.replaykit.VideoConferenceControlCenterModule.plist"
         
         // Springboard Options
         case springboard = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.springboard.plist"
         case footnote = "SpringboardOptions/ConfigProfileDomain/Library/ConfigurationProfiles/SharedDeviceConfiguration.plist"
         case wifi = "SpringboardOptions/SystemPreferencesDomain/SystemConfiguration/com.apple.wifi.plist"
-        case uikit = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.UIKit.plist"
-        case accessibility = "SpringboardOptions/HomeDomain/Library/Preferences/com.apple.Accessibility.plist"
+        case uikit = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.UIKit.plist"
+        case accessibility = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.Accessibility.plist"
         case wifiDebug = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.MobileWiFi.debug.plist"
         case airdrop = "SpringboardOptions/ManagedPreferencesDomain/mobile/com.apple.sharingd.plist"
         
         // Internal Options
         case globalPreferences = "InternalOptions/ManagedPreferencesDomain/mobile/hiddendotGlobalPreferences.plist"
-        case appStore = "InternalOptions/HomeDomain/Library/Preferences/com.apple.AppStore.plist"
-        case notes = "InternalOptions/HomeDomain/Library/Preferences/com.apple.mobilenotes.plist"
+        case appStore = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.AppStore.plist"
+        case backboardd = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.backboardd.plist"
+        case coreMotion = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.CoreMotion.plist"
+        case pasteboard = "InternalOptions/HomeDomain/Library/Preferences/com.apple.Pasteboard.plist"
+        case notes = "InternalOptions/ManagedPreferencesDomain/mobile/com.apple.mobilenotes.plist"
         case maps = "InternalOptions/AppDomain-com.apple.Maps/Library/Preferences/com.apple.Maps.plist"
         case weather = "InternalOptions/AppDomain-com.apple.weather/Library/Preferences/com.apple.weather.plist"
         
         // Setup Options
         case skipSetup = "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
-        case ota = "SkipSetup/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
+        
+        // OTA Killer
+        case ota = "OTAKiller/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
     }
     
     struct ToggleOption: Identifiable {
@@ -42,6 +49,7 @@ class MainUtils {
         var name: String
         var fileLocation: FileLocation
         var value: Bool = false
+        var invertValue: Bool = false
         var dividerBelow: Bool = false
     }
     
@@ -73,70 +81,6 @@ class MainUtils {
         return newArray
     }
     
-    // Load the preferences
-    #if CLI
-    public static func loadPreferences() {
-        if let workspace = DataSingleton.shared.getCurrentWorkspace() {
-            // Icon Theming
-            IconThemingPage.loadPreferences()
-            
-            // Control Center
-            for (i, module) in moduleTypes.enumerated() {
-                do {
-                    guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(module.fileLocation.rawValue) else { continue }
-                    moduleTypes[i].value =  try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility") as? Bool ?? false
-                } catch {
-                    
-                }
-            }
-            do {
-                if let filePath = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.moduleConfig.rawValue) {
-                    if FileManager.default.fileExists(atPath: filePath.path) {
-                        let plistData = try Data(contentsOf: filePath)
-                        let plist = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any]
-                        if let pIdentifier = plist["preset-identifiers"] as? [String: Any], let pID = pIdentifier["identification"] as? String {
-                            selectedCCPreset = pID
-                        } else {
-                            selectedCCPreset = "None"
-                        }
-                    }
-                }
-            } catch {
-                print(error.localizedDescription)
-                selectedCCPreset = "None"
-            }
-            
-            // Springboard Options
-            sbOptions = loadToggles(from: sbOptions, workspace: workspace)
-            do {
-                sbAnimationSpeed = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.uikit.rawValue), key: "UIAnimationDragCoefficient") as? Double ?? 1
-            } catch {
-
-            }
-            do {
-                sbLockScreenFootnote = try PlistManager.getPlistValues(url: workspace.appendingPathComponent(FileLocation.footnote.rawValue), key: "LockScreenFootnote") as? String ?? ""
-            } catch {
-
-            }
-            
-            // Internal Options
-            internalOptions = loadToggles(from: internalOptions, workspace: workspace)
-
-            // Setup Options
-            for (i, opt) in skipSetupOptions.enumerated() {
-                if opt.key == "Skip" {
-                    skipSetupOptions[i].value = getSkipSetupEnabled()
-                } else if opt.key == "OTA" {
-                    skipSetupOptions[i].value = getOTABlocked()
-                } else if opt.key == "Supervision" {
-                    skipSetupOptions[i].value = getSupervisionEnabled()
-                }
-            }
-            skipSetupOrganizationName = getOrganizationName()
-        }
-    }
-    #endif
-    
     // Apply a toggle
     public static func applyToggle(index: Int, value: Bool, tweak: Tweak) {
         var key: String = ""
@@ -165,7 +109,8 @@ class MainUtils {
                     if value == true {
                         try PropertyListSerialization.data(fromPropertyList: ["DiscoverableMode": "Everyone"], format: .xml, options: 0).write(to: plistURL)
                     } else {
-                        try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: plistURL)
+                        let plist: [String: String] = [:] // just to stop the annoying warning
+                        try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0).write(to: plistURL)
                     }
                 } else {
                     try PlistManager.setPlistValues(url: plistURL, values: [
@@ -186,12 +131,6 @@ class MainUtils {
         .init(key: "3", name: "Siri Spoken Notifications Module", fileLocation: .spoken)
     ]
     public static var selectedCCPreset: String = "None"
-    #if CLI
-    public static let ccPresets: [ConfigPreset] = [
-        .init(title: "Revert to Original", identification: "RevertCC", fileLocation: Bundle.module.url(forResource: "RevertCC", withExtension: ".plist"), modulesToEnable: []),
-        .init(title: "Default", identification: "DefaultCC", fileLocation: Bundle.module.url(forResource: "DefaultCC", withExtension: ".plist"), modulesToEnable: [2])
-    ]
-    #endif
     
     public static func setModuleVisibility(key: Int, _ nv: Bool) {
         for (i, module) in moduleTypes.enumerated() {
@@ -251,10 +190,12 @@ class MainUtils {
         .init(key: "SBDontLockAfterCrash", name: "Disable Lock After Respring", fileLocation: .springboard),
         .init(key: "SBDontDimOrLockOnAC", name: "Disable Screen Dimming While Charging", fileLocation: .springboard),
         .init(key: "SBHideLowPowerAlerts", name: "Disable Low Battery Alerts", fileLocation: .springboard),
-        .init(key: "SBControlCenterEnabledInLockScreen", name: "CC Enabled on Lock Screen", fileLocation: .springboard),
-        .init(key: "StartupSoundEnabled", name: "Shutdown Sound", fileLocation: .accessibility),
+        .init(key: "SBNeverBreadcrumb", name: "Disable Breadcrumb", fileLocation: .springboard),
+        .init(key: "SBShowSupervisionTextOnLockScreen", name: "Show Supervision Text on Lock Screen", fileLocation: .springboard),
+        .init(key: "CCSPresentationGesture", name: "Disable CC Presentation Gesture", fileLocation: .springboard, invertValue: true, dividerBelow: true),
+        .init(key: "StartupSoundEnabled", name: "Play Sound on Shutdown", fileLocation: .accessibility),
         .init(key: "WiFiManagerLoggingEnabled", name: "Show WiFi Debugger", fileLocation: .wifiDebug),
-        .init(key: "DiscoverableMode", name: "Set Airdrop to Everyone", fileLocation: .airdrop)
+        .init(key: "DiscoverableMode", name: "Permanently Allow Receiving AirDrop from Everyone", fileLocation: .airdrop)
     ]
     public static var sbAnimationSpeed: Double = 1
     public static var sbLockScreenFootnote: String = ""
@@ -294,15 +235,20 @@ class MainUtils {
     
     // MARK: Internal Options
     public static var internalOptions: [ToggleOption] = [
-        .init(key: "UIStatusBarShowBuildVersion", name: "Build Version in Status Bar", fileLocation: .globalPreferences),
-        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right to Left", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "MetalForceHudEnabled", name: "Force Metal HUD Debug", fileLocation: .globalPreferences),
-        .init(key: "AccessoryDeveloperEnabled", name: "Accessory Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "iMessageDiagnosticsEnabled", name: "iMessage Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "IDSDiagnosticsEnabled", name: "IDS Diagnostics", fileLocation: .globalPreferences),
-        .init(key: "VCDiagnosticsEnabled", name: "VC Diagnostics", fileLocation: .globalPreferences, dividerBelow: true),
-        .init(key: "debugGestureEnabled", name: "App Store Debug Gesture", fileLocation: .appStore),
-        .init(key: "DebugModeEnabled", name: "Notes App Debug Mode", fileLocation: .notes)
+        .init(key: "UIStatusBarShowBuildVersion", name: "Show Build Version in Status Bar", fileLocation: .globalPreferences),
+        .init(key: "NSForceRightToLeftWritingDirection", name: "Force Right-to-Left Layout", fileLocation: .globalPreferences, dividerBelow: true),
+        .init(key: "MetalForceHudEnabled", name: "Enable Metal HUD Debug", fileLocation: .globalPreferences),
+        .init(key: "AccessoryDeveloperEnabled", name: "Enable Accessory Debugging", fileLocation: .globalPreferences),
+        .init(key: "iMessageDiagnosticsEnabled", name: "Enable iMessage Debugging", fileLocation: .globalPreferences),
+        .init(key: "IDSDiagnosticsEnabled", name: "Enable Continuity Debugging", fileLocation: .globalPreferences),
+        .init(key: "VCDiagnosticsEnabled", name: "Enable FaceTime Debugging", fileLocation: .globalPreferences, dividerBelow: true),
+        .init(key: "debugGestureEnabled", name: "Enable App Store Debug Gesture", fileLocation: .appStore),
+        .init(key: "DebugModeEnabled", name: "Enable Notes App Debug Mode", fileLocation: .notes, dividerBelow: true),
+        .init(key: "BKDigitizerVisualizeTouches", name: "Show Touches With Debug Info", fileLocation: .backboardd),
+        .init(key: "BKHideAppleLogoOnLaunch", name: "Hide Respring Icon", fileLocation: .backboardd),
+        .init(key: "EnableWakeGestureHaptic", name: "Vibrate on Raise-to-Wake", fileLocation: .coreMotion, dividerBelow: true),
+        .init(key: "PlaySoundOnPaste", name: "Play Sound on Paste", fileLocation: .pasteboard),
+        .init(key: "AnnounceAllPastes", name: "Show Notifications for System Pastes", fileLocation: .pasteboard),
     ]
     
     
@@ -362,9 +308,10 @@ class MainUtils {
             }
         } else {
             do {
+                let skipSetupList: [Any] = [] // just to stop the annoying warning
                 try PlistManager.setPlistValues(url: plistURL, values: [
                     "CloudConfigurationUIComplete": false,
-                    "SkipSetup": []
+                    "SkipSetup": skipSetupList
                 ])
             } catch {
                 Logger.shared.logMe(error.localizedDescription)
@@ -421,7 +368,8 @@ class MainUtils {
                     Logger.shared.logMe("Error finding MobileAsset plist")
                     return
                 }
-                let newData = try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0)
+                let plist: [String: String] = [:] // just to stop the annoying warning
+                let newData = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
                 try newData.write(to: plistURL)
             } catch {
                 Logger.shared.logMe("Error enabling ota preferences: \(error.localizedDescription)")

@@ -14,7 +14,6 @@ struct SupervisionView: View {
     @State private var supervisionEnabled = false
     @State private var managedCompanyName = ""
     @State private var enableTweak = false
-    @State private var otaDisabled = false
     
     var body: some View {
         List {
@@ -31,7 +30,7 @@ struct SupervisionView: View {
                             Spacer()
                         }
                         HStack {
-                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
+                            Toggle("Modify", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
                                 DataSingleton.shared.setTweakEnabled(.skipSetup, isEnabled: nv)
                             }).onAppear(perform: {
                                 enableTweak = DataSingleton.shared.isTweakEnabled(.skipSetup)
@@ -42,6 +41,8 @@ struct SupervisionView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
+            
             if dataSingleton.deviceAvailable {
                 Group {
                     // MARK: Skipping Setup
@@ -50,18 +51,6 @@ struct SupervisionView: View {
                     }).onAppear(perform: {
                         skipSetup = MainUtils.getSkipSetupEnabled()
                     })
-                    
-                    // MARK: OTA Killer
-                    Toggle(isOn: $otaDisabled) {
-                        Text("Disable OTA Updates")
-                            .minimumScaleFactor(0.5)
-                            .onChange(of: otaDisabled, perform: { nv in
-                                MainUtils.setOTABlocked(nv)
-                            })
-                            .onAppear {
-                                otaDisabled = MainUtils.getOTABlocked()
-                            }
-                    }
                     
                     // MARK: Supervision
                     Toggle("Enable Supervision", isOn: $supervisionEnabled).onChange(of: supervisionEnabled, perform: { nv in
@@ -75,6 +64,7 @@ struct SupervisionView: View {
                         managedCompanyName = MainUtils.getOrganizationName()
                     })
                 }.disabled(!enableTweak)
+                    .hideSeparator()
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
