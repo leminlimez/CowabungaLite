@@ -7,7 +7,7 @@ A jailed customization toolbox for iOS 15+ on all devices.
 Please back up your devices before using this software! We are not responsible for damage to your device. **If you see the data transferring screen, you __MUST__ select Do Not Transfer Apps and Data**
 
 Join the [Discord](https://discord.gg/Cowabunga) for additional support and sneak peaks.
-Support us on [Patreon](https://patreon.com/Cowabunga_iOS) to be featured in the home screen and to get access to exclusive private beta builds!
+Feel free to support my work on [Ko-Fi](https://ko-fi.com/leminlimez).
 
 ## Requirements
 - A Mac running MacOS 11.0 (Big Sur) or higher (Can be a virtual machine/hackintosh)
