@@ -1,4 +1,4 @@
-![Artboard](https://github.com/leminlimez/CowabungaLite/blob/14df17c1086d9a21fae29aacdeba12fb608338b4/Cowabunga%20Lite/Assets.xcassets/AppIcon.appiconset/icon_128x128.png)
+![Artboard](https://github.com/leminlimez/CowabungaLite/blob/2d9a503ad4f60b3cbbb5736cfbaa39b833c85c76/Cowabunga%20Lite/Assets.xcassets/AppIcon.appiconset/128-icon.png)
 # Cowabunga Lite
 A jailed customization toolbox for iOS 15+ on all devices.
 
