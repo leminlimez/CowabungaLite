@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "sstream": "c",
+        "libimobiledevice.h": "c",
+        "plist.h": "c"
+    }
+}

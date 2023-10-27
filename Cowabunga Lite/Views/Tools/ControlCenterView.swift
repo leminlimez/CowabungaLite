@@ -12,6 +12,9 @@ struct ControlCenterView: View {
     @State private var currentCC: String = "None"
     @StateObject private var dataSingleton = DataSingleton.shared
     
+    @State private var replayKitAudioPref = 1
+    @State private var replayKitVideoPref = 1
+    
     var gridItemLayout = [GridItem(.adaptive(minimum: 110))]
     
     private struct ModuleType: Identifiable {
@@ -56,7 +59,7 @@ struct ControlCenterView: View {
                             Spacer()
                         }
                         HStack {
-                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
+                            Toggle("Modify", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
                                 DataSingleton.shared.setTweakEnabled(.controlCenter, isEnabled: nv)
                             }).onAppear(perform: {
                                 enableTweak = DataSingleton.shared.isTweakEnabled(.controlCenter)
@@ -67,6 +70,7 @@ struct ControlCenterView: View {
                 }
                 Divider()
             }
+            .hideSeparator()
             
             if dataSingleton.deviceAvailable {
                 Group {
@@ -89,8 +93,120 @@ struct ControlCenterView: View {
                             Text("You must go into Settings and organize them manually.")
                             Spacer()
                         }
+                        .padding(.bottom, 5)
+                        HStack {
+                            Text("iOS 17 Users: ")
+                                .bold()
+                            Text("Due to changes in the OS, this feature may not work as intended.")
+                            Spacer()
+                        }
                         Divider()
                     }
+                    
+                    // bad code below but i am lazy
+                    // MARK: Audio Replay Kit Button
+                    Text("Audio Replay Kit Button Visibility")
+                    Picker(selection: $replayKitAudioPref, label: Text("")) {
+                        Text("Default").tag(1)
+                        Text("Always Show").tag(2)
+                        Text("Always Hide").tag(3)
+                    }
+                    .pickerStyle(.radioGroup)
+                    .horizontalRadioGroupLayout()
+                    .onChange(of: replayKitAudioPref) { new in
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit audio plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                            return
+                        }
+                        do {
+                            if new == 1 {
+                                // remove the value
+                                try PlistManager.removePlistValues(url: plistURL, keys: ["SBIconVisibility"])
+                            } else if new == 2 {
+                                // set to true
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": true])
+                            } else if new == 3 {
+                                // set to false
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": false])
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error setting replay kit audio plist: \(error.localizedDescription)")
+                        }
+                    }
+                    .onAppear {
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitAudio.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit audio plist \(MainUtils.FileLocation.replayKitAudio.rawValue)")
+                            return
+                        }
+                        // get the value
+                        do {
+                            let visibility = try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility")
+                            if visibility != nil {
+                                if visibility as? Bool ?? false {
+                                    replayKitAudioPref = 2
+                                } else {
+                                    replayKitAudioPref = 3
+                                }
+                            } else {
+                                replayKitAudioPref = 1
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error getting replay kit audio plist: \(error.localizedDescription)")
+                        }
+                    }
+                    
+                    // MARK: Video Replay Kit Button
+                    Text("Video Replay Kit Button Visibility")
+                    Picker(selection: $replayKitVideoPref, label: Text("")) {
+                        Text("Default").tag(1)
+                        Text("Always Show").tag(2)
+                        Text("Always Hide").tag(3)
+                    }
+                    .pickerStyle(.radioGroup)
+                    .horizontalRadioGroupLayout()
+                    .onChange(of: replayKitVideoPref) { new in
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit video plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                            return
+                        }
+                        do {
+                            if new == 1 {
+                                // remove the value
+                                try PlistManager.removePlistValues(url: plistURL, keys: ["SBIconVisibility"])
+                            } else if new == 2 {
+                                // set to true
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": true])
+                            } else if new == 3 {
+                                // set to false
+                                try PlistManager.setPlistValues(url: plistURL, values: ["SBIconVisibility": false])
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error setting replay kit audio plist: \(error.localizedDescription)")
+                        }
+                    }
+                    .onAppear {
+                        guard let plistURL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(MainUtils.FileLocation.replayKitVideo.rawValue) else {
+                            Logger.shared.logMe("Error finding replay kit video plist \(MainUtils.FileLocation.replayKitVideo.rawValue)")
+                            return
+                        }
+                        // get the value
+                        do {
+                            let visibility = try PlistManager.getPlistValues(url: plistURL, key: "SBIconVisibility")
+                            if visibility != nil {
+                                if visibility as? Bool ?? false {
+                                    replayKitVideoPref = 2
+                                } else {
+                                    replayKitVideoPref = 3
+                                }
+                            } else {
+                                replayKitVideoPref = 1
+                            }
+                        } catch {
+                            Logger.shared.logMe("Error getting replay kit video plist: \(error.localizedDescription)")
+                        }
+                    }
+                    
+                    Divider()
                     
                     ForEach($modules) { module in
                         Toggle(isOn: module.value) {
@@ -234,6 +350,7 @@ struct ControlCenterView: View {
                         print("Error loading cc presets")
                     }
                 }
+                .hideSeparator()
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }

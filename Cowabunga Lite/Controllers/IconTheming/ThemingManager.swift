@@ -128,8 +128,7 @@ class ThemingManager: ObservableObject {
     }
     
     public func makeWebClip(displayName: String = "", image: Data, bundleID: String, isAppClip: Bool = false, nameToDisplay: String!, overlay: Data?) throws {
-        let validChars = Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890.,_") // filter so that there is no error 205 downloading multiple file domains
-        let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip".filter{validChars.contains($0)}
+        let folderName: String = "Cowabunga_" + bundleID + "," + displayName + ".webclip"
         guard let folderURL = getAppliedThemeFolder()?.appendingPathComponent(folderName) else {
             throw "Error getting webclip folder"
         }
@@ -344,7 +343,7 @@ class ThemingManager: ObservableObject {
         do {
             for t in try FileManager.default.contentsOfDirectory(at: overlayFolder, includingPropertiesForKeys: nil) {
                 guard let d = try? Data(contentsOf: t) else { continue }
-                guard let i = NSImage(data: d) else { continue }
+                guard let _ = NSImage(data: d) else { continue }
                 overlays.append(.init(name: t.deletingPathExtension().lastPathComponent))
             }
         } catch {
@@ -454,7 +453,8 @@ class ThemingManager: ObservableObject {
         guard let infoPlist = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent("AltIconThemingPreferences.plist") else { return nil }
         if !FileManager.default.fileExists(atPath: infoPlist.path) {
             do {
-                try PropertyListSerialization.data(fromPropertyList: [:], format: .xml, options: 0).write(to: infoPlist)
+                let plist: [String: String] = [:] // just to stop the annoying warning
+                try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0).write(to: infoPlist)
             } catch {
                 return nil
             }

@@ -43,7 +43,7 @@ struct InternalOptionsView: View {
                             Spacer()
                         }
                         HStack {
-                            Toggle("Enable", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
+                            Toggle("Modify", isOn: $enableTweak).onChange(of: enableTweak, perform: {nv in
                                 DataSingleton.shared.setTweakEnabled(.internalOptions, isEnabled: nv)
                             }).onAppear(perform: {
                                 enableTweak = DataSingleton.shared.isTweakEnabled(.internalOptions)
@@ -92,6 +92,7 @@ struct InternalOptionsView: View {
                     }.disabled(!enableTweak)
                 }
             }.disabled(!dataSingleton.deviceAvailable)
+                .hideSeparator()
                 .onAppear {
                     if sbOptions.isEmpty {
                         for opt in MainUtils.internalOptions {
