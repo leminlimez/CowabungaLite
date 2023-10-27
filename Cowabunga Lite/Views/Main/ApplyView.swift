@@ -18,6 +18,12 @@ struct ApplyView: View {
     
     var body: some View {
         List {
+            if dataSingleton.deviceAvailable && (dataSingleton.currentDevice?.version ?? "15").compare("17.2", options: .numeric) == .orderedDescending {
+                MitigationBanner()
+                    .hideSeparator()
+                Divider()
+            }
+            
             Text("1. PLEASE make sure you have made a backup beforehand JUST IN CASE.\n2. Disable Find My iPhone before applying. You may re-enable it after.\n3. Check the log after applying for any issues. It should say \"Restore Successful\" at the bottom if successful.")
                 .hideSeparator()
             Text("If you get error 205 relating to downloading files, try setting your device's language to English temporarily.")
@@ -146,6 +152,34 @@ struct ApplyView: View {
             }
         }.disabled(!dataSingleton.deviceAvailable)
             .hideSeparator()
+    }
+    
+    struct MitigationBanner: View {
+        var body: some View {
+            HStack {
+                VStack {
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .padding(.trailing, 5)
+                            .foregroundColor(.blue)
+                            .font(.title)
+                        Text("Warning:")
+                            .bold()
+                        Text("Apple added new mitigations in iOS 17.2. Please read the following:")
+                        Spacer()
+                    }
+                    .padding(.bottom, 2)
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .padding(.trailing, 5)
+                            .font(.title)
+                            .opacity(0)
+                        Text("If you see a screen that says \"iPhone Partially Set Up\", DO NOT tap the big blue button. You must click \"Continue with Partial Setup\"")
+                        Spacer()
+                    }
+                }
+            }
+        }
     }
 }
 
