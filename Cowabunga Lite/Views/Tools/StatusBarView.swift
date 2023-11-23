@@ -664,7 +664,7 @@ struct StatusBarView: View {
                         .hideSeparator()
                     
                     Group {
-                        Toggle("Hide Do Not Disturb", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
+                        Toggle("Hide Focus (E.G: Do Not Disturb)", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
                             StatusManager.sharedInstance().hideDND(nv)
                         }).onAppear(perform: {
                             DNDHidden = StatusManager.sharedInstance().isDNDHidden()
