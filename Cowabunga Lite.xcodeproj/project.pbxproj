@@ -92,6 +92,7 @@
 		7207596029F2648E0053E26F /* homeScreenAppsNew in Resources */ = {isa = PBXBuildFile; fileRef = 7207595F29F2648E0053E26F /* homeScreenAppsNew */; };
 		7207596229F4D4390053E26F /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7207596129F4D4390053E26F /* ZIPFoundation */; };
 		7207596429F4D43C0053E26F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 7207596329F4D43C0053E26F /* SDWebImageSwiftUI */; };
+		89F8DD612B20FD1000D3893B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 89F8DD602B20FD1000D3893B /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -203,6 +204,7 @@
 		7207595B29F263270053E26F /* FileManager+MergeDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+MergeDirectory.swift"; sourceTree = "<group>"; };
 		7207595D29F263480053E26F /* ExecShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecShell.swift; sourceTree = "<group>"; };
 		7207595F29F2648E0053E26F /* homeScreenAppsNew */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = homeScreenAppsNew; sourceTree = "<group>"; };
+		89F8DD602B20FD1000D3893B /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -388,6 +390,7 @@
 		6F700AB429C37DF50085964B /* Cowabunga Lite */ = {
 			isa = PBXGroup;
 			children = (
+				89F8DD602B20FD1000D3893B /* Credits.rtf */,
 				6FE6D2782AAA39A0002CFD2F /* Cowabunga-Lite-Info.plist */,
 				6F700AB929C37DF60085964B /* Assets.xcassets */,
 				6F700ABE29C37DF60085964B /* CowabungaJailed.entitlements */,
@@ -651,6 +654,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7207596029F2648E0053E26F /* homeScreenAppsNew in Resources */,
+				89F8DD612B20FD1000D3893B /* Credits.rtf in Resources */,
 				25B47F1D29C91BA800BD9F7E /* Files in Resources */,
 				2544927229C7F79F00B6D82E /* CreateBackup.sh in Resources */,
 				6FE6D1072A951A0C002CFD2F /* restore in Resources */,
