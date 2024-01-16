@@ -24,14 +24,14 @@ struct RootView: View {
         
         // Tools View
         .init(title: "Tools", options: [
-//            .init(tweak: .operations, title: "Custom Operations", icon: "pencil.and.outline", view: OperationsMainView()),
+            .init(tweak: .operations, title: "Custom Operations", icon: "pencil.and.outline", view: OperationsMainView()),
             .init(tweak: .themes, title: "Icon Theming", icon: "paintbrush", view: IconThemingMainView()),
             .init(tweak: .controlCenter, title: "Control Center", icon: "switch.2", view: ControlCenterView()),
             .init(tweak: .statusBar, title: "Status Bar", icon: "wifi", view: StatusBarView(), dividerBelow: true),
             .init(tweak: .springboardOptions, title: "Springboard Options", icon: "app.badge", view: SpringboardOptionsView()),
             .init(tweak: .internalOptions, title: "Internal Options", icon: "internaldrive", view: InternalOptionsView()),
             .init(tweak: .skipSetup, title: "Setup Options", icon: "gear", view: SupervisionView()),
-            .init(tweak: .otaKiller, title: "OTA Killer", icon: "network.badge.shield.half.filled", view: OTAKillerView())
+//            .init(tweak: .otaKiller, title: "OTA Killer", icon: "network.badge.shield.half.filled", view: OTAKillerView())
 //            .init(tweak: .testing, title: "Testing Tweaks", icon: "testtube.2", view: TestingView())
         ]),
         
