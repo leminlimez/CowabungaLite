@@ -11,7 +11,6 @@ struct RootView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var devices: [Device]?
     @State private var selectedDeviceIndex = 0
-    @State private var loadingDevices: Bool = false
     
     @State private var options: [Category] = [
         .init(options: [
@@ -42,33 +41,22 @@ struct RootView: View {
     ]
     
     func updateDevices() {
-        if !loadingDevices {
-            loadingDevices = true
-            Task {
-                if DeviceSupportAPI.shared.lastTestedVersion == nil {
-                    await DeviceSupportAPI.shared.getLastTestedVersion()
-                }
-                
-                devices = getDevices()
-                if let devices = devices {
-                    if devices.isEmpty {
-                        selectedDeviceIndex = 0
-                        DataSingleton.shared.resetCurrentDevice()
-                    } else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
-                        selectedDeviceIndex = index
-                    } else {
-                        DataSingleton.shared.setCurrentDevice(devices[0])
-                    }
-                }
-                // Return to Home view
-                options[0].options[0].active = true
-                for i in 1..<options.count {
-                    for j in 0..<options[i].options.count {
-                        options[i].options[j].active = false
-                    }
-                }
-                
-                loadingDevices = false
+        devices = getDevices()
+        if let devices = devices {
+            if devices.isEmpty {
+                selectedDeviceIndex = 0
+                DataSingleton.shared.resetCurrentDevice()
+            } else if dataSingleton.deviceAvailable, let index = devices.firstIndex(where: { $0.uuid == dataSingleton.getCurrentUUID() }) {
+                selectedDeviceIndex = index
+            } else {
+                DataSingleton.shared.setCurrentDevice(devices[0])
+            }
+        }
+        // Return to Home view
+        options[0].options[0].active = true
+        for i in 1..<options.count {
+            for j in 0..<options[i].options.count {
+                options[i].options[j].active = false
             }
         }
     }
