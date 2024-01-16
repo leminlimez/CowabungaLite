@@ -34,7 +34,18 @@ import Foundation
     }
     
     func isDeviceTested(_ device: Device) -> Bool {
-        return lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame
+        return isDeviceOfVersion(device, version: lastTestedVersion)
+    }
+    
+    func isDeviceOfVersion(_ device: Device, version: String) -> Bool {
+        return version.compare(device.version, options: .numeric) == .orderedDescending || version.compare(device.version, options: .numeric) == .orderedSame
+    }
+    
+    func isCurrentDeviceOfVersion(_ version: String) -> Bool {
+        if let device = currentDevice {
+            return isDeviceOfVersion(device, version: version)
+        }
+        return false
     }
     
     func setCurrentDevice(_ device: Device) {
