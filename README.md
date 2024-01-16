@@ -8,7 +8,7 @@ Official Website Here: https://cowabun.ga/
 
 Please back up your devices before using this software! We are not responsible for damage to your device. **If you see the data transferring screen, you __MUST__ select Do Not Transfer Apps and Data**
 
-Join the [Discord](https://discord.gg/Cowabunga) for additional support and sneak peaks.
+Join the [Discord](https://discord.gg/MN8JgqSAqT) for additional support and sneak peaks.
 Feel free to support my work on [Ko-Fi](https://ko-fi.com/leminlimez).
 
 ## Requirements
