@@ -44,6 +44,7 @@ struct SupervisionView: View {
             .hideSeparator()
             
             if dataSingleton.deviceAvailable {
+                GoofinessBanner()
                 Group {
                     // MARK: Skipping Setup
                     Toggle("Skip Setup (recommended)", isOn: $skipSetup).onChange(of: skipSetup, perform: { nv in
@@ -67,6 +68,34 @@ struct SupervisionView: View {
                     .hideSeparator()
             }
         }.disabled(!dataSingleton.deviceAvailable)
+    }
+    
+    struct GoofinessBanner: View {
+        var body: some View {
+            HStack {
+                VStack {
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .padding(.trailing, 5)
+                            .foregroundColor(.blue)
+                            .font(.title)
+                        Text("Warning:")
+                            .bold()
+                        Text("This has been known to cause issues with device profiles.")
+                        Spacer()
+                    }
+                    .padding(.bottom, 2)
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .padding(.trailing, 5)
+                            .font(.title)
+                            .opacity(0)
+                        Text("Turn it off if you use any, but YOU MUST CLICK \"Don't Restore from Backup\" on setup.")
+                        Spacer()
+                    }
+                }
+            }
+        }
     }
 }
 
