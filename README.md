@@ -75,7 +75,6 @@ Simply download the .zip that is for your MacOS version and run the app. Plug in
 
 - Setup Options
     - Skip Restore Setup
-    - Disable OTA Updates
     - Enable Supervision
     - Set Supervision Organization Name
 

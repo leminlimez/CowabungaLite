@@ -17,7 +17,7 @@ struct RootView: View {
             .init(title: "Home", icon: "house", view: HomeView(), active: true),
 //            .init(title: "About", icon: "info.circle", view: AboutView()), // to change later
             .init(title: "Explore", icon: "safari", view: ThemesExploreView()),
-            .init(title: "Location Simulation", icon: "mappin.and.ellipse", view: LocSimView()),
+            .init(title: "Location Simulation", icon: "mappin.and.ellipse", view: LocSimView(), highestVersion: "16.9.9"),
 //            .init(title: "Appabetical", icon: "rectangle.2.swap", view: AppabeticalView())
         ]),
         
@@ -100,25 +100,27 @@ struct RootView: View {
                     Divider()
                     
                     ForEach(cat.options) { option in
-                        NavigationLink(destination: option.view.wrappedValue, isActive: option.active) {
-                            HStack {
-                                Image(systemName: option.icon.wrappedValue)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 24)
-                                Text(option.title.wrappedValue)
-                                    .padding(.horizontal, 8)
-                                if (dataSingleton.enabledTweaks.contains(option.tweak.wrappedValue)) {
-                                    Spacer()
-                                    Image(systemName: "checkmark")
+                        if (option.highestVersion.wrappedValue == nil || DataSingleton.shared.isCurrentDeviceOfVersion(option.highestVersion.wrappedValue!)) {
+                            NavigationLink(destination: option.view.wrappedValue, isActive: option.active) {
+                                HStack {
+                                    Image(systemName: option.icon.wrappedValue)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 10, height: 10)
+                                        .frame(width: 24, height: 24)
+                                    Text(option.title.wrappedValue)
+                                        .padding(.horizontal, 8)
+                                    if (dataSingleton.enabledTweaks.contains(option.tweak.wrappedValue)) {
+                                        Spacer()
+                                        Image(systemName: "checkmark")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 10, height: 10)
+                                    }
                                 }
                             }
-                        }
-                        if option.dividerBelow.wrappedValue {
-                            Divider()
+                            if option.dividerBelow.wrappedValue {
+                                Divider()
+                            }
                         }
                     }
                     .hideSeparator()
@@ -141,14 +143,16 @@ struct RootView: View {
         var title: String
         var icon: String
         var view: AnyView
+        var highestVersion: String? = nil
         var active: Bool = false
         var tweak: Tweak
         var dividerBelow: Bool = false
         
-        init(tweak: Tweak = .none, title: String, icon: String, view: any View, active: Bool = false, dividerBelow: Bool = false) {
+        init(tweak: Tweak = .none, title: String, icon: String, view: any View, highestVersion: String? = nil, active: Bool = false, dividerBelow: Bool = false) {
             self.title = title
             self.icon = icon
             self.view = AnyView(view)
+            self.highestVersion = highestVersion
             self.active = active
             self.tweak = tweak
             self.dividerBelow = dividerBelow
