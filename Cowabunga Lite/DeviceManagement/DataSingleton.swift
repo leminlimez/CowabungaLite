@@ -8,6 +8,8 @@
 import Foundation
 
 @objc class DataSingleton: NSObject, ObservableObject {
+    let lastTestedVersion: String = "17.3.9"
+    
     @objc static let shared = DataSingleton()
     @Published var currentDevice: Device?
     private var currentWorkspace: URL?
@@ -32,10 +34,7 @@ import Foundation
     }
     
     func isDeviceTested(_ device: Device) -> Bool {
-        if let lastTestedVersion = DeviceSupportAPI.shared.lastTestedVersion {
-            return lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame
-        }
-        return false
+        return lastTestedVersion.compare(device.version, options: .numeric) == .orderedDescending || lastTestedVersion.compare(device.version, options: .numeric) == .orderedSame
     }
     
     func setCurrentDevice(_ device: Device) {
