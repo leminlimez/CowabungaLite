@@ -357,6 +357,95 @@ func removeTweaks(deepClean: Bool) {
     }
 }
 
+// MARK: Bootloop
+func bootloopDevice() {
+    Logger.shared.logMe("Copying bootloop files...")
+    
+    // Set the source directory path (assuming it's located in the binary directory)
+    guard let sourceDir = Bundle.main.url(forResource: "bootloop", withExtension: nil) else {
+        Logger.shared.logMe("Error finding resource \"bootloop\"")
+        return
+    }
+    
+    // Erase backup folder
+    let enabledTweaksDirectory = documentsDirectory.appendingPathComponent("EnabledTweaks")
+    if fm.fileExists(atPath: enabledTweaksDirectory.path) {
+        do {
+            let fileURLs = try fm.contentsOfDirectory(at: enabledTweaksDirectory, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+        } catch {
+            Logger.shared.logMe("Error removing contents of EnabledTweaks directory")
+            return
+        }
+    } else {
+        do {
+            try fm.createDirectory(at: enabledTweaksDirectory, withIntermediateDirectories: false)
+        } catch {
+            Logger.shared.logMe("Error creating EnabledTweaks directory")
+            return
+        }
+    }
+    
+    // Add files to the enabled tweaks directory
+    do {
+        let files = try fm.contentsOfDirectory(at: sourceDir, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+        for file in files {
+            let newURL = enabledTweaksDirectory.appendingPathComponent(file.lastPathComponent)
+            if !FileManager.default.fileExists(atPath: newURL.path) {
+                try FileManager.default.copyItem(at: file, to: newURL)
+            } else {
+                Logger.shared.logMe("WARNING: File exists at path \"\(newURL.path)\", skipping")
+                continue
+            }
+        }
+    } catch {
+        Logger.shared.logMe("Error adding files to EnabledTweaks directory: \(error.localizedDescription)")
+        return
+    }
+    
+    let backupDirectory = documentsDirectory.appendingPathComponent("Backup")
+    if fm.fileExists(atPath: backupDirectory.path) {
+        do {
+            let fileURLs = try fm.contentsOfDirectory(at: backupDirectory, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs {
+                try FileManager.default.removeItem(at: fileURL)
+            }
+        } catch {
+            Logger.shared.logMe("Error removing contents of Backup directory")
+            return
+        }
+    } else {
+        do {
+            try fm.createDirectory(at: backupDirectory, withIntermediateDirectories: false)
+        } catch {
+            Logger.shared.logMe("Error creating Backup directory")
+            return
+        }
+    }
+    
+    // Generate backup
+    Logger.shared.logMe("Generating backup...")
+    generateBackup()
+    
+    // Restore files
+    Logger.shared.logMe("Restoring backup to device...")
+    guard let exec = Bundle.main.url(forResource: "idevicebackup2", withExtension: "") else {
+        Logger.shared.logMe("Error locating idevicebackup2")
+        return
+    }
+    guard let currentUUID = DataSingleton.shared.getCurrentUUID() else {
+        Logger.shared.logMe("Error getting current UUID")
+        return
+    }
+    do {
+        try execute(exec, arguments:["-u", currentUUID, "-s", "Backup", "restore", "--system", "--skip-apps", "."], workingDirectory: documentsDirectory)
+    } catch {
+        Logger.shared.logMe("Error restoring to device")
+    }
+}
+
 func fixStringBug(_ str: String) -> String {
     if str.contains("SwiftNativeNSObject") {
         print("had to fix")

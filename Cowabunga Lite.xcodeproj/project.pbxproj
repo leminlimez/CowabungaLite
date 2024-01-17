@@ -55,6 +55,7 @@
 		6F700ABA29C37DF60085964B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700AB929C37DF60085964B /* Assets.xcassets */; };
 		6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F700ABC29C37DF60085964B /* Preview Assets.xcassets */; };
 		6F700AC529C3A9240085964B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F700AC429C3A9240085964B /* RootView.swift */; };
+		6F71DBF62B57560500D9982A /* bootloop in Resources */ = {isa = PBXBuildFile; fileRef = 6F71DBF52B57560500D9982A /* bootloop */; };
 		6F7B3EED29F1980D0080FFDA /* AltIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B3EEC29F1980D0080FFDA /* AltIconView.swift */; };
 		6F7B3EEF29F198170080FFDA /* ListOfAppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B3EEE29F198170080FFDA /* ListOfAppsView.swift */; };
 		6F7B3F2F29FAA8870080FFDA /* IconThemingMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B3F2E29FAA8870080FFDA /* IconThemingMainView.swift */; };
@@ -166,6 +167,7 @@
 		6F700ABC29C37DF60085964B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6F700ABE29C37DF60085964B /* CowabungaJailed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CowabungaJailed.entitlements; sourceTree = "<group>"; };
 		6F700AC429C3A9240085964B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		6F71DBF52B57560500D9982A /* bootloop */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bootloop; sourceTree = "<group>"; };
 		6F7B3EEC29F1980D0080FFDA /* AltIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltIconView.swift; sourceTree = "<group>"; };
 		6F7B3EEE29F198170080FFDA /* ListOfAppsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfAppsView.swift; sourceTree = "<group>"; };
 		6F7B3F2E29FAA8870080FFDA /* IconThemingMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconThemingMainView.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 		6FE6D1052A9519D5002CFD2F /* FileFolders */ = {
 			isa = PBXGroup;
 			children = (
+				6F71DBF52B57560500D9982A /* bootloop */,
 				6FE6D1082A951A20002CFD2F /* restore-deepclean */,
 				6FE6D1062A951A0C002CFD2F /* restore */,
 				25B47F1C29C91BA800BD9F7E /* Files */,
@@ -653,6 +656,7 @@
 				6FE6D1072A951A0C002CFD2F /* restore in Resources */,
 				6F700ABD29C37DF60085964B /* Preview Assets.xcassets in Resources */,
 				2544928F29C80F5700B6D82E /* ideviceinfo in Resources */,
+				6F71DBF62B57560500D9982A /* bootloop in Resources */,
 				6FA6ED502AB574AE00E935B6 /* locsimUtils in Resources */,
 				6F1D5E812A1CF98B00D6E377 /* DefaultCC.plist in Resources */,
 				2557663129D2F51B008DF0E2 /* appabeticalJailed in Resources */,
@@ -900,7 +904,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -945,7 +949,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.leemin.CowabungaLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

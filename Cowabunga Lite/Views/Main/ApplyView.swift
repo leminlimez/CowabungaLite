@@ -12,6 +12,10 @@ struct ApplyView: View {
     @StateObject private var dataSingleton = DataSingleton.shared
     @State private var canApply: Bool = true
     
+    private let keyCombination = ["up", "up", "down", "down", "left", "right", "left", "right", "b", "a", "space"]
+    @State private var currentKeyOrder = -1
+    @State private var showBootloopButton: Bool = false
+    
     @Namespace var logID
     
     @State private var testNum: Int = 1
@@ -102,6 +106,25 @@ struct ApplyView: View {
                     pasteboard.setString(logger.logText, forType: .string)
                 }
                 
+                // MARK: Bootloop Button
+                if showBootloopButton {
+                    NiceButton(text: AnyView(
+                        HStack {
+                            Image(systemName: "apple.logo")
+                            Text("Bootloop Device")
+                                .foregroundColor(.red)
+                        }
+                    ), action: {
+                        if canApply {
+                            canApply = false
+                            Task {
+                                bootloopDevice()
+                                canApply = true
+                            }
+                        }
+                    })
+                }
+                
                 // Test button
 //                NiceButton(text: AnyView(
 //                    Text("Test console")
@@ -121,6 +144,34 @@ struct ApplyView: View {
             
             if #available(macOS 12, *) {
                 ZStack {
+                    ZStack {
+                        Button(action: {
+                            handleKeyPress("up")
+                        }) {}.keyboardShortcut(.upArrow, modifiers: [])
+                        Button(action: {
+                            handleKeyPress("down")
+                        }) {}.keyboardShortcut(.downArrow, modifiers: [])
+                        Button(action: {
+                            handleKeyPress("left")
+                        }) {}.keyboardShortcut(.leftArrow, modifiers: [])
+                        Button(action: {
+                            handleKeyPress("right")
+                        }) {}.keyboardShortcut(.rightArrow, modifiers: [])
+                        Button(action: {
+                            handleKeyPress("b")
+                        }) {}.keyboardShortcut(.init("b"), modifiers: [])
+                        Button(action: {
+                            handleKeyPress("a")
+                        }) {}.keyboardShortcut(.init("a"), modifiers: [])
+                        Button(action: {
+                            handleKeyPress("space")
+                        }) {}.keyboardShortcut(.space, modifiers: [])
+                    }
+                    .opacity(0)
+                    .onAppear {
+                        currentKeyOrder = -1
+                        showBootloopButton = false
+                    }
                     GeometryReader { proxy1 in
                         ScrollViewReader { reader in
                             ScrollView {
@@ -180,6 +231,19 @@ struct ApplyView: View {
                 }
             }
         }
+    }
+    
+    func handleKeyPress(_ k: String) {
+        if !showBootloopButton {
+            if currentKeyOrder + 1 >= 0 && currentKeyOrder + 1 < keyCombination.count && keyCombination[currentKeyOrder + 1] == k {
+                currentKeyOrder = currentKeyOrder + 1
+                if currentKeyOrder + 1 >= keyCombination.count {
+                    showBootloopButton = true
+                }
+                return
+            }
+        }
+        currentKeyOrder = -1
     }
 }
 
