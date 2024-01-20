@@ -188,7 +188,7 @@ struct HomeView: View {
                                                 .foregroundColor(.red)
                                         } else {
                                             if (!DataSingleton.shared.deviceTested) {
-                                                Text("Untested.")
+                                                Text("Supported, YMMV.")
                                                     .foregroundColor(.yellow)
                                             } else {
                                                 Text("Supported!")
@@ -243,7 +243,7 @@ struct HomeView: View {
                                 
                                 // discord button
                                 HStack {
-                                    LinkCell(imageName: "discord.fill", url: "https://discord.gg/Cowabunga", title: "Join the Discord", contribution: "", circle: false)
+                                    LinkCell(imageName: "discord.fill", url: "https://discord.gg/MN8JgqSAqT", title: "Join the Discord", contribution: "", circle: false)
                                     Spacer()
                                 }
                             }

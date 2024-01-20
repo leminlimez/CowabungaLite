@@ -5,6 +5,21 @@
 //  Created by lemin on 8/25/23.
 //
 
+/* 
+ * MARK: DEPRICATED
+ * Recent iOS updates have caused problems re enabling ota, so this has been depricated for the user's safety.
+ *
+ * MARK: To re-enable (not recommended):
+ * - Add folder "OTAKiller" to "FileFolders/Files"
+ * - Add folder "ManagedPreferencesDomain" inside of "OTAKiller"
+ * - Add folder "mobile" inside of "ManagedPreferencesDomain"
+ * - Add an empty plist titled "com.Apple.MobileAsset.plist" inside that "mobile" folder
+ * - Re-enable "OTA Killer" tab by uncommenting the line inside of "Views/RootView.swift"
+ *
+ * To re-enable it for removing all tweaks and deep clean, add that same empty plist inside of the same paths in
+ * "FileFolders/restore" and "FileFolders/restore-deepclean" folders.
+ */
+
 import Foundation
 import SwiftUI
 

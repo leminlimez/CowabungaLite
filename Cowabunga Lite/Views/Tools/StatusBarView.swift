@@ -124,7 +124,7 @@ struct StatusBarView: View {
             }
             .hideSeparator()
             
-            if dataSingleton.deviceAvailable && dataSingleton.deviceTested == true {
+            if dataSingleton.deviceAvailable {
                 Text("Betas, use with caution. Have a backup.")
                     .hideSeparator()
                 Group {
@@ -664,7 +664,7 @@ struct StatusBarView: View {
                         .hideSeparator()
                     
                     Group {
-                        Toggle("Hide Do Not Disturb", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
+                        Toggle("Hide Focus (i.e. Do Not Disturb)", isOn: $DNDHidden).onChange(of: DNDHidden, perform: { nv in
                             StatusManager.sharedInstance().hideDND(nv)
                         }).onAppear(perform: {
                             DNDHidden = StatusManager.sharedInstance().isDNDHidden()
@@ -735,8 +735,8 @@ struct StatusBarView: View {
                     }
                     .hideSeparator()
                 }.disabled(!enableTweak)
-            } else if dataSingleton.deviceAvailable && !dataSingleton.deviceTested {
-                Text("Status bar status is untested on your iOS version. It has been disabled for your safety.")
+            } else {
+                Text("No device connected.")
             }
         }.disabled(!dataSingleton.deviceAvailable)
     }
