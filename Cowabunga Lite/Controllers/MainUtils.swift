@@ -288,6 +288,7 @@ class MainUtils {
                 try PlistManager.setPlistValues(url: plistURL, values: [
                     "CloudConfigurationUIComplete": true,
                     "SkipSetup": [
+                        "WiFi",
                         "Location",
                         "Restore",
                         "SIMSetup",
