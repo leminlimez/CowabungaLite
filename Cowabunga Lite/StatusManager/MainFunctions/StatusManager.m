@@ -53,13 +53,11 @@
             NSInteger subversion = [versionSplit[1] integerValue];
             if (subversion == 0) {
                 _setter = [StatusSetter16 new];
-            } else if (subversion <= 2) {
-                _setter = [StatusSetter16_1 new];
             } else {
-                _setter = [StatusSetter16_3 new];
+                _setter = [StatusSetter16_1 new];
             }
         } else {
-            _setter = [StatusSetter16_3 new];
+            _setter = [StatusSetter16_1 new];
         }
     }
     return _setter;
