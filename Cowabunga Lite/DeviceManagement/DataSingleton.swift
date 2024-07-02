@@ -8,7 +8,7 @@
 import Foundation
 
 @objc class DataSingleton: NSObject, ObservableObject {
-    let lastTestedVersion: String = "17.3.9"
+    let lastTestedVersion: String = "17.6"
     
     @objc static let shared = DataSingleton()
     @Published var currentDevice: Device?

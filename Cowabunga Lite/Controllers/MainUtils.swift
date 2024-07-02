@@ -38,6 +38,7 @@ class MainUtils {
         
         // Setup Options
         case skipSetup = "SkipSetup/ConfigProfileDomain/Library/ConfigurationProfiles/CloudConfigurationDetails.plist"
+        case skipSetup2 = "SkipSetup/ManagedPreferencesDomain/mobile/com.apple.purplebuddy.plist"
         
         // OTA Killer
         case ota = "OTAKiller/ManagedPreferencesDomain/mobile/com.apple.MobileAsset.plist"
@@ -278,29 +279,62 @@ class MainUtils {
             Logger.shared.logMe("Error finding cloud configuration details plist")
             return
         }
+        guard let plist2URL = DataSingleton.shared.getCurrentWorkspace()?.appendingPathComponent(FileLocation.skipSetup2.rawValue) else {
+            Logger.shared.logMe("Error finding purplebuddy plist")
+            return
+        }
         if nv {
             do {
                 try PlistManager.setPlistValues(url: plistURL, values: [
                     "CloudConfigurationUIComplete": true,
                     "SkipSetup": [
-                        "Diagnostics",
-                        "WiFi",
-                        "AppleID",
-                        "Siri",
+                        "Location",
                         "Restore",
+                        "SIMSetup",
+                        "Android",
+                        "AppleID",
+                        "IntendedUser",
+                        "TOS",
+                        "Siri",
+                        "ScreenTime",
+                        "Diagnostics",
                         "SoftwareUpdate",
+                        "Passcode",
+                        "Biometric",
+                        "Payment",
+                        "Zoom",
+                        "DisplayTone",
+                        "MessagingActivationUsingPhoneNumber",
+                        "HomeButtonSensitivity",
+                        "CloudStorage",
+                        "ScreenSaver",
+                        "TapToSetup",
+                        "Keyboard",
+                        "PreferredLanguage",
+                        "SpokenLanguage",
+                        "WatchMigration",
+                        "OnBoarding",
+                        "TVProviderSignIn",
+                        "TVHomeScreenSync",
+                        "Privacy",
+                        "TVRoom",
+                        "iMessageAndFaceTime",
+                        "AppStore",
+                        "Safety",
+                        "Multitasking",
+                        "ActionButton",
+                        "TermsOfAddress",
+                        "AccessibilityAppearance",
                         "Welcome",
                         "Appearance",
-                        "Privacy",
-                        "SIMSetup",
-                        "OnBoarding",
-                        "Zoom",
-                        "Biometric",
-                        "ScreenTime",
-                        "Payment",
-                        "Passcode",
-                        "Display",
+                        "RestoreCompleted",
+                        "UpdateCompleted"
                     ]
+                ])
+                try PlistManager.setPlistValues(url: plist2URL, values: [
+                    "SetupDone": true,
+                    "SetupFinishedAllSteps": true,
+                    "UserChoseLanguage": true
                 ])
             } catch {
                 Logger.shared.logMe(error.localizedDescription)
@@ -313,6 +347,7 @@ class MainUtils {
                     "CloudConfigurationUIComplete": false,
                     "SkipSetup": skipSetupList
                 ])
+                try PlistManager.setPlistValues(url: plist2URL, values: [:])
             } catch {
                 Logger.shared.logMe(error.localizedDescription)
                 return
