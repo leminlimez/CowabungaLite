@@ -94,8 +94,7 @@ func executeWIN(_ execURL: URL, arguments: [String] = [], workingDirectory: URL?
     try task.run()
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     if let output = String(data: data, encoding: .utf8) {
-        let output2 = output.replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\r", with: "")
-        return output2
+        return output
     }
     return ""
 }
